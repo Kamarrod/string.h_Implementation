@@ -96,39 +96,65 @@ void check_part_format(const char *pF, struct info *mys, va_list input,
   }
 }
 
-void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces) {
+void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces, int col_zeros) {
   if (num_s[0] != '-' &&
-      num_s[0] != '+') { //Число положительное - просто пишем слева нули
-    for (int i = 0; i < col_spaces; i++)
-      strcat(str, "0");
+      num_s[0] != '+') { //есть какая-то ширина и стоит флаг 0
+    
+    if(col_zeros >0) { //если даже стоит фл 0 но есть точность все заполнять нулями не будем
+      for (int i = 0; i < col_spaces; i++)
+        strcat(str, " ");
+      for (int i = 0; i <col_zeros; i++)
+        strcat(str, "0");
+    } else {
+      for (int i = 0; i < col_spaces; i++)
+        strcat(str, "0");
+    }
     strcat(str, num_s);
   } else if (num_s[0] == '-' ||
-             num_s[0] == '+') { //Число отрициательное сначала минус потом нули
+             num_s[0] == '+') { //сначала знак потом нули
                                 //потом число
     if (num_s[0] == '-')
       strcat(str, "-");
     else
       strcat(str, "+");
-    for (int i = 0; i < col_spaces; i++)
-      strcat(str, "0");
+
+
+
+
+
+    if(col_zeros >0) { //если даже стоит фл 0 но есть точность все заполнять нулями не будем
+      for (int i = 0; i < col_spaces; i++)
+        strcat(str, " ");
+      for (int i = 0; i <col_zeros; i++)
+        strcat(str, "0");
+    } else {
+      for (int i = 0; i < col_spaces; i++)
+        strcat(str, "0");
+    }
+    
+    
     strcat(str, &num_s[1]);
   }
 }
 
 void ppts_width_align_right(char *num_s, char *str, int col_spaces,
-                            struct info *mys) {
+                            int col_zeros, struct info *mys) {
   if (mys->fl != '0') {
     for (int i = 0; i < col_spaces; i++)
       strcat(str, " ");
+    for (int i = 0; i < col_zeros; i++)
+      strcat(str, "0");
     strcat(str, num_s);
   } else if (mys->fl ==
              '0') { //Заполняет число слева нулями (0) вместо пробелов,
                     //где указан спецификатор ширины
-    ppts_width_fill_nulls(num_s, str, col_spaces);
+    ppts_width_fill_nulls(num_s, str, col_spaces, col_zeros);
   }
 }
 
-void ppts_width_align_left(char *num_s, char *str, int col_spaces) {
+void ppts_width_align_left(char *num_s, char *str, int col_spaces, int col_zeros) {
+  for (int i = 0; i < col_zeros; i++)
+    strcat(str, "0");
   strcat(str, num_s);
   for (int i = 0; i < col_spaces; i++)
     strcat(str, " ");
@@ -159,14 +185,22 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
     // printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
     // printf("FUNC:mys->width:%d\n", mys->width);
     if (mys->width != -1) { //ширина для числа
-      int col_spaces = mys->width - len_num_s;
-      if (col_spaces >= 1) {
+      int col_spaces = 0;
+      int col_zeros = 0;
+      if(mys->acc == -1)
+        col_spaces = mys->width - len_num_s;
+      else {
+        col_zeros = mys->acc - len_num_s;
+        col_spaces = mys->width - mys->acc;
+      }
+
+      if (col_spaces >= 1 || col_zeros >=1) {
         if (mys->fl !=
             '-') { //выравнивание правому краю в пределах заданной ширины
-          ppts_width_align_right(num_s, str, col_spaces, mys);
+          ppts_width_align_right(num_s, str, col_spaces,col_zeros, mys);
         } else if (mys->fl == '-') { //Выравнивание по левому краю в пределах
                                      //заданной ширины
-          ppts_width_align_left(num_s, str, col_spaces);
+          ppts_width_align_left(num_s, str, col_spaces, col_zeros);
         }
       } else {
         strcat(str, num_s);
@@ -219,8 +253,8 @@ int s21_sprintf(char *str, const char *format, ...) {
       i++;
       j++;
     }
+    str[j] = '\0';
   }
-  // str[j] = '\0';
 
   va_end(input);
   //printf("FUNC:STRLEN:%ld\n", strlen(str));
@@ -236,11 +270,18 @@ format −  это С-строка, содержащая один или нес�
 
 */
 // int main() {
-//   char str1[256] = "";
-//   const char *format = "%0.*i %d %.*i %013d %d";
+//   char str1[256];
+//   char str2[256];
+//   //const char *format = "%0.*i %d %.*i %013d %d";
+//   const char *format = "%012i";
+  
 //   int val = 69;
-//   s21_sprintf(str1, format, 5, val, -10431, 13, 5311, 0, -581813581);
-//   printf("MAIN:SPRINTF:%s\n", str1);
-//   printf("MAIN:STRLEN:%ld\n", strlen(str1));
+//   s21_sprintf(str1, format , val);
+//   sprintf(str2, format , val);
+
+//   printf("MAIN:S21 sPRINTF:%s\n", str1);
+//   printf("MAIN:SPRINTF:%s\n", str2);
+//   printf("MAIN:s21 STRLEN:%ld\n", strlen(str1));
+//   printf("MAIN:STRLEN:%ld\n", strlen(str2));
 //   return 0;
 // }
