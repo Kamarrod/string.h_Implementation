@@ -134,8 +134,8 @@ void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces,
   }
 }
 
-void ppts_width_align_right(char *num_s, char *str, int col_spaces,
-                            int col_zeros, struct info *mys) {
+void ppts_width_align_right_i_d(char *num_s, char *str, int col_spaces,
+                                int col_zeros, struct info *mys) {
   if (mys->fl != '0') {
 
     if (num_s[0] != '-' && num_s[0] != '+') {
@@ -163,8 +163,8 @@ void ppts_width_align_right(char *num_s, char *str, int col_spaces,
   }
 }
 
-void ppts_width_align_left(char *num_s, char *str, int col_spaces,
-                           int col_zeros) {
+void ppts_width_align_left_i_d(char *num_s, char *str, int col_spaces,
+                               int col_zeros) {
 
   if (num_s[0] != '-' && num_s[0] != '+') {
     for (int i = 0; i < col_zeros; i++)
@@ -197,10 +197,10 @@ void ppts_width_i_d(struct info *mys, int len_num_s, char *num_s, char *str) {
 
   if (col_spaces >= 1 || col_zeros >= 1) {
     if (mys->fl != '-') { //выравнивание правому краю в пределах заданной ширины
-      ppts_width_align_right(num_s, str, col_spaces, col_zeros, mys);
+      ppts_width_align_right_i_d(num_s, str, col_spaces, col_zeros, mys);
     } else if (mys->fl == '-') { //Выравнивание по левому краю в пределах
                                  //заданной ширины
-      ppts_width_align_left(num_s, str, col_spaces, col_zeros);
+      ppts_width_align_left_i_d(num_s, str, col_spaces, col_zeros);
     }
   } else {
     strcat(str, num_s);
@@ -214,6 +214,8 @@ void ppts_acc_i_d(struct info *mys, int len_num_s, char *num_s, char *str) {
       strcat(str, "+");
     else if (num_s[0] == '-')
       strcat(str, "-");
+    else if (mys->fl == ' ')
+      strcat(str, " ");
 
     for (int i = 0; i < col_zeros; i++)
       strcat(str, "0");
@@ -223,9 +225,45 @@ void ppts_acc_i_d(struct info *mys, int len_num_s, char *num_s, char *str) {
     } else {
       strcat(str, num_s);
     }
+  } else {
+    strcat(str, num_s);
   }
 }
 
+void ppts_width_align_left_c(char c, char *str, int col_spaces) {
+  strncat(str, &c, 1);
+  for (int i = 0; i < col_spaces; i++)
+    strcat(str, " ");
+}
+
+
+
+
+
+void ppts_width_align_right_c(char c, char *str, int col_spaces) {
+  for (int i = 0; i < col_spaces; i++)
+    strcat(str, " ");
+  strncat(str, &c, 1);
+}
+
+
+
+
+
+void ppts_width_c(struct info *mys, char c, char *str) {
+  int col_spaces = mys->width - 1;
+
+  if (col_spaces >= 1) {
+    if (mys->fl != '-') { //выравнивание правому краю в пределах заданной ширины
+      ppts_width_align_right_c(c, str, col_spaces);
+    } else if (mys->fl == '-') { //Выравнивание по левому краю в пределах
+                                 //заданной ширины
+      ppts_width_align_left_c(c, str, col_spaces);
+    }
+  } else {
+    strncat(str, &c, 1);
+  }
+}
 char *add_plus_nums(struct info *mys, char *num_s) {
   char *p1 = NULL;
   p1 = malloc((strlen(num_s) + 2) * sizeof(char));
@@ -238,7 +276,8 @@ char *add_plus_nums(struct info *mys, char *num_s) {
 void print_part_to_str(char *str, struct info *mys, va_list input) {
   long num;
   char *num_s;
-  int len_num_s=0;
+  int len_num_s = 0;
+  char c;
   switch (mys->spec) {
   case 'i':
   case 'd':
@@ -248,9 +287,9 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
       num = va_arg(input, int);
     num_s = itoa(num, 10);
 
-    if (mys->fl == '+'&& num_s[0]!='-'){
-      num_s = add_plus_nums(mys, num_s);    //проверит флаг и добавит + если нужно
-      if(mys->len == 'l')
+    if (mys->fl == '+' && num_s[0] != '-') {
+      num_s = add_plus_nums(mys, num_s); //проверит флаг и добавит + если нужно
+      if (mys->len == 'l')
         len_num_s = -1;
     }
     len_num_s += strlen(num_s);
@@ -267,6 +306,11 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
     }
     if (mys->fl == '+')
       free(num_s);
+    break;
+  case 'c':
+  case '%':
+    c = va_arg(input, int);
+    ppts_width_c(mys, c, str);
     break;
 
   default:
@@ -309,13 +353,14 @@ format −  это С-строка, содержащая один или нес�
 сканирующих функций следует прототипу: %[*][ширина][длина]спецификатор.
 
 */
+
 // int main() {
 //   char str1[256];
 //   char str2[256];
-//   // const char *format = "%0.*i %d %.*i %013d %d";
-//   const char *format = "%+12d";
 
-//   long val = 69;
+//   char *format = "%5c";
+//   char val = 'c';
+
 //   s21_sprintf(str1, format, val);
 //   sprintf(str2, format, val);
 
