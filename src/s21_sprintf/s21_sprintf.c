@@ -25,6 +25,18 @@ char *itoa(long val, int base) {
   return ret_val;
 }
 
+char *utoa(unsigned long val, int base) {
+  static char buf[128] = {0};
+  int i = 30;
+
+  for (; val && i; --i, val /= base)
+
+    buf[i] = "0123456789abcdef"[val % base];
+  char *ret_val;
+  ret_val = &buf[i + 1];
+  return ret_val;
+}
+
 void init_struct(struct info *mys) {
   mys->fl = '_';
   mys->width = -1;
@@ -312,12 +324,30 @@ char *add_plus_nums(struct info *mys, char *num_s) {
   return p1;
 }
 
+
+
+
+
+void ppts_acc_u(struct info *mys, int len_num_s, char *num_s, char *str) {
+  int col_zeros = mys->acc - len_num_s;
+  if (col_zeros >= 1) {
+    for (int i = 0; i < col_zeros; i++)
+      strcat(str, "0");
+      strcat(str, num_s);
+  } else {
+    strcat(str, num_s);
+  }
+}
+
+
 void print_part_to_str(char *str, struct info *mys, va_list input) {
   long num;
   char *num_s;
   int len_num_s = 0;
   char c;
   char *s = NULL;
+  unsigned ui;
+  unsigned long uli;
   switch (mys->spec) {
   case 'i':
   case 'd':
@@ -363,7 +393,25 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
     } else {
       strcat(str, s);
     }
+    break;
+  case 'u':
+    if(mys->len=='l'){
+      uli = va_arg(input, unsigned long);
+      num_s = utoa(uli, 10);
+    } else {
+      ui = va_arg(input, unsigned);
+      num_s = utoa(ui, 10);
+    }
+    len_num_s += strlen(num_s);
 
+    if (mys->width != -1) {
+      ppts_width_i_d(mys, len_num_s, num_s, str);
+    } else if (mys->acc != -1) {
+      ppts_acc_u(mys, len_num_s , num_s, str);
+    } else {
+      strcat(str, num_s);
+    }
+    break;
   default:
     break;
   }
@@ -409,14 +457,13 @@ format −  это С-строка, содержащая один или нес�
 //   char str1[256];
 //   char str2[256];
 
-//     char *format = "%15.9s";
-//     char *val =
-//         "69 IS MY FAVORITE NUMBER THIS IS SUPPOSED TO BE A VERY LONG STRING";
-//   s21_sprintf(str1, format, val);
-//   sprintf(str2, format, val);
+//     char *format = "%lu, %u, %hu, %.5u, %15.6u";
+//     unsigned long int val = 949149114140;
+//   s21_sprintf(str1, format, val, 14, 1441, 14414, 9681);
+//   sprintf(str2, format, val, 14, 1441, 14414, 9681);
 //   //sprintf(str2, format, val, s1, s2, s3);
 //   printf("MAIN:S21 sPRINTF:%s\n", str1);
-//   printf("MAIN:SPRINTF:%s\n", str2);
+//   printf("MAIN:SPRINTF    :%s\n", str2);
 //   printf("MAIN:s21 STRLEN:%ld\n", strlen(str1));
 //   printf("MAIN:STRLEN:%ld\n", strlen(str2));
 //   return 0;
