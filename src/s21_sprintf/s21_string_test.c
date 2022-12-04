@@ -3384,16 +3384,16 @@ START_TEST(sprintf_many_flags_many_ints) {
     ck_assert_str_eq(str1, str2);
 } END_TEST
 
-// START_TEST(sprintf_flags_long_int) {
-//     char str1[BUFF_SIZE];
-//     char str2[BUFF_SIZE];
+START_TEST(sprintf_flags_long_int) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
 
-//     char *format = "%+5.31li";
-//     long int val = 698518581899;
-//     ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+    char *format = "%+5.31li";
+    long int val = 698518581899;
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-//     ck_assert_str_eq(str1, str2);
-// } END_TEST
+    ck_assert_str_eq(str1, str2);
+} END_TEST
 
 // START_TEST(sprintf_flags_short_int) {
 //     char str1[BUFF_SIZE];
@@ -7725,7 +7725,7 @@ Suite *suite_insert(void) {
     tcase_add_test(tc, sprintf_star_width_int);
     tcase_add_test(tc, sprintf_star_precision_int);
     tcase_add_test(tc, sprintf_many_flags_many_ints);
-    // tcase_add_test(tc, sprintf_flags_long_int);
+    tcase_add_test(tc, sprintf_flags_long_int);
     // tcase_add_test(tc, sprintf_flags_short_int);
     // tcase_add_test(tc, sprintf_flags_another_long_int);
     // tcase_add_test(tc, sprintf_zero_precision_zero_int);
@@ -8121,9 +8121,9 @@ int main(void) {
     sr = srunner_create(s1);
 
     //srunner_run_all(sr, CK_ENV);
-    srunner_run_all(sr, CK_NORMAL);
+    //srunner_run_all(sr, CK_NORMAL);
     srunner_set_fork_status(sr, CK_NOFORK);
-    //srunner_run_all(sr, CK_VERBOSE);
+    srunner_run_all(sr, CK_VERBOSE);
 
     nf = srunner_ntests_failed(sr);
     srunner_free(sr);
