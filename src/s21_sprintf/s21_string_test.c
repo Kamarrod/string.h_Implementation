@@ -3773,71 +3773,71 @@ START_TEST(sprintf_hex_two_longer_width) {
     ck_assert_str_eq(str1, str2);
 } END_TEST
 */
-START_TEST(sprintf_one_char) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+// START_TEST(sprintf_one_char) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
 
-    char *format = "%c";
-    char val = 'X';
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+//     char *format = "%c";
+//     char val = 'X';
+//     ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
-START_TEST(sprintf_one_precision) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
+// START_TEST(sprintf_one_precision) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
 
-    char *format = "%.5c";
-    char val = 'c';
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+//     char *format = "%.5c";
+//     char val = 'c';
+//     ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
 
-START_TEST(sprintf_one_flags) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+// START_TEST(sprintf_one_flags) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
 
-    char *format = "% -5c";
-    char val = 'c';
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+//     char *format = "% -5c";
+//     char val = 'c';
+//     ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
 
-START_TEST(sprintf_one_width) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+// START_TEST(sprintf_one_width) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
 
-    char *format = "%15c";
-    char val = 'c';
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+//     char *format = "%15c";
+//     char val = 'c';
+//     ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
 
-START_TEST(sprintf_one_many) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+// START_TEST(sprintf_one_many) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
 
-    char *format = "%-5.3c%c%c%c%c Hello! ABOBA";
-    char val = 'c';
-    ck_assert_int_eq(s21_sprintf(str1, format, val, 'c', 'a', 'b', 'b'), sprintf(str2, format, val, 'c', 'a', 'b', 'b'));
+//     char *format = "%-5.3c%c%c%c%c Hello! ABOBA";
+//     char val = 'c';
+//     ck_assert_int_eq(s21_sprintf(str1, format, val, 'c', 'a', 'b', 'b'), sprintf(str2, format, val, 'c', 'a', 'b', 'b'));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
 
-START_TEST(sprintf_one_starwidth) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+// START_TEST(sprintf_one_starwidth) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
 
-    char *format = "%-*c";
-    char val = 'c';
-    ck_assert_int_eq(s21_sprintf(str1, format, 5, val), sprintf(str2, format, 5, val));
+//     char *format = "%-*c";
+//     char val = 'c';
+//     ck_assert_int_eq(s21_sprintf(str1, format, 5, val), sprintf(str2, format, 5, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
-/*
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
+
 START_TEST(sprintf_string) {
     char str1[BUFF_SIZE];
     char str2[BUFF_SIZE];
@@ -3849,7 +3849,7 @@ START_TEST(sprintf_string) {
     ck_assert_str_eq(str1, str2);
 } END_TEST
 
-START_TEST(sprintf_string_precision) {
+START_TEST(sprintf_string_precision_less_s_len) {
     char str1[BUFF_SIZE];
     char str2[BUFF_SIZE];
 
@@ -3860,18 +3860,70 @@ START_TEST(sprintf_string_precision) {
     ck_assert_str_eq(str1, str2);
 } END_TEST
 
-START_TEST(sprintf_string_width) {
+
+START_TEST(sprintf_string_precision_greater_s_len) {
     char str1[BUFF_SIZE];
     char str2[BUFF_SIZE];
 
-    char *format = "%15s";
+    char *format = "%.50s";
+    char *val = "I LOVE STRINGS";
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
+
+START_TEST(sprintf_string_width_greater_s_len) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%50s";
     char *val = "69 IS MY FAVORITE NUMBER";
     ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
     ck_assert_str_eq(str1, str2);
 } END_TEST
 
-START_TEST(sprintf_string_flags) {
+
+START_TEST(sprintf_string_width_less_s_len) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%5s";
+    char *val = "69 IS MY FAVORITE NUMBER";
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
+
+
+START_TEST(sprintf_string_min_width_greater_s_len) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%-50s";
+    char *val = "69 IS MY FAVORITE NUMBER";
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
+START_TEST(sprintf_string_min_width_less_s_len) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%-5s";
+    char *val = "69 IS MY FAVORITE NUMBER";
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
+
+
+
+START_TEST(sprintf_string_min_width_acc) {
     char str1[BUFF_SIZE];
     char str2[BUFF_SIZE];
 
@@ -3882,13 +3934,40 @@ START_TEST(sprintf_string_flags) {
     ck_assert_str_eq(str1, str2);
 } END_TEST
 
-START_TEST(sprintf_string_long) {
+START_TEST(sprintf_string_width_greater_acc_less_s) {
     char str1[BUFF_SIZE];
     char str2[BUFF_SIZE];
 
-    char *format = "%s";
+    char *format = "%15.9s";
     char *val =
         "69 IS MY FAVORITE NUMBER THIS IS SUPPOSED TO BE A VERY LONG STRING";
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
+
+START_TEST(sprintf_string_width_greater_acc_greater_s) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%45.9s";
+    char *val =
+        "69 IS MY FAVORI2323";
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
+
+
+START_TEST(sprintf_string_width_less_acc) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%15.25s";
+    char *val =
+        "69 IS MY FAVORITE NUMBERRRRRRRRRRRRRRRRR";
     ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
     ck_assert_str_eq(str1, str2);
@@ -3898,7 +3977,7 @@ START_TEST(sprintf_string_many) {
     char str1[BUFF_SIZE];
     char str2[BUFF_SIZE];
 
-    char *format = "%s%s%s%s";
+    char *format = "%s %s %s %s";
     char *val =
         "69 IS MY FAVORITE NUMBER THIS IS SUPPOSED TO BE A VERY LONG STRING";
     char *s1 = "";
@@ -3908,7 +3987,7 @@ START_TEST(sprintf_string_many) {
 
     ck_assert_str_eq(str1, str2);
 } END_TEST
-
+/*
 START_TEST(sprintf_ptr) {
     char str1[BUFF_SIZE];
     char str2[BUFF_SIZE];
@@ -7763,19 +7842,31 @@ Suite *suite_insert(void) {
     tcase_add_test(tc, sprintf_hex_one_longer_width);
     tcase_add_test(tc, sprintf_hex_two_longer_width);
     */
-    tcase_add_test(tc, sprintf_one_char);
-    tcase_add_test(tc, sprintf_one_precision);
-    tcase_add_test(tc, sprintf_one_flags);
-    tcase_add_test(tc, sprintf_one_width);
-    tcase_add_test(tc, sprintf_one_many);
-    tcase_add_test(tc, sprintf_one_starwidth);
-    /*
+    // tcase_add_test(tc, sprintf_one_char);
+    // tcase_add_test(tc, sprintf_one_precision);
+    // tcase_add_test(tc, sprintf_one_flags);
+    // tcase_add_test(tc, sprintf_one_width);
+    // tcase_add_test(tc, sprintf_one_many);
+    // tcase_add_test(tc, sprintf_one_starwidth);
+    
     tcase_add_test(tc, sprintf_string);
-    tcase_add_test(tc, sprintf_string_precision);
-    tcase_add_test(tc, sprintf_string_width);
-    tcase_add_test(tc, sprintf_string_flags);
-    tcase_add_test(tc, sprintf_string_long);
+    tcase_add_test(tc, sprintf_string_precision_less_s_len);
+    tcase_add_test(tc, sprintf_string_precision_greater_s_len);
+    tcase_add_test(tc, sprintf_string_width_greater_s_len);
+
+
+    tcase_add_test(tc, sprintf_string_width_less_s_len);
+    tcase_add_test(tc, sprintf_string_min_width_greater_s_len);
+    tcase_add_test(tc, sprintf_string_min_width_less_s_len);
+
+
+    tcase_add_test(tc, sprintf_string_width_less_acc);
+    tcase_add_test(tc, sprintf_string_width_greater_acc_greater_s);
+    tcase_add_test(tc, sprintf_string_width_greater_acc_less_s);
+
+    tcase_add_test(tc, sprintf_string_min_width_acc);
     tcase_add_test(tc, sprintf_string_many);
+    /*
     tcase_add_test(tc, sprintf_ptr);
     tcase_add_test(tc, sprintf_ptr_width);
     tcase_add_test(tc, sprintf_ptr_precision);

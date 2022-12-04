@@ -236,19 +236,11 @@ void ppts_width_align_left_c(char c, char *str, int col_spaces) {
     strcat(str, " ");
 }
 
-
-
-
-
 void ppts_width_align_right_c(char c, char *str, int col_spaces) {
   for (int i = 0; i < col_spaces; i++)
     strcat(str, " ");
   strncat(str, &c, 1);
 }
-
-
-
-
 
 void ppts_width_c(struct info *mys, char c, char *str) {
   int col_spaces = mys->width - 1;
@@ -264,6 +256,52 @@ void ppts_width_c(struct info *mys, char c, char *str) {
     strncat(str, &c, 1);
   }
 }
+
+void ppts_acc_s(struct info *mys, char *s, char *str) {
+  strncat(str, s, mys->acc);
+}
+
+void ppts_width_align_right_s(struct info *mys, char *s, char *str,
+                              int col_spaces) {
+  for (int i = 0; i < col_spaces; i++)
+    strcat(str, " ");
+  if (mys->acc >= 1)
+    strncat(str, s, mys->acc);
+  else
+    strcat(str, s);
+}
+
+void ppts_width_align_left_s(struct info *mys, char *s, char *str,
+                             int col_spaces) {
+  if (mys->acc >= 1)
+    strncat(str, s, mys->acc);
+  else
+    strcat(str, s);
+  for (int i = 0; i < col_spaces; i++)
+    strcat(str, " ");
+}
+
+void ppts_width_s(struct info *mys, char *s, char *str) {
+  int col_spaces;
+  if (mys->acc >= 1)
+    col_spaces = mys->width - mys->acc;
+  else
+    col_spaces = mys->width - strlen(s);
+
+  if (col_spaces >= 1) {
+    if (mys->fl != '-') { //выравнивание правому краю в пределах заданной ширины
+      ppts_width_align_right_s(mys, s, str, col_spaces);
+    } else if (mys->fl == '-') { //Выравнивание по левому краю в пределах
+                                 //заданной ширины
+      ppts_width_align_left_s(mys, s, str, col_spaces);
+    }
+  } else if (mys->acc >= 1) {
+    ppts_acc_s(mys, s, str);
+  } else {
+    strcat(str, s);
+  }
+}
+
 char *add_plus_nums(struct info *mys, char *num_s) {
   char *p1 = NULL;
   p1 = malloc((strlen(num_s) + 2) * sizeof(char));
@@ -273,11 +311,13 @@ char *add_plus_nums(struct info *mys, char *num_s) {
   }
   return p1;
 }
+
 void print_part_to_str(char *str, struct info *mys, va_list input) {
   long num;
   char *num_s;
   int len_num_s = 0;
   char c;
+  char *s = NULL;
   switch (mys->spec) {
   case 'i':
   case 'd':
@@ -307,11 +347,22 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
     if (mys->fl == '+')
       free(num_s);
     break;
+
   case 'c':
   case '%':
     c = va_arg(input, int);
     ppts_width_c(mys, c, str);
     break;
+
+  case 's':
+    s = va_arg(input, char *);
+    if (mys->width != -1) {
+      ppts_width_s(mys, s, str);
+    } else if (mys->acc != -1) {
+      ppts_acc_s(mys, s, str);
+    } else {
+      strcat(str, s);
+    }
 
   default:
     break;
@@ -358,12 +409,12 @@ format −  это С-строка, содержащая один или нес�
 //   char str1[256];
 //   char str2[256];
 
-//   char *format = "%5c";
-//   char val = 'c';
-
+//     char *format = "%15.9s";
+//     char *val =
+//         "69 IS MY FAVORITE NUMBER THIS IS SUPPOSED TO BE A VERY LONG STRING";
 //   s21_sprintf(str1, format, val);
 //   sprintf(str2, format, val);
-
+//   //sprintf(str2, format, val, s1, s2, s3);
 //   printf("MAIN:S21 sPRINTF:%s\n", str1);
 //   printf("MAIN:SPRINTF:%s\n", str2);
 //   printf("MAIN:s21 STRLEN:%ld\n", strlen(str1));
