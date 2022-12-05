@@ -66,15 +66,13 @@ char* itoa(long x, int d) {
     return str;
 }
 
-char* ftoa(float n) {
+char* ftoa(long double n, int afterpoint) {
     static char res [1024];
     long ipart = (long)n;
-    float fpart = n - (float)ipart;
-
-    int afterpoint = 6;
-
-    // printf("FTOA:%f\n", fpart);
-    // printf("FTOA:%f\n", fpart * pow(10, afterpoint));
+    long double fpart = n - (long double)ipart;
+    // printf("FTOA:IPART:%ld\n", ipart);
+    // printf("FTOA:FPART:%f\n", fpart);
+    // printf("FTOA:FPART:%f\n", fpart * pow(10, afterpoint));
     strcpy(res, itoa(ipart,0));
     int i = strlen(res);
     
@@ -91,7 +89,7 @@ void init_struct(struct info *mys) {
   mys->fl = '_';
   mys->width = -1;
   mys->acc = -1;
-  mys->len = 'L';
+  mys->len = '_';
   mys->spec = '_';
 }
 
@@ -414,7 +412,7 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
   char *s = NULL;
   unsigned ui;
   unsigned long uli;
-  double d;
+  long double d;
   switch (mys->spec) {
   case 'i':
   case 'd':
@@ -481,13 +479,24 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
     break;
   
   case 'f':
-  d = va_arg(input, double);
-  num_s = ftoa(d);
-    // printf("FUNC:NUMS:%s\n", num_s);
-    // printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
-  if (mys->acc!=-1) {
+    printf("PPTS:F:MYSLEN: %c\n", mys->len);
+    if(mys->len=='L')
+      d = va_arg(input, long double);
+    else
+      d = va_arg(input, double);
+    if (mys->acc==-1)
+      mys->acc = 6;
+
+      
+    if(mys->acc==0)
+      num_s = ftoa(d, 0);
+    else
+      num_s = ftoa(d, 6);
+
+    len_num_s = strlen(num_s);
+      // printf("FUNC:NUMS:%s\n", num_s);
+      // printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
     ppts_acc_f(mys, len_num_s,num_s, str);
-  }
     break;
   
   
@@ -497,7 +506,7 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
 }
 
 int s21_sprintf(char *str, const char *format, ...) {
-  struct info mys = {'_', -1, -1, 'L', '_'};
+  struct info mys = {'_', -1, -1, '_', '_'};
   va_list(input);
   va_start(input, format);
   int i = 0;
@@ -533,17 +542,18 @@ format −  это С-строка, содержащая один или нес�
 */
 
 int main() {
-  char str1[256];
+  char str1[256]="";
   char str2[256];
 
-    char *format = "%.6f";
-    double val = 513515.1315;
+    char *format = "%.0Lf";
+  long double val = 72537572375.1431341;
   s21_sprintf(str1, format, val);
   sprintf(str2, format, val);
   printf("MAIN:S21 sPRINTF:%s\n", str1);
   printf("MAIN:SPRINTF    :%s\n", str2);
   printf("MAIN:s21 STRLEN:%ld\n", strlen(str1));
   printf("MAIN:STRLEN:%ld\n", strlen(str2));
+  
   return 0;
 
 
