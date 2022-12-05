@@ -5,25 +5,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char *itoa(long val, int base) {
-  static char buf[128] = {0};
-  int i = 30;
-  int neg = 0;
-  if (val < 0) {
-    val = -val;
-    neg = 1;
-  }
-  for (; val && i; --i, val /= base)
+#include <float.h>
+#include <math.h>
+// char *itoa(long val, int base) {
+//   static char buf[128] = {0};
+//   int i = 30;
+//   int neg = 0;
+//   if (val < 0) {
+//     val = -val;
+//     neg = 1;
+//   }
+//   for (; val && i; --i, val /= base)
 
-    buf[i] = "0123456789abcdef"[val % base];
-  char *ret_val;
-  ret_val = &buf[i + 1];
-  if (neg) {
-    buf[i] = '-';
-    ret_val = &buf[i];
-  }
-  return ret_val;
-}
+//     buf[i] = "0123456789abcdef"[val % base];
+//   char *ret_val;
+//   ret_val = &buf[i + 1];
+//   if (neg) {
+//     buf[i] = '-';
+//     ret_val = &buf[i];
+//   }
+//   return ret_val;
+// }
 
 char *utoa(unsigned long val, int base) {
   static char buf[128] = {0};
@@ -36,6 +38,54 @@ char *utoa(unsigned long val, int base) {
   ret_val = &buf[i + 1];
   return ret_val;
 }
+
+void reverse(char* str, int len)
+{
+    int i = 0, j = len - 1, temp;
+    while (i < j) {
+        temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+        i++;
+        j--;
+    }
+}
+ 
+char* itoa(long x, int d) { 
+    static char str[1024] = {0};
+    int i = 0;
+    while (x) {
+        str[i++] = (x % 10) + '0';
+        x = x / 10;
+    }
+    while (i < d)
+      str[i++] = '0';
+
+    reverse(str, i);
+    str[i] = '\0';
+    return str;
+}
+
+char* ftoa(float n) {
+    static char res [1024];
+    long ipart = (long)n;
+    float fpart = n - (float)ipart;
+
+    int afterpoint = 6;
+
+    // printf("FTOA:%f\n", fpart);
+    // printf("FTOA:%f\n", fpart * pow(10, afterpoint));
+    strcpy(res, itoa(ipart,0));
+    int i = strlen(res);
+    
+    if (afterpoint != 0) {
+        res[i] = '.';
+        fpart = fpart * pow(10, afterpoint);
+        strcat(res, itoa((long)fpart, afterpoint));
+    }
+    return res;
+}
+
 
 void init_struct(struct info *mys) {
   mys->fl = '_';
@@ -324,10 +374,6 @@ char *add_plus_nums(struct info *mys, char *num_s) {
   return p1;
 }
 
-
-
-
-
 void ppts_acc_u(struct info *mys, int len_num_s, char *num_s, char *str) {
   int col_zeros = mys->acc - len_num_s;
   if (col_zeros >= 1) {
@@ -339,6 +385,26 @@ void ppts_acc_u(struct info *mys, int len_num_s, char *num_s, char *str) {
   }
 }
 
+void ppts_acc_f(struct info *mys, int len_num_s, char *num_s, char *str) {
+  int num_acc = 0, i =0, col_zeros = 0;
+
+  while(num_s[i-1]!='.'&&num_s[i]!='\0')
+    i++;
+  while(num_s[i]!='\0'){
+    i++;
+    num_acc++;
+  }
+  if(num_acc >= mys->acc){
+    strncat(str, num_s, len_num_s - (num_acc-mys->acc));
+  } else {
+    col_zeros = mys->acc - num_acc; 
+    strcat(str, num_s);
+    for (int i = 0; i < col_zeros; i++)
+      strcat(str, "0");
+  }
+}
+
+
 
 void print_part_to_str(char *str, struct info *mys, va_list input) {
   long num;
@@ -348,6 +414,7 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
   char *s = NULL;
   unsigned ui;
   unsigned long uli;
+  double d;
   switch (mys->spec) {
   case 'i':
   case 'd':
@@ -355,7 +422,7 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
       num = va_arg(input, long);
     else
       num = va_arg(input, int);
-    num_s = itoa(num, 10);
+    num_s = itoa(num, 0);
 
     if (mys->fl == '+' && num_s[0] != '-') {
       num_s = add_plus_nums(mys, num_s); //проверит флаг и добавит + если нужно
@@ -412,6 +479,18 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
       strcat(str, num_s);
     }
     break;
+  
+  case 'f':
+  d = va_arg(input, double);
+  num_s = ftoa(d);
+    // printf("FUNC:NUMS:%s\n", num_s);
+    // printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
+  if (mys->acc!=-1) {
+    ppts_acc_f(mys, len_num_s,num_s, str);
+  }
+    break;
+  
+  
   default:
     break;
   }
@@ -453,18 +532,28 @@ format −  это С-строка, содержащая один или нес�
 
 */
 
-// int main() {
-//   char str1[256];
-//   char str2[256];
+int main() {
+  char str1[256];
+  char str2[256];
 
-//     char *format = "%lu, %u, %hu, %.5u, %15.6u";
-//     unsigned long int val = 949149114140;
-//   s21_sprintf(str1, format, val, 14, 1441, 14414, 9681);
-//   sprintf(str2, format, val, 14, 1441, 14414, 9681);
-//   //sprintf(str2, format, val, s1, s2, s3);
-//   printf("MAIN:S21 sPRINTF:%s\n", str1);
-//   printf("MAIN:SPRINTF    :%s\n", str2);
-//   printf("MAIN:s21 STRLEN:%ld\n", strlen(str1));
-//   printf("MAIN:STRLEN:%ld\n", strlen(str2));
-//   return 0;
-// }
+    char *format = "%.6f";
+    double val = 513515.1315;
+  s21_sprintf(str1, format, val);
+  sprintf(str2, format, val);
+  printf("MAIN:S21 sPRINTF:%s\n", str1);
+  printf("MAIN:SPRINTF    :%s\n", str2);
+  printf("MAIN:s21 STRLEN:%ld\n", strlen(str1));
+  printf("MAIN:STRLEN:%ld\n", strlen(str2));
+  return 0;
+
+
+    // char* res;
+    // float n = 3.402823;
+    // res = ftoa(n, 6);
+    // // long n  = 9223372036854775807;
+    // // res = itoa(n);
+    // printf("\"%s\"\n", res);
+    // printf("\"%ld\"\n", strlen(res));
+    // return 0;
+
+}

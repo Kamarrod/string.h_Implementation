@@ -726,67 +726,66 @@ START_TEST(sprintf_string_many) {
 
 
 
-/*
-START_TEST(sprintf_ptr) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+// START_TEST(sprintf_ptr) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
 
-    char *format = "%p";
-    ck_assert_int_eq(s21_sprintf(str1, format, format), sprintf(str2, format, format));
+//     char *format = "%p";
+//     ck_assert_int_eq(s21_sprintf(str1, format, format), sprintf(str2, format, format));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
 
-START_TEST(sprintf_ptr_width) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+// START_TEST(sprintf_ptr_width) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
 
-    char *format = "%15p";
-    ck_assert_int_eq(s21_sprintf(str1, format, format), sprintf(str2, format, format));
+//     char *format = "%15p";
+//     ck_assert_int_eq(s21_sprintf(str1, format, format), sprintf(str2, format, format));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
 
-START_TEST(sprintf_ptr_precision) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+// START_TEST(sprintf_ptr_precision) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
 
-    char *format = "%.5p";
-    ck_assert_int_eq(s21_sprintf(str1, format, format), sprintf(str2, format, format));
+//     char *format = "%.5p";
+//     ck_assert_int_eq(s21_sprintf(str1, format, format), sprintf(str2, format, format));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
 
-START_TEST(sprintf_null_ptr) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+// START_TEST(sprintf_null_ptr) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
 
-    char *format = "%p";
-    char *ptr = s21_NULL;
-    ck_assert_int_eq(s21_sprintf(str1, format, ptr), sprintf(str2, format, ptr));
+//     char *format = "%p";
+//     char *ptr = s21_NULL;
+//     ck_assert_int_eq(s21_sprintf(str1, format, ptr), sprintf(str2, format, ptr));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
 
-START_TEST(sprintf_string_width_huge) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
-    char *val = "kjafdiuhfjahfjdahf";
-    char *format = "%120s";
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+// START_TEST(sprintf_string_width_huge) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
+//     char *val = "kjafdiuhfjahfjdahf";
+//     char *format = "%120s";
+//     ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
 
-START_TEST(sprintf_n_specifier) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
-    int ret = 0;
-    char *format = "Hello, my sexy little aboba abobushka abobina %n";
-    ck_assert_int_eq(s21_sprintf(str1, format, &ret), sprintf(str2, format, &ret));
+// START_TEST(sprintf_n_specifier) {
+//     char str1[BUFF_SIZE];
+//     char str2[BUFF_SIZE];
+//     int ret = 0;
+//     char *format = "Hello, my sexy little aboba abobushka abobina %n";
+//     ck_assert_int_eq(s21_sprintf(str1, format, &ret), sprintf(str2, format, &ret));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+//     ck_assert_str_eq(str1, str2);
+// } END_TEST
 
 START_TEST(sprintf_float_precision) {
     char str1[BUFF_SIZE];
@@ -885,6 +884,8 @@ START_TEST(sprintf_float_many) {
     ck_assert_str_eq(str1, str2);
 } END_TEST
 
+
+/*
 START_TEST(sprintf_e_precision) {
     char str1[BUFF_SIZE];
     char str2[BUFF_SIZE];
@@ -2183,13 +2184,14 @@ Suite *suite_insert(void) {
     
     
     
-    /*
-    tcase_add_test(tc, sprintf_ptr);
-    tcase_add_test(tc, sprintf_ptr_width);
-    tcase_add_test(tc, sprintf_ptr_precision);
-    tcase_add_test(tc, sprintf_null_ptr);
-    tcase_add_test(tc, sprintf_n_specifier);
-    tcase_add_test(tc, sprintf_string_width_huge);
+    
+    // tcase_add_test(tc, sprintf_ptr);
+    // tcase_add_test(tc, sprintf_ptr_width);
+    // tcase_add_test(tc, sprintf_ptr_precision);
+    // tcase_add_test(tc, sprintf_null_ptr);
+    // tcase_add_test(tc, sprintf_n_specifier);
+    // tcase_add_test(tc, sprintf_string_width_huge);
+
     tcase_add_test(tc, sprintf_float_precision);
     tcase_add_test(tc, sprintf_float_width);
     tcase_add_test(tc, sprintf_float_precision_zero);
@@ -2199,120 +2201,119 @@ Suite *suite_insert(void) {
     tcase_add_test(tc, sprintf_float_huge);
     tcase_add_test(tc, sprintf_float_flags);
     tcase_add_test(tc, sprintf_float_many);
-    tcase_add_test(tc, sprintf_e_precision);
-    tcase_add_test(tc, sprintf_e_precision_zero);
-    tcase_add_test(tc, sprintf_e_precision_empty);
-    tcase_add_test(tc, sprintf_e_precision_huge);
-    tcase_add_test(tc, sprintf_e_precision_huge_negative);
-    tcase_add_test(tc, sprintf_e_huge);
-    tcase_add_test(tc, sprintf_e_many);
-    tcase_add_test(tc, sprintf_e_width);
-    tcase_add_test(tc, sprintf_e_flags);
-    tcase_add_test(tc, sprintf_E_int);
-    tcase_add_test(tc, sprintf_all_empty);
-    tcase_add_test(tc, sprintf_empty_format_and_parameters);
-    tcase_add_test(tc, sprintf_test_one_char);
-    tcase_add_test(tc, sprintf_test_many_char);
-    tcase_add_test(tc, sprintf_test_one_string);
-    tcase_add_test(tc, sprintf_test_many_string);
-    tcase_add_test(tc, sprintf_test_one_dec);
-    tcase_add_test(tc, sprintf_test_many_dec);
-    tcase_add_test(tc, sprintf_test_one_int);
-    tcase_add_test(tc, sprintf_test_many_int);
-    tcase_add_test(tc, sprintf_test_one_float);
-    tcase_add_test(tc, sprintf_test_many_float);
-    tcase_add_test(tc, sprintf_test_one_unsigned_dec);
-    tcase_add_test(tc, sprintf_test_many_unsigned_dec);
-    tcase_add_test(tc, sprintf_test_one_char_with_alignment_left);
-    tcase_add_test(tc, sprintf_test_one_char_with_alignment_right);
-    tcase_add_test(tc, sprintf_test_many_char_with_alignment);
-    tcase_add_test(tc, sprintf_test_one_hex_lower);
-    tcase_add_test(tc, sprintf_test_one_hex_upper);
-    tcase_add_test(tc, sprintf_test_many_hex_lower);
-    tcase_add_test(tc, sprintf_test_many_hex_upper);
-    tcase_add_test(tc, sprintf_test_one_hex_lower_with_alignment_left);
-    tcase_add_test(tc, sprintf_test_one_hex_lower_with_alignment_right);
-    tcase_add_test(tc, sprintf_test_one_hex_upper_with_alignment_left);
-    tcase_add_test(tc, sprintf_test_one_hex_upper_with_alignment_right);
-    tcase_add_test(tc, sprintf_test_many_hex_lower_with_alignment);
-    tcase_add_test(tc, sprintf_test_many_hex_upper_with_alignment);
-    tcase_add_test(tc, sprintf_test_one_hex_with_hashtag);
-    tcase_add_test(tc, sprintf_test_one_hex_upper_with_hashtag);
-    tcase_add_test(tc, sprintf_test_many_hex_lower_with_hashtag_and_alignm);
-    tcase_add_test(tc, sprintf_test_many_hex_upper_with_hashtag_and_alignm);
-    tcase_add_test(tc, sprintf_test_one_hex_lower_with_width_star);
-    tcase_add_test(tc, sprintf_test_one_hex_upper_with_width_star);
-    tcase_add_test(tc, sprintf_test_many_hex_lower_with_width_star_and_align_and_hashtag);
-    tcase_add_test(tc, sprintf_test_many_hex_upper_with_width_star);
-    tcase_add_test(tc, sprintf_test_one_hex_lower_with_precision);
-    tcase_add_test(tc, sprintf_test_one_hex_upper_with_precision);
-    tcase_add_test(tc, sprintf_test_many_hex_lower_with_precision_and_other);
-    tcase_add_test(tc, sprintf_test_many_hex_upper_with_precision_and_other);
-    tcase_add_test(tc, sprintf_test_one_hex_lower_with_length);
-    tcase_add_test(tc, sprintf_test_one_hex_upper_with_length);
-    tcase_add_test(tc, sprintf_test_sprintf1);
-    tcase_add_test(tc, sprintf_test_sprintf2);
-    tcase_add_test(tc, sprintf_test_sprintf3);
-    tcase_add_test(tc, sprintf_test_sprintf4);
-    tcase_add_test(tc, sprintf_test_sprintf6);
-    tcase_add_test(tc, sprintf_test_sprintf7);
-    tcase_add_test(tc, sprintf_test_sprintf8);
-    tcase_add_test(tc, sprintf_test_sprintf9);
-    tcase_add_test(tc, sprintf_test_sprintf10);
-    tcase_add_test(tc, sprintf_test_sprintf11);
-    tcase_add_test(tc, sprintf_test_sprintf12);
-    tcase_add_test(tc, sprintf_test_sprintf14);
-    tcase_add_test(tc, sprintf_test_sprintf15);
-    tcase_add_test(tc, sprintf_test_sprintf16);
-    tcase_add_test(tc, sprintf_test_sprintf17);
-    tcase_add_test(tc, sprintf_test_sprintf18);
-    tcase_add_test(tc, sprintf_test_sprintf19);
-    tcase_add_test(tc, sprintf_test_sprintf20);
-    tcase_add_test(tc, sprintf_test_sprintf24);
-    tcase_add_test(tc, sprintf_test_sprintf25);
-    tcase_add_test(tc, sprintf_test_sprintf28);
-    tcase_add_test(tc, sprintf_test_sprintf29);
-    tcase_add_test(tc, sprintf_test_sprintf30);
-    tcase_add_test(tc, sprintf_test_sprintf31);
-    tcase_add_test(tc, sprintf_test_sprintf32);
-    tcase_add_test(tc, sprintf_test_sprintf33);
-    tcase_add_test(tc, sprintf_test_sprintf35);
-    tcase_add_test(tc, sprintf_test_sprintf36);
-    tcase_add_test(tc, sprintf_test_sprintf37);
-    tcase_add_test(tc, sprintf_test_sprintf38);
-    tcase_add_test(tc, sprintf_test_sprintf39);
-    tcase_add_test(tc, sprintf_test_sprintf40);
-    tcase_add_test(tc, sprintf_test_sprintf41);
-    tcase_add_test(tc, sprintf_test_sprintf42);
-    tcase_add_test(tc, sprintf_test_sprintf43);
-    tcase_add_test(tc, sprintf_test_sprintf44);
-    tcase_add_test(tc, sprintf_test_sprintf26);
-    tcase_add_test(tc, sprintf_test_sprintf27);
-    tcase_add_test(tc, sprintf_g_trailing_zero);
-    tcase_add_test(tc, sprintf_g_large);
-    tcase_add_test(tc, sprintf_g_small);
-    tcase_add_test(tc, sprintf_g_precision);
-    tcase_add_test(tc, sprintf_g_precision_zero);
-    tcase_add_test(tc, sprintf_g_precision_missing);
-    tcase_add_test(tc, sprintf_g_many_zeroes_in_front);
-    tcase_add_test(tc, sprintf_g_one_zero);
-    tcase_add_test(tc, sprintf_g_mantiss);
-    tcase_add_test(tc, sprintf_g_mantiss_flags);
-    tcase_add_test(tc, sprintf_g_short_no_mantiss);
-    tcase_add_test(tc, sprintf_LG);
-    tcase_add_test(tc, sprintf_g_many);
-    tcase_add_test(tc, sprintf_g_zero);
-    tcase_add_test(tc, sprintf_wide_char);
-    tcase_add_test(tc, sprintf_width_char);
-    tcase_add_test(tc, sprintf_minus_wide_char);
-    tcase_add_test(tc, sprintf_wide_string);
-    tcase_add_test(tc, sprintf_wide_string1);
-    tcase_add_test(tc, sprintf_wide_string2);
-    tcase_add_test(tc, sprintf_wide_string3);
-    tcase_add_test(tc, sprintf_wide_string4);
-    tcase_add_test(tc, sprintf_wide_char2);
+    // tcase_add_test(tc, sprintf_e_precision);
+    // tcase_add_test(tc, sprintf_e_precision_zero);
+    // tcase_add_test(tc, sprintf_e_precision_empty);
+    // tcase_add_test(tc, sprintf_e_precision_huge);
+    // tcase_add_test(tc, sprintf_e_precision_huge_negative);
+    // tcase_add_test(tc, sprintf_e_huge);
+    // tcase_add_test(tc, sprintf_e_many);
+    // tcase_add_test(tc, sprintf_e_width);
+    // tcase_add_test(tc, sprintf_e_flags);
+    // tcase_add_test(tc, sprintf_E_int);
+    // tcase_add_test(tc, sprintf_all_empty);
+    // tcase_add_test(tc, sprintf_empty_format_and_parameters);
+    // tcase_add_test(tc, sprintf_test_one_char);
+    // tcase_add_test(tc, sprintf_test_many_char);
+    // tcase_add_test(tc, sprintf_test_one_string);
+    // tcase_add_test(tc, sprintf_test_many_string);
+    // tcase_add_test(tc, sprintf_test_one_dec);
+    // tcase_add_test(tc, sprintf_test_many_dec);
+    // tcase_add_test(tc, sprintf_test_one_int);
+    // tcase_add_test(tc, sprintf_test_many_int);
+    // tcase_add_test(tc, sprintf_test_one_float);
+    // tcase_add_test(tc, sprintf_test_many_float);
+    // tcase_add_test(tc, sprintf_test_one_unsigned_dec);
+    // tcase_add_test(tc, sprintf_test_many_unsigned_dec);
+    // tcase_add_test(tc, sprintf_test_one_char_with_alignment_left);
+    // tcase_add_test(tc, sprintf_test_one_char_with_alignment_right);
+    // tcase_add_test(tc, sprintf_test_many_char_with_alignment);
+    // tcase_add_test(tc, sprintf_test_one_hex_lower);
+    // tcase_add_test(tc, sprintf_test_one_hex_upper);
+    // tcase_add_test(tc, sprintf_test_many_hex_lower);
+    // tcase_add_test(tc, sprintf_test_many_hex_upper);
+    // tcase_add_test(tc, sprintf_test_one_hex_lower_with_alignment_left);
+    // tcase_add_test(tc, sprintf_test_one_hex_lower_with_alignment_right);
+    // tcase_add_test(tc, sprintf_test_one_hex_upper_with_alignment_left);
+    // tcase_add_test(tc, sprintf_test_one_hex_upper_with_alignment_right);
+    // tcase_add_test(tc, sprintf_test_many_hex_lower_with_alignment);
+    // tcase_add_test(tc, sprintf_test_many_hex_upper_with_alignment);
+    // tcase_add_test(tc, sprintf_test_one_hex_with_hashtag);
+    // tcase_add_test(tc, sprintf_test_one_hex_upper_with_hashtag);
+    // tcase_add_test(tc, sprintf_test_many_hex_lower_with_hashtag_and_alignm);
+    // tcase_add_test(tc, sprintf_test_many_hex_upper_with_hashtag_and_alignm);
+    // tcase_add_test(tc, sprintf_test_one_hex_lower_with_width_star);
+    // tcase_add_test(tc, sprintf_test_one_hex_upper_with_width_star);
+    // tcase_add_test(tc, sprintf_test_many_hex_lower_with_width_star_and_align_and_hashtag);
+    // tcase_add_test(tc, sprintf_test_many_hex_upper_with_width_star);
+    // tcase_add_test(tc, sprintf_test_one_hex_lower_with_precision);
+    // tcase_add_test(tc, sprintf_test_one_hex_upper_with_precision);
+    // tcase_add_test(tc, sprintf_test_many_hex_lower_with_precision_and_other);
+    // tcase_add_test(tc, sprintf_test_many_hex_upper_with_precision_and_other);
+    // tcase_add_test(tc, sprintf_test_one_hex_lower_with_length);
+    // tcase_add_test(tc, sprintf_test_one_hex_upper_with_length);
+    // tcase_add_test(tc, sprintf_test_sprintf1);
+    // tcase_add_test(tc, sprintf_test_sprintf2);
+    // tcase_add_test(tc, sprintf_test_sprintf3);
+    // tcase_add_test(tc, sprintf_test_sprintf4);
+    // tcase_add_test(tc, sprintf_test_sprintf6);
+    // tcase_add_test(tc, sprintf_test_sprintf7);
+    // tcase_add_test(tc, sprintf_test_sprintf8);
+    // tcase_add_test(tc, sprintf_test_sprintf9);
+    // tcase_add_test(tc, sprintf_test_sprintf10);
+    // tcase_add_test(tc, sprintf_test_sprintf11);
+    // tcase_add_test(tc, sprintf_test_sprintf12);
+    // tcase_add_test(tc, sprintf_test_sprintf14);
+    // tcase_add_test(tc, sprintf_test_sprintf15);
+    // tcase_add_test(tc, sprintf_test_sprintf16);
+    // tcase_add_test(tc, sprintf_test_sprintf17);
+    // tcase_add_test(tc, sprintf_test_sprintf18);
+    // tcase_add_test(tc, sprintf_test_sprintf19);
+    // tcase_add_test(tc, sprintf_test_sprintf20);
+    // tcase_add_test(tc, sprintf_test_sprintf24);
+    // tcase_add_test(tc, sprintf_test_sprintf25);
+    // tcase_add_test(tc, sprintf_test_sprintf28);
+    // tcase_add_test(tc, sprintf_test_sprintf29);
+    // tcase_add_test(tc, sprintf_test_sprintf30);
+    // tcase_add_test(tc, sprintf_test_sprintf31);
+    // tcase_add_test(tc, sprintf_test_sprintf32);
+    // tcase_add_test(tc, sprintf_test_sprintf33);
+    // tcase_add_test(tc, sprintf_test_sprintf35);
+    // tcase_add_test(tc, sprintf_test_sprintf36);
+    // tcase_add_test(tc, sprintf_test_sprintf37);
+    // tcase_add_test(tc, sprintf_test_sprintf38);
+    // tcase_add_test(tc, sprintf_test_sprintf39);
+    // tcase_add_test(tc, sprintf_test_sprintf40);
+    // tcase_add_test(tc, sprintf_test_sprintf41);
+    // tcase_add_test(tc, sprintf_test_sprintf42);
+    // tcase_add_test(tc, sprintf_test_sprintf43);
+    // tcase_add_test(tc, sprintf_test_sprintf44);
+    // tcase_add_test(tc, sprintf_test_sprintf26);
+    // tcase_add_test(tc, sprintf_test_sprintf27);
+    // tcase_add_test(tc, sprintf_g_trailing_zero);
+    // tcase_add_test(tc, sprintf_g_large);
+    // tcase_add_test(tc, sprintf_g_small);
+    // tcase_add_test(tc, sprintf_g_precision);
+    // tcase_add_test(tc, sprintf_g_precision_zero);
+    // tcase_add_test(tc, sprintf_g_precision_missing);
+    // tcase_add_test(tc, sprintf_g_many_zeroes_in_front);
+    // tcase_add_test(tc, sprintf_g_one_zero);
+    // tcase_add_test(tc, sprintf_g_mantiss);
+    // tcase_add_test(tc, sprintf_g_mantiss_flags);
+    // tcase_add_test(tc, sprintf_g_short_no_mantiss);
+    // tcase_add_test(tc, sprintf_LG);
+    // tcase_add_test(tc, sprintf_g_many);
+    // tcase_add_test(tc, sprintf_g_zero);
+    // tcase_add_test(tc, sprintf_wide_char);
+    // tcase_add_test(tc, sprintf_width_char);
+    // tcase_add_test(tc, sprintf_minus_wide_char);
+    // tcase_add_test(tc, sprintf_wide_string);
+    // tcase_add_test(tc, sprintf_wide_string1);
+    // tcase_add_test(tc, sprintf_wide_string2);
+    // tcase_add_test(tc, sprintf_wide_string3);
+    // tcase_add_test(tc, sprintf_wide_string4);
+    // tcase_add_test(tc, sprintf_wide_char2);
     // // sprintf <-
-    */
 
     suite_add_tcase(s, tc);
     return s;

@@ -8,8 +8,6 @@ struct info {
   char len;
   char spec;
 };
-
-char *itoa(long val, int base);
 void init_struct(struct info *mys);
 void cpf_width(const char *pF, struct info *mys, va_list input, int * i);
 void cpf_acc(const char *pF, struct info *mys, va_list input, int * i);
