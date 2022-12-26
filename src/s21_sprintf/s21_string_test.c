@@ -2109,29 +2109,29 @@ Suite *suite_insert(void) {
     TCase *tc = tcase_create("insert_tc");
 
     // // sprintf ->
-    tcase_add_test(tc, sprintf_simple_int);
-    tcase_add_test(tc, sprintf_precise_int);
-    tcase_add_test(tc, sprintf_width_int);
-    tcase_add_test(tc, sprintf_minus_width_int);
-    tcase_add_test(tc, sprintf_plus_width_int);
-    tcase_add_test(tc, sprintf_padding_int);
-    tcase_add_test(tc, sprintf_star_width_int);
-    tcase_add_test(tc, sprintf_star_precision_int);
-    tcase_add_test(tc, sprintf_many_flags_many_ints);
-    tcase_add_test(tc, sprintf_flags_long_int);
-    tcase_add_test(tc, sprintf_flags_short_int);
-    tcase_add_test(tc, sprintf_flags_another_long_int);
-    tcase_add_test(tc, sprintf_zero_precision_zero_int);
-    tcase_add_test(tc, sprintf_space_flag_int);
+    // tcase_add_test(tc, sprintf_simple_int);
+    // tcase_add_test(tc, sprintf_precise_int);
+    // tcase_add_test(tc, sprintf_width_int);
+    // tcase_add_test(tc, sprintf_minus_width_int);
+    // tcase_add_test(tc, sprintf_plus_width_int);
+    // tcase_add_test(tc, sprintf_padding_int);
+    // tcase_add_test(tc, sprintf_star_width_int);
+    // tcase_add_test(tc, sprintf_star_precision_int);
+    // tcase_add_test(tc, sprintf_many_flags_many_ints);
+    // tcase_add_test(tc, sprintf_flags_long_int);
+    // tcase_add_test(tc, sprintf_flags_short_int);
+    // tcase_add_test(tc, sprintf_flags_another_long_int);
+    // tcase_add_test(tc, sprintf_zero_precision_zero_int);
+    // tcase_add_test(tc, sprintf_space_flag_int);
     
-    tcase_add_test(tc, sprintf_unsigned_val);
-    tcase_add_test(tc, sprintf_unsigned_val_width);
-    tcase_add_test(tc, sprintf_unsigned_val_flags);
-    tcase_add_test(tc, sprintf_unsigned_val_precision);
-    tcase_add_test(tc, sprintf_unsigned_val_many_flags);
-    tcase_add_test(tc, sprintf_unsigned_val_short);
-    tcase_add_test(tc, sprintf_unsigned_val_long);
-    tcase_add_test(tc, sprintf_unsigned_val_many);
+    // tcase_add_test(tc, sprintf_unsigned_val);
+    // tcase_add_test(tc, sprintf_unsigned_val_width);
+    // tcase_add_test(tc, sprintf_unsigned_val_flags);
+    // tcase_add_test(tc, sprintf_unsigned_val_precision);
+    // tcase_add_test(tc, sprintf_unsigned_val_many_flags);
+    // tcase_add_test(tc, sprintf_unsigned_val_short);
+    // tcase_add_test(tc, sprintf_unsigned_val_long);
+    // tcase_add_test(tc, sprintf_unsigned_val_many);
     
     /*
     tcase_add_test(tc, sprintf_octal_width);
@@ -2157,30 +2157,30 @@ Suite *suite_insert(void) {
     tcase_add_test(tc, sprintf_hex_one_longer_width);
     tcase_add_test(tc, sprintf_hex_two_longer_width);
     */
-    tcase_add_test(tc, sprintf_one_char);
-    tcase_add_test(tc, sprintf_one_precision);
-    tcase_add_test(tc, sprintf_one_flags);
-    tcase_add_test(tc, sprintf_one_width);
-    tcase_add_test(tc, sprintf_one_many);
-    tcase_add_test(tc, sprintf_one_starwidth);
+    // tcase_add_test(tc, sprintf_one_char);
+    // tcase_add_test(tc, sprintf_one_precision);
+    // tcase_add_test(tc, sprintf_one_flags);
+    // tcase_add_test(tc, sprintf_one_width);
+    // tcase_add_test(tc, sprintf_one_many);
+    // tcase_add_test(tc, sprintf_one_starwidth);
     
-    tcase_add_test(tc, sprintf_string);
-    tcase_add_test(tc, sprintf_string_precision_less_s_len);
-    tcase_add_test(tc, sprintf_string_precision_greater_s_len);
-    tcase_add_test(tc, sprintf_string_width_greater_s_len);
+    // tcase_add_test(tc, sprintf_string);
+    // tcase_add_test(tc, sprintf_string_precision_less_s_len);
+    // tcase_add_test(tc, sprintf_string_precision_greater_s_len);
+    // tcase_add_test(tc, sprintf_string_width_greater_s_len);
 
 
-    tcase_add_test(tc, sprintf_string_width_less_s_len);
-    tcase_add_test(tc, sprintf_string_min_width_greater_s_len);
-    tcase_add_test(tc, sprintf_string_min_width_less_s_len);
+    // tcase_add_test(tc, sprintf_string_width_less_s_len);
+    // tcase_add_test(tc, sprintf_string_min_width_greater_s_len);
+    // tcase_add_test(tc, sprintf_string_min_width_less_s_len);
 
 
-    tcase_add_test(tc, sprintf_string_width_less_acc);
-    tcase_add_test(tc, sprintf_string_width_greater_acc_greater_s);
-    tcase_add_test(tc, sprintf_string_width_greater_acc_less_s);
+    // tcase_add_test(tc, sprintf_string_width_less_acc);
+    // tcase_add_test(tc, sprintf_string_width_greater_acc_greater_s);
+    // tcase_add_test(tc, sprintf_string_width_greater_acc_less_s);
 
-    tcase_add_test(tc, sprintf_string_min_width_acc);
-    tcase_add_test(tc, sprintf_string_many);
+    // tcase_add_test(tc, sprintf_string_min_width_acc);
+    // tcase_add_test(tc, sprintf_string_many);
     
     
     
