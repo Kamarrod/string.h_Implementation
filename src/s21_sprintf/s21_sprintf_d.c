@@ -74,6 +74,8 @@ void ppts_width_i_d(struct info *mys, int len_num_s, char *num_s, char *str) {
   }
   if(col_zeros<0)
     col_zeros=0;
+  if(mys->block_zero)
+    len_num_s = 0;
   col_spaces = mys->width - (len_num_s+col_zeros);
   
   //printf("ppts_width_i_d:CZ%d CS%d\n", col_zeros, col_spaces);

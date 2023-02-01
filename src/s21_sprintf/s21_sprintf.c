@@ -32,13 +32,22 @@ void reverse(char* str, int len)
 
 char* itoa(long x, int d) {
   int neg = 0;
+  int long_min=0;
   if (x < 0) {
-    x = -x;
+    //костыль для min_long
+    if(x==LONG_MIN){
+      x=LONG_MAX;
+      long_min=1;
+    } else {
+      x = -x;
+    }
     neg = 1;
-  } 
+  }
+
+
   static char str[1024] = {0};
   
-  //тк статик чтобы убирать мусор
+  //тк статик чтобы убирать мусор между итерациями
   for (int k = 0; k <= 1024; k++)
       str[k] = '\0';
   int i = 0;
@@ -62,6 +71,9 @@ char* itoa(long x, int d) {
       for (int j=i+1; j>=0; j--)
         str[j] = str[j-1];
       str[0]='-';
+      if(long_min){//тут нужен правильный цикличный сдвиг по чар цифрам
+        str[i] +=1;
+      } 
       str[i+2] = '\0';
     }
     return str;
@@ -317,7 +329,7 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
     // printf("FUNC:NUM:%ld\n", num);
     // printf("FUNC:NUMS:%s\n", num_s);
     // printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
-    // printf("FUNC:mys->width:%d\n", mys->width);
+    //printf("FUNC:mys->width:%d\n", mys->width);
    
     if (mys->width != -1) { //ширина / +внутри точность 
       ppts_width_i_d(mys, len_num_s, num_s, str);
@@ -432,15 +444,20 @@ int s21_sprintf(char *str, const char *format, ...) {
 
 
 // int main() {
-//   char str1[200];
-//   char str2[200];
-//   char *str3 = "%+d Test %+3.d Test %+5.7d TEST %+10d";
-//   int val = -3015;
-//   int val2 = -712;
-//   int val3 = -99;
-//   int val4 = -2939;
-//   sprintf(str1, str3, val, val2, val3, val4);
-//   s21_sprintf(str2, str3, val, val2, val3, val4);
+//   char str1[300];
+//   char str2[300];
+//   char *str3 = "%ld Test %ld Test %hd GOD %hd tt %d tt %d";
+//   long int val = LONG_MAX;
+//   long val2 = LONG_MIN;
+//   short int val3 = SHRT_MAX;
+//   short val4 = SHRT_MIN;
+//   int val5 = INT_MAX;
+//   int val6 = INT_MIN;
+//   sprintf(str1, str3, val, val2, val3, val4, val5, val6);
+//   s21_sprintf(str2, str3, val, val2, val3, val4, val5, val6);
+
+
+
 
 //   printf("MAIN:S21PRINTF:%s\n", str2);
 //   printf("MAIN:PRINTF   :%s\n", str1);
@@ -448,4 +465,4 @@ int s21_sprintf(char *str, const char *format, ...) {
 //   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
 //   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
 //   return 0;
-// }
+// } 

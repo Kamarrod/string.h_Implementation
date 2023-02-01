@@ -3,6 +3,8 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <limits.h>
 struct info {
   char fl;
   int width;
