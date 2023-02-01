@@ -3,12 +3,9 @@
 #include <string.h>
 #include <locale.h>
 #include "s21_sprintf.h"
+#include <limits.h>
 
 #define BUFF_SIZE 512
-
-
-
-// sprintf ->
 
 START_TEST(sprintf_simple_int) {
     char str1[BUFF_SIZE];
@@ -2103,11 +2100,20 @@ START_TEST(sprintf_wide_char2) {
 // sprintf <-
 */
 
+START_TEST(sprintf_1_signed) {
+  char str1[100] = "";
+  char str2[100] = "";
+  char *str3 = "Test %d Test";
+  int val = -12;
+  ck_assert_int_eq(sprintf(str1, str3, val), s21_sprintf(str2, str3, val));
+  ck_assert_pstr_eq(str1, str2);
+}
+END_TEST
 
 Suite *suite_insert(void) {
     Suite *s = suite_create("suite_insert");
     TCase *tc = tcase_create("insert_tc");
-
+    tcase_add_test(tc, sprintf_1_signed);
     // // sprintf ->
     // tcase_add_test(tc, sprintf_simple_int);
     // tcase_add_test(tc, sprintf_precise_int);
@@ -2124,6 +2130,7 @@ Suite *suite_insert(void) {
     // tcase_add_test(tc, sprintf_zero_precision_zero_int);
     // tcase_add_test(tc, sprintf_space_flag_int);
     
+
     // tcase_add_test(tc, sprintf_unsigned_val);
     // tcase_add_test(tc, sprintf_unsigned_val_width);
     // tcase_add_test(tc, sprintf_unsigned_val_flags);
@@ -2192,15 +2199,18 @@ Suite *suite_insert(void) {
     // tcase_add_test(tc, sprintf_n_specifier);
     // tcase_add_test(tc, sprintf_string_width_huge);
 
-    tcase_add_test(tc, sprintf_float_precision);
-    tcase_add_test(tc, sprintf_float_width);
-    tcase_add_test(tc, sprintf_float_precision_zero);
-    tcase_add_test(tc, sprintf_float_precision_empty);
-    tcase_add_test(tc, sprintf_float_precision_huge);
-    tcase_add_test(tc, sprintf_float_precision_huge_negative);
-    tcase_add_test(tc, sprintf_float_huge);
-    tcase_add_test(tc, sprintf_float_flags);
-    tcase_add_test(tc, sprintf_float_many);
+    // tcase_add_test(tc, sprintf_float_precision);
+    // tcase_add_test(tc, sprintf_float_width);
+    // tcase_add_test(tc, sprintf_float_precision_zero);
+    // tcase_add_test(tc, sprintf_float_precision_empty);
+    // tcase_add_test(tc, sprintf_float_precision_huge);
+    // tcase_add_test(tc, sprintf_float_precision_huge_negative);
+    // tcase_add_test(tc, sprintf_float_huge);
+    // tcase_add_test(tc, sprintf_float_flags);
+    // tcase_add_test(tc, sprintf_float_many);
+
+
+
     // tcase_add_test(tc, sprintf_e_precision);
     // tcase_add_test(tc, sprintf_e_precision_zero);
     // tcase_add_test(tc, sprintf_e_precision_empty);

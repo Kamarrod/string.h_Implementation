@@ -1,31 +1,10 @@
-
 #include "s21_sprintf.h"
 #include "string.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 //#include <float.h>
 #include <math.h>
-// char *itoa(long val, int base) {
-//   static char buf[128] = {0};
-//   int i = 30;
-//   int neg = 0;
-//   if (val < 0) {
-//     val = -val;
-//     neg = 1;
-//   }
-//   for (; val && i; --i, val /= base)
-
-//     buf[i] = "0123456789abcdef"[val % base];
-//   char *ret_val;
-//   ret_val = &buf[i + 1];
-//   if (neg) {
-//     buf[i] = '-';
-//     ret_val = &buf[i];
-//   }
-//   return ret_val;
-// }
 
 char *utoa(unsigned long val, int base) {
   static char buf[128] = {0};
@@ -50,52 +29,49 @@ void reverse(char* str, int len)
         j--;
     }
 }
- 
-char* itoa(long x, int d) { 
-    static char str[1024] = {0};
-    int i = 0;
-    while (x) {
-        str[i++] = (x % 10) + '0';
-        x = x / 10;
-    }
-    while (i < d)
-      str[i++] = '0';
 
-    reverse(str, i);
-    str[i] = '\0';
+char* itoa(long x, int d) {
+  int neg = 0;
+  if (x < 0) {
+    x = -x;
+    neg = 1;
+  } 
+  static char str[1024] = {0};
+  
+  //тк статик чтобы убирать мусор
+  for (int k = 0; k <= 1024; k++)
+      str[k] = '\0';
+  int i = 0;
+  
+    if(x==0)
+      str[i] = '0';
+    else {
+      while (x) {
+          str[i++] = (x % 10) + '0';
+          x = x / 10;
+      }
+      while (i < d)
+        str[i++] = '0';
+
+      reverse(str, i);
+    }
+    str[i+1] = '\0';
+    
+
+    if(neg){
+      for (int j=i+1; j>=0; j--)
+        str[j] = str[j-1];
+      str[0]='-';
+      str[i+2] = '\0';
+    }
     return str;
 }
 
-// char* ftoa(long double n, int afterpoint) {
-//     static char res [1024];
-//     long ipart = (long)n;
-//     long double fpart = n - (long double)ipart;
-
-
-//     printf("FTOA:IPART:%ld\n", ipart);
-
-    
-//     strcpy(res, itoa(ipart,0));
-//     int i = strlen(res);
-    
-//     if (afterpoint != 0) {
-//         res[i] = '.';
-//         //округление
-//         printf("FTOA:FPART:DEC:LF:%.99Lf\n", fpart);
-//         fpart = fpart * pow(10, afterpoint);
-//         //fpart = fpart * pow(10, afterpoint+1);
-
-        
-//         strcat(res, itoa((long)fpart, afterpoint));
-//         printf("FTOA:FPART:DEC:LD:%ld\n", (long)fpart);
-//         printf("FTOA:FPART:STR:%s\n", itoa((long)fpart, afterpoint));
-//     }
-//     return res;
-// }
-
-
 char* ftoa(long double n, int afterpoint, char c) {
-    static char res [1024];
+    static char res [1024]={0};
+    for (int k = 0; k <= 1024; k++)
+      res[k] = '\0';
+
     if(n<0) {
       n=-n;
       strcpy(res, "-");
@@ -115,11 +91,12 @@ char* ftoa(long double n, int afterpoint, char c) {
     if (afterpoint != 0) {
         res[i] = '.';
         //округление
-        //printf("FTOA:FPART:DEC:LF:%.99Lf\n", fpart);
+        printf("FTOA:FPART:DEC:LF:%.16Lf\n", fpart);
         fpart = roundl(fpart * pow(10, afterpoint));
-        //printf("FTOA:FPART:DEC:LF:%Lf\n", roundl(fpart));
+        //fpart = fpart * pow(10, afterpoint);
+        printf("FTOA:FPART:DEC:LF:%Lf\n", fpart);
         strcat(res, itoa((long)fpart, afterpoint));
-        //printf("FTOA:FPART:DEC:LD:%ld\n", (long)fpart);
+        printf("FTOA:FPART:DEC:LD:%ld\n", (long)fpart);
         //printf("FTOA:FPART:STR:%s\n", itoa((long)fpart, afterpoint));
     }
     return res;
@@ -131,73 +108,11 @@ void init_struct(struct info *mys) {
   mys->acc = -1;
   mys->len = '_';
   mys->spec = '_';
-}
-
-void cpf_width(const char *pF, struct info *mys, va_list input, int *i) {
-  mys->width = 0;
-  if (pF[*i] != '*') {
-    char num[256] = "";
-    while (strcspn(&pF[*i], "0123456789") == 0) {
-      char buf[3];
-      buf[0] = pF[*i];
-      buf[1] = '\0';
-      strcat(num, buf);
-      (*i)++;
-    }
-    strcat(num, "\0");
-    mys->width += atoi(num);
-  } else if (pF[*i] == '*') {
-    mys->width = va_arg(input, int);
-    (*i)++;
-  }
-}
-void cpf_acc(const char *pF, struct info *mys, va_list input, int *i) {
-  mys->acc = 0;
-  char num[256] = "";
-  (*i)++;
-  if (pF[*i] != '*') {
-    while (strcspn(&pF[*i], "0123456789") == 0) {
-      char buf[3];
-      buf[0] = pF[*i];
-      buf[1] = '\0';
-      strcat(num, buf);
-      (*i)++;
-    }
-    strcat(num, "\0");
-    if (strlen(num) != 0)
-      mys->acc += atoi(num);
-  } else if (pF[*i] == '*') {
-    mys->acc = va_arg(input, int);
-    (*i)++;
-  }
-}
-
-void check_part_format(const char *pF, struct info *mys, va_list input,
-                       int *i) {
-  init_struct(mys);
-  int was_spec = 0;
-  // printf("&PF[i]:%s\n", &pF[*i]);
-  while (pF[*i] != '\0' && was_spec == 0) {
-    if (strcspn(&pF[*i], "-+ #0") == 0) {
-      mys->fl = pF[*i];
-      (*i)++;
-    } else if (strcspn(&pF[*i], "0123456789*") == 0) {
-      cpf_width(pF, mys, input, i);
-    } else if (pF[*i] == '.') {
-      cpf_acc(pF, mys, input, i);
-    } else if (strcspn(&pF[*i], "lhL") == 0) {
-      mys->len = pF[*i];
-      (*i)++;
-    } else if (strcspn(&pF[*i], "cdeEfgGosuxXpni") == 0) {
-      mys->spec = pF[*i];
-      was_spec = 1;
-      (*i)++;
-    }
-  }
+  mys->block_zero = 0;
 }
 
 void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces,
-                           int col_zeros) {
+                           int col_zeros, struct info *mys) {
   if (num_s[0] != '-' &&
       num_s[0] != '+') { //есть какая-то ширина и стоит флаг 0
 
@@ -209,8 +124,10 @@ void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces,
         strcat(str, "0");
     } else {
       for (int i = 0; i < col_spaces; i++)
+      if(mys->block_zero==0)
         strcat(str, "0");
     }
+  if(mys->block_zero==0)
     strcat(str, num_s);
   } else if (num_s[0] == '-' || num_s[0] == '+') { //сначала знак потом нули
                                                    //потом число
@@ -227,109 +144,15 @@ void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces,
         strcat(str, "0");
     } else {
       for (int i = 0; i < col_spaces; i++)
+      if(mys->block_zero==0)
         strcat(str, "0");
     }
-
+  if(mys->block_zero==0)
     strcat(str, &num_s[1]);
   }
 }
 
-void ppts_width_align_right_i_d(char *num_s, char *str, int col_spaces,
-                                int col_zeros, struct info *mys) {
-  if (mys->fl != '0') {
-
-    if (num_s[0] != '-' && num_s[0] != '+') {
-      for (int i = 0; i < col_spaces; i++)
-        strcat(str, " ");
-      for (int i = 0; i < col_zeros; i++)
-        strcat(str, "0");
-      strcat(str, num_s);
-    } else if (num_s[0] == '-' || num_s[0] == '+') {
-      for (int i = 0; i < col_spaces; i++)
-        strcat(str, " ");
-
-      if (num_s[0] == '-')
-        strcat(str, "-");
-      else
-        strcat(str, "+");
-
-      for (int i = 0; i < col_zeros; i++)
-        strcat(str, "0");
-      strcat(str, &num_s[1]);
-    }
-  } else if (mys->fl == '0') { //Заполняет число слева нулями (0) вместо
-                               //пробелов, где указан спецификатор ширины
-    ppts_width_fill_nulls(num_s, str, col_spaces, col_zeros);
-  }
-}
-
-void ppts_width_align_left_i_d(char *num_s, char *str, int col_spaces,
-                               int col_zeros) {
-
-  if (num_s[0] != '-' && num_s[0] != '+') {
-    for (int i = 0; i < col_zeros; i++)
-      strcat(str, "0");
-    strcat(str, num_s);
-    for (int i = 0; i < col_spaces; i++)
-      strcat(str, " ");
-  } else if (num_s[0] == '-' || num_s[0] == '+') {
-    if (num_s[0] == '-')
-      strcat(str, "-");
-    else
-      strcat(str, "+");
-
-    for (int i = 0; i < col_zeros; i++)
-      strcat(str, "0");
-    strcat(str, &num_s[1]);
-    for (int i = 0; i < col_spaces; i++)
-      strcat(str, " ");
-  }
-}
-void ppts_width_i_d(struct info *mys, int len_num_s, char *num_s, char *str) {
-  int col_spaces = 0;
-  int col_zeros = 0;
-  if (mys->acc == -1)
-    col_spaces = mys->width - len_num_s;
-  else {
-    col_zeros = mys->acc - len_num_s;
-    col_spaces = mys->width - mys->acc;
-  }
-
-  if (col_spaces >= 1 || col_zeros >= 1) {
-    if (mys->fl != '-') { //выравнивание правому краю в пределах заданной ширины
-      ppts_width_align_right_i_d(num_s, str, col_spaces, col_zeros, mys);
-    } else if (mys->fl == '-') { //Выравнивание по левому краю в пределах
-                                 //заданной ширины
-      ppts_width_align_left_i_d(num_s, str, col_spaces, col_zeros);
-    }
-  } else {
-    strcat(str, num_s);
-  }
-}
-
-void ppts_acc_i_d(struct info *mys, int len_num_s, char *num_s, char *str) {
-  int col_zeros = mys->acc - len_num_s;
-  if (col_zeros >= 1) {
-    if (num_s[0] == '+')
-      strcat(str, "+");
-    else if (num_s[0] == '-')
-      strcat(str, "-");
-    else if (mys->fl == ' ')
-      strcat(str, " ");
-
-    for (int i = 0; i < col_zeros; i++)
-      strcat(str, "0");
-
-    if (num_s[0] == '+' || num_s[0] == '-') {
-      strcat(str, &num_s[1]);
-    } else {
-      strcat(str, num_s);
-    }
-  } else {
-    strcat(str, num_s);
-  }
-}
-
+/*
 void ppts_width_align_left_c(char c, char *str, int col_spaces) {
   strncat(str, &c, 1);
   for (int i = 0; i < col_spaces; i++)
@@ -402,15 +225,7 @@ void ppts_width_s(struct info *mys, char *s, char *str) {
   }
 }
 
-char *add_plus_nums(struct info *mys, char *num_s) {
-  char *p1 = NULL;
-  p1 = malloc((strlen(num_s) + 2) * sizeof(char));
-  if (p1) {
-    strcpy(p1, "+");
-    strcat(p1, num_s);
-  }
-  return p1;
-}
+
 
 void ppts_acc_u(struct info *mys, int len_num_s, char *num_s, char *str) {
   int col_zeros = mys->acc - len_num_s;
@@ -441,10 +256,30 @@ void ppts_acc_f(struct info *mys, char *num_s, char *str) {
   if(mys->fl!='-')
     strcat(str, num_s);
 }
+*/
 
+char *add_plus_nums(struct info *mys, char *num_s) {
+  char *p1 = NULL;
+  p1 = malloc((strlen(num_s) + 2) * sizeof(char));
+  if (p1) {
+    strcpy(p1, "+");
+    strcat(p1, num_s);
+  }
+  return p1;
+}
 
+char *add_space_nums(struct info *mys, char *num_s) {
+  char *p1 = NULL;
+  p1 = malloc((strlen(num_s) + 2) * sizeof(char));
+  if (p1) {
+    strcpy(p1, " ");
+    strcat(p1, num_s);
+  }
+  return p1;
+}
 
 void print_part_to_str(char *str, struct info *mys, va_list input) {
+  //case i d
   long num;
   char *num_s;
   int len_num_s = 0;
@@ -454,91 +289,112 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
   unsigned long uli;
   long double d;
   float f;
+
   switch (mys->spec) {
   case 'i':
   case 'd':
-    if (mys->len == 'l')
+    if (mys->len == 'l'){
       num = va_arg(input, long);
-    else
+    } else {
       num = va_arg(input, int);
+    }
     num_s = itoa(num, 0);
 
-    if (mys->fl == '+' && num_s[0] != '-') {
-      num_s = add_plus_nums(mys, num_s); //проверит флаг и добавит + если нужно
-      if (mys->len == 'l')
-        len_num_s = -1;
+    //проверки флагa
+    if (mys->fl == '+' && num_s[0] != '-') { // флаг+
+      num_s = add_plus_nums(mys, num_s); 
+      // if (mys->len == 'l')
+      //   len_num_s = -1;
     }
+    if (mys->fl == ' '&& num_s[0] != '-'){
+      num_s = add_space_nums(mys, num_s);
+    }
+    //иницилизируем поле структуры block_zero
+    if(mys->acc == 0 && num == 0)
+      mys->block_zero = 1; 
+    
     len_num_s += strlen(num_s);
     // printf("FUNC:NUM:%ld\n", num);
     // printf("FUNC:NUMS:%s\n", num_s);
     // printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
     // printf("FUNC:mys->width:%d\n", mys->width);
-    if (mys->width != -1) { //ширина для числа
+   
+    if (mys->width != -1) { //ширина / +внутри точность 
       ppts_width_i_d(mys, len_num_s, num_s, str);
-    } else if (mys->acc != -1) {
+    } else if (mys->acc != -1 && mys->block_zero==0) {//не установлена ширина - проверяем сразу точность 
       ppts_acc_i_d(mys, len_num_s, num_s, str);
     } else {
-      strcat(str, num_s);
+      if(mys->block_zero==0)
+        strcat(str, num_s);
+      else {
+        if (mys->fl == '+')
+          strcat(str, "+");
+        else if(mys->fl == ' ')
+          strcat(str, " ");
+      }
     }
-    if (mys->fl == '+')
+    if ((mys->fl == '+'|| mys->fl == ' ')&& num_s[0] != '-'&& num_s!=NULL){
+     // printf("PPTS: FREED\n");
+     // printf("PPTS: LEN %d\n", strlen(num_s));
       free(num_s);
-    break;
-
-  case 'c':
-  case '%':
-    c = va_arg(input, int);
-    ppts_width_c(mys, c, str);
-    break;
-
-  case 's':
-    s = va_arg(input, char *);
-    if (mys->width != -1) {
-      ppts_width_s(mys, s, str);
-    } else if (mys->acc != -1) {
-      ppts_acc_s(mys, s, str);
-    } else {
-      strcat(str, s);
     }
     break;
-  case 'u':
-    if(mys->len=='l'){
-      uli = va_arg(input, unsigned long);
-      num_s = utoa(uli, 10);
-    } else {
-      ui = va_arg(input, unsigned);
-      num_s = utoa(ui, 10);
-    }
-    len_num_s += strlen(num_s);
 
-    if (mys->width != -1) {
-      ppts_width_i_d(mys, len_num_s, num_s, str);
-    } else if (mys->acc != -1) {
-      ppts_acc_u(mys, len_num_s , num_s, str);
-    } else {
-      strcat(str, num_s);
-    }
-    break;
+  // case 'c':
+  // case '%':
+  //   c = va_arg(input, int);
+  //   ppts_width_c(mys, c, str);
+  //   break;
+
+  // case 's':
+  //   s = va_arg(input, char *);
+  //   if (mys->width != -1) {
+  //     ppts_width_s(mys, s, str);
+  //   } else if (mys->acc != -1) {
+  //     ppts_acc_s(mys, s, str);
+  //   } else {
+  //     strcat(str, s);
+  //   }
+  //   break;
+  // case 'u':
+  //   if(mys->len=='l'){
+  //     uli = va_arg(input, unsigned long);
+  //     num_s = utoa(uli, 10);
+  //   } else {
+  //     ui = va_arg(input, unsigned);
+  //     num_s = utoa(ui, 10);
+  //   }
+  //   len_num_s += strlen(num_s);
+
+  //   if (mys->width != -1) {
+  //     ppts_width_i_d(mys, len_num_s, num_s, str);
+  //   } else if (mys->acc != -1) {
+  //     ppts_acc_u(mys, len_num_s , num_s, str);
+  //   } else {
+  //     strcat(str, num_s);
+  //   }
+  //   break;
   
-  case 'f':
-    //printf("PPTS:F:MYSLEN: %c\n", mys->len);
-    if(mys->len=='L')
-      d = va_arg(input, long double);
-    else
-      d = va_arg(input, double);
+  // case 'f':
+  //   //printf("PPTS:F:MYSLEN: %c\n", mys->len);
+  //   if(mys->len=='L')
+  //     d = va_arg(input, long double);
+  //   else
+  //     d = va_arg(input, double);
 
-    //printf("PPTS:F:MYSACC: %d\n", mys->acc);
-    if(mys->acc==0)
-      num_s = ftoa(d, 0, mys->fl);
-    else if(mys->acc==-1)
-      num_s = ftoa(d, 6, mys->fl);
-    else
-      num_s = ftoa(d, mys->acc, mys->fl);
+  //   printf("PPTS:F:MYSACC: %d\n", mys->acc);
+  //   if(mys->acc==0)
+  //     num_s = ftoa(d, 0, mys->fl);
+  //   else if(mys->acc==-1)
+  //     num_s = ftoa(d, 6, mys->fl);
+  //   else
+  //     num_s = ftoa(d, mys->acc, mys->fl);
 
-    len_num_s = strlen(num_s);
-    //printf("FUNC:NUMS:%s\n", num_s);
-    //printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
-    ppts_acc_f(mys, num_s, str);
-    break;
+  //   len_num_s = strlen(num_s);
+  //   //printf("FUNC:NUMS:%s\n", num_s);
+  //   //printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
+  //   ppts_acc_f(mys, num_s, str);
+  //   break;
   
   
   default:
@@ -547,18 +403,17 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
 }
 
 int s21_sprintf(char *str, const char *format, ...) {
-  struct info mys = {'_', -1, -1, '_', '_'};
+  struct info mys = {'_', -1, -1, '_', '_', 0};
   va_list(input);
   va_start(input, format);
   int i = 0;
   int j = 0;
+  str[0]='\0';
   while (format[i] != '\0') {
-    if (format[i] == '%') {
-      //здесь смотри как записать в buf то что идет после процента
+    if (format[i] == '%') { //здесь смотри как записать в buf то что идет после процента
       i++;
       check_part_format(format, &mys, input, &i);
-      //пишем форматированный кусок в buf
-      print_part_to_str(str, &mys, input);
+      print_part_to_str(str, &mys, input);//пишем форматированный кусок в buf
       j = strlen(str);
     } else {
       str[j] = format[i];
@@ -567,46 +422,30 @@ int s21_sprintf(char *str, const char *format, ...) {
     }
     str[j] = '\0';
   }
-
   va_end(input);
-  // printf("FUNC:STRLEN:%ld\n", strlen(str));
   return strlen(str);
 }
 
-/*
-format −  это С-строка, содержащая один или несколько следующих элементов:
-пробельный символ, непробельный символ и спецификаторы формата.
-Спецификатор формата для печатающих функций следует прототипу:
-%[флаги][ширина][.точность][длина]спецификатор. Спецификатор формата для
-сканирующих функций следует прототипу: %[*][ширина][длина]спецификатор.
 
-*/
+//%[флаги][ширина][.точность][длина]спецификатор. 
 
-int main() {
-  char str1[256]="";
-  char str2[256];
-  //   char *format = "% f";
-  //   float val = 0;
-  // s21_sprintf(str1, format, val);
-  // sprintf(str2, format, val);
-  
-  char *format = "% .0f %.lf %Lf %f %lf %Lf";
-    float val = 0;
-    double val1 = 0;
-    long double val2 = 3515315.153151;
-    float val3 = 5.5;
-    double val4 = 9851.51351;
-    long double val5 = 95919539159.53151351131;
 
-        s21_sprintf(str1, format, val, val1, val2, val3, val4, val5),
-        sprintf(str2, format, val, val1, val2, val3, val4, val5);
 
-  
-  
-  printf("MAIN:S21PRINTF:%s\n", str1);
-  printf("MAIN:PRINTF   :%s\n", str2);
-  //printf("MAIN:s21 STRLEN:%ld\n", strlen(str1));
-  //printf("MAIN:STRLEN:%ld\n", strlen(str2));
-  
-  return 0;
-}
+// int main() {
+//   char str1[200];
+//   char str2[200];
+//   char *str3 = "%+d Test %+3.d Test %+5.7d TEST %+10d";
+//   int val = -3015;
+//   int val2 = -712;
+//   int val3 = -99;
+//   int val4 = -2939;
+//   sprintf(str1, str3, val, val2, val3, val4);
+//   s21_sprintf(str2, str3, val, val2, val3, val4);
+
+//   printf("MAIN:S21PRINTF:%s\n", str2);
+//   printf("MAIN:PRINTF   :%s\n", str1);
+//   printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
+//   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
+//   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
+//   return 0;
+// }
