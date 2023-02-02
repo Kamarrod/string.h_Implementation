@@ -71,7 +71,8 @@ char* itoa(long x, int d) {
       for (int j=i+1; j>=0; j--)
         str[j] = str[j-1];
       str[0]='-';
-      if(long_min){//тут нужен правильный цикличный сдвиг по чар цифрам
+
+      if(long_min){////костыль для min_long продолжение
         str[i] +=1;
       } 
       str[i+2] = '\0';
@@ -121,6 +122,7 @@ void init_struct(struct info *mys) {
   mys->len = '_';
   mys->spec = '_';
   mys->block_zero = 0;
+  mys->was_shift = 0;
 }
 
 void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces,
@@ -164,38 +166,6 @@ void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces,
   }
 }
 
-/*
-void ppts_width_align_left_c(char c, char *str, int col_spaces) {
-  strncat(str, &c, 1);
-  for (int i = 0; i < col_spaces; i++)
-    strcat(str, " ");
-}
-
-void ppts_width_align_right_c(char c, char *str, int col_spaces) {
-  for (int i = 0; i < col_spaces; i++)
-    strcat(str, " ");
-  strncat(str, &c, 1);
-}
-
-void ppts_width_c(struct info *mys, char c, char *str) {
-  int col_spaces = mys->width - 1;
-
-  if (col_spaces >= 1) {
-    if (mys->fl != '-') { //выравнивание правому краю в пределах заданной ширины
-      ppts_width_align_right_c(c, str, col_spaces);
-    } else if (mys->fl == '-') { //Выравнивание по левому краю в пределах
-                                 //заданной ширины
-      ppts_width_align_left_c(c, str, col_spaces);
-    }
-  } else {
-    strncat(str, &c, 1);
-  }
-}
-
-void ppts_acc_s(struct info *mys, char *s, char *str) {
-  strncat(str, s, mys->acc);
-}
-
 void ppts_width_align_right_s(struct info *mys, char *s, char *str,
                               int col_spaces) {
   for (int i = 0; i < col_spaces; i++)
@@ -214,6 +184,9 @@ void ppts_width_align_left_s(struct info *mys, char *s, char *str,
     strcat(str, s);
   for (int i = 0; i < col_spaces; i++)
     strcat(str, " ");
+}
+void ppts_acc_s(struct info *mys, char *s, char *str) {
+  strncat(str, s, mys->acc);
 }
 
 void ppts_width_s(struct info *mys, char *s, char *str) {
@@ -268,7 +241,6 @@ void ppts_acc_f(struct info *mys, char *num_s, char *str) {
   if(mys->fl!='-')
     strcat(str, num_s);
 }
-*/
 
 char *add_plus_nums(struct info *mys, char *num_s) {
   char *p1 = NULL;
@@ -290,7 +262,7 @@ char *add_space_nums(struct info *mys, char *num_s) {
   return p1;
 }
 
-void print_part_to_str(char *str, struct info *mys, va_list input) {
+void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_null) {
   //case i d
   long num;
   char *num_s;
@@ -352,61 +324,63 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
     }
     break;
 
-  // case 'c':
-  // case '%':
-  //   c = va_arg(input, int);
-  //   ppts_width_c(mys, c, str);
-  //   break;
+  case 'c':
+  case '%':
+    c = va_arg(input, int);
+    if(c==0)
+      *exist_c_null=1;
+    ppts_width_c(mys, c, str);
+    break;
 
-  // case 's':
-  //   s = va_arg(input, char *);
-  //   if (mys->width != -1) {
-  //     ppts_width_s(mys, s, str);
-  //   } else if (mys->acc != -1) {
-  //     ppts_acc_s(mys, s, str);
-  //   } else {
-  //     strcat(str, s);
-  //   }
-  //   break;
-  // case 'u':
-  //   if(mys->len=='l'){
-  //     uli = va_arg(input, unsigned long);
-  //     num_s = utoa(uli, 10);
-  //   } else {
-  //     ui = va_arg(input, unsigned);
-  //     num_s = utoa(ui, 10);
-  //   }
-  //   len_num_s += strlen(num_s);
+  case 's':
+    s = va_arg(input, char *);
+    if (mys->width != -1) {
+      ppts_width_s(mys, s, str);
+    } else if (mys->acc != -1) {
+      ppts_acc_s(mys, s, str);
+    } else {
+      strcat(str, s);
+    }
+    break;
+  case 'u':
+    if(mys->len=='l'){
+      uli = va_arg(input, unsigned long);
+      num_s = utoa(uli, 10);
+    } else {
+      ui = va_arg(input, unsigned);
+      num_s = utoa(ui, 10);
+    }
+    len_num_s += strlen(num_s);
 
-  //   if (mys->width != -1) {
-  //     ppts_width_i_d(mys, len_num_s, num_s, str);
-  //   } else if (mys->acc != -1) {
-  //     ppts_acc_u(mys, len_num_s , num_s, str);
-  //   } else {
-  //     strcat(str, num_s);
-  //   }
-  //   break;
+    if (mys->width != -1) {
+      ppts_width_i_d(mys, len_num_s, num_s, str);
+    } else if (mys->acc != -1) {
+      ppts_acc_u(mys, len_num_s , num_s, str);
+    } else {
+      strcat(str, num_s);
+    }
+    break;
   
-  // case 'f':
-  //   //printf("PPTS:F:MYSLEN: %c\n", mys->len);
-  //   if(mys->len=='L')
-  //     d = va_arg(input, long double);
-  //   else
-  //     d = va_arg(input, double);
+  case 'f':
+    //printf("PPTS:F:MYSLEN: %c\n", mys->len);
+    if(mys->len=='L')
+      d = va_arg(input, long double);
+    else
+      d = va_arg(input, double);
 
-  //   printf("PPTS:F:MYSACC: %d\n", mys->acc);
-  //   if(mys->acc==0)
-  //     num_s = ftoa(d, 0, mys->fl);
-  //   else if(mys->acc==-1)
-  //     num_s = ftoa(d, 6, mys->fl);
-  //   else
-  //     num_s = ftoa(d, mys->acc, mys->fl);
+    printf("PPTS:F:MYSACC: %d\n", mys->acc);
+    if(mys->acc==0)
+      num_s = ftoa(d, 0, mys->fl);
+    else if(mys->acc==-1)
+      num_s = ftoa(d, 6, mys->fl);
+    else
+      num_s = ftoa(d, mys->acc, mys->fl);
 
-  //   len_num_s = strlen(num_s);
-  //   //printf("FUNC:NUMS:%s\n", num_s);
-  //   //printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
-  //   ppts_acc_f(mys, num_s, str);
-  //   break;
+    len_num_s = strlen(num_s);
+    //printf("FUNC:NUMS:%s\n", num_s);
+    //printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
+    ppts_acc_f(mys, num_s, str);
+    break;
   
   
   default:
@@ -415,20 +389,26 @@ void print_part_to_str(char *str, struct info *mys, va_list input) {
 }
 
 int s21_sprintf(char *str, const char *format, ...) {
-  struct info mys = {'_', -1, -1, '_', '_', 0};
+  struct info mys = {'_', -1, -1, '_', '_', 0, 0};
   va_list(input);
   va_start(input, format);
   int i = 0;
   int j = 0;
+  int exist_c_null=0;
   str[0]='\0';
   while (format[i] != '\0') {
     if (format[i] == '%') { //здесь смотри как записать в buf то что идет после процента
       i++;
       check_part_format(format, &mys, input, &i);
-      print_part_to_str(str, &mys, input);//пишем форматированный кусок в buf
+      print_part_to_str(str, &mys, input, &exist_c_null);//пишем форматированный кусок в buf
       j = strlen(str);
     } else {
+      if(exist_c_null){//для флага с при char 0
+        str[j+1] = format[i];
+        exist_c_null=0;
+      } else {
       str[j] = format[i];
+      }
       i++;
       j++;
     }
@@ -443,26 +423,16 @@ int s21_sprintf(char *str, const char *format, ...) {
 
 
 
-// int main() {
-//   char str1[300];
-//   char str2[300];
-//   char *str3 = "%ld Test %ld Test %hd GOD %hd tt %d tt %d";
-//   long int val = LONG_MAX;
-//   long val2 = LONG_MIN;
-//   short int val3 = SHRT_MAX;
-//   short val4 = SHRT_MIN;
-//   int val5 = INT_MAX;
-//   int val6 = INT_MIN;
-//   sprintf(str1, str3, val, val2, val3, val4, val5, val6);
-//   s21_sprintf(str2, str3, val, val2, val3, val4, val5, val6);
-
-
-
-
-//   printf("MAIN:S21PRINTF:%s\n", str2);
-//   printf("MAIN:PRINTF   :%s\n", str1);
-//   printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
-//   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
-//   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
-//   return 0;
-// } 
+int main() {
+  char str1[100];
+  char str2[100];
+  char *str3 = "%c Test %c Test %c Test %c Test %c";
+sprintf(str1, str3, '\n', '\0', '\0', '\0', 'c');
+                   s21_sprintf(str2, str3, '\n', '\0', '\0', '\0', 'c');
+  printf("MAIN:S21PRINTF:%s\n", str2);
+  printf("MAIN:PRINTF   :%s\n", str1);
+  printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
+  printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
+  printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
+  return 0;
+} 

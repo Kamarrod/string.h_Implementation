@@ -2,20 +2,21 @@
 CC=gcc
 #Это еще один комментарий. Он поясняет, что в переменной CFLAGS лежат флаги, которые передаются компилятору
 CFLAGS=-c #-Wall -Wextra -Werror
-OFILES= 
-CFILES=
+DOP_CFILES= s21_sprintf_d.c s21_sprintf_c.c parser.c
+DOP_OFILES= s21_sprintf_d.o s21_sprintf_c.o parser.o
 #TST_LIBS = $(shell pkg-config --libs check)
 TST_LIBS = -lcheck -lm -lpthread -lrt -lsubunit
-all: s21_sprintf test
+all: s21_sprintf
 s21_sprintf:
-	$(CC) $(CFLAGS) s21_sprintf.c s21_sprintf_d.c parser.c
-	$(CC) s21_sprintf.o s21_sprintf_d.o parser.o -o s21_sprintf.out
-test:
-# $(CC) $(CFLAGS) s21_string_test.c
-# $(CC) s21_string_test.o $(TST_LIBS) -o s21_string_test.out
-	gcc s21_string_test.c s21_sprintf.c -lcheck -lpthread  -lm  -o s21_string_test.out
+#$(CC) $(CFLAGS) s21_sprintf.c $(DOP_CFILES)
+#$(CC) s21_sprintf.o $(DOP_OFILES) -o s21_sprintf.out
+	gcc s21_sprintf.c $(DOP_CFILES) -o s21_sprintf.out
 testd:
-	gcc test_sprintf_d.c s21_sprintf.c s21_sprintf_d.c parser.c -lcheck -lpthread  -lm  -o testd.out
+	gcc test_sprintf_d.c s21_sprintf.c $(DOP_CFILES) -lcheck -lpthread  -lm  -o test_d.out
+testi:
+	gcc test_sprintf_i.c s21_sprintf.c $(DOP_CFILES) -lcheck -lpthread  -lm  -o test_i.out
+testc:
+	gcc test_sprintf_c.c s21_sprintf.c $(DOP_CFILES) -lcheck -lpthread  -lm  -o test_c.out
 
 clean:
 	rm -rf *.o
