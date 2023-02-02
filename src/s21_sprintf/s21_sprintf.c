@@ -6,6 +6,14 @@
 //#include <float.h>
 #include <math.h>
 
+
+
+
+
+
+
+
+
 char *utoa(unsigned long val, int base) {
   static char buf[128] = {0};
   int i = 30;
@@ -262,7 +270,7 @@ char *add_space_nums(struct info *mys, char *num_s) {
   return p1;
 }
 
-void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_null) {
+void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_null, int j) {
   //case i d
   long num;
   char *num_s;
@@ -329,7 +337,7 @@ void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_
     c = va_arg(input, int);
     if(c==0)
       *exist_c_null=1;
-    ppts_width_c(mys, c, str);
+    ppts_width_c(mys, c, str, j);
     break;
 
   case 's':
@@ -400,15 +408,15 @@ int s21_sprintf(char *str, const char *format, ...) {
     if (format[i] == '%') { //здесь смотри как записать в buf то что идет после процента
       i++;
       check_part_format(format, &mys, input, &i);
-      print_part_to_str(str, &mys, input, &exist_c_null);//пишем форматированный кусок в buf
+      print_part_to_str(str, &mys, input, &exist_c_null, j);//пишем форматированный кусок в buf
       j = strlen(str);
     } else {
       if(exist_c_null){//для флага с при char 0
         str[j+1] = format[i];
         exist_c_null=0;
-      } else {
-      str[j] = format[i];
-      }
+      } 
+      else
+        str[j] = format[i];
       i++;
       j++;
     }
@@ -428,11 +436,12 @@ int main() {
   char str2[100];
   char *str3 = "%c Test %c Test %c Test %c Test %c";
 sprintf(str1, str3, '\n', '\0', '\0', '\0', 'c');
-                   s21_sprintf(str2, str3, '\n', '\0', '\0', '\0', 'c');
+s21_sprintf(str2, str3, '\n', '\0', '\0', '\0', 'c');
   printf("MAIN:S21PRINTF:%s\n", str2);
   printf("MAIN:PRINTF   :%s\n", str1);
   printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
+
   return 0;
 } 

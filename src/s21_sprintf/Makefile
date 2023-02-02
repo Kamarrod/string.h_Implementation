@@ -10,7 +10,7 @@ all: s21_sprintf
 s21_sprintf:
 #$(CC) $(CFLAGS) s21_sprintf.c $(DOP_CFILES)
 #$(CC) s21_sprintf.o $(DOP_OFILES) -o s21_sprintf.out
-	gcc s21_sprintf.c $(DOP_CFILES) -o s21_sprintf.out
+	gcc -g s21_sprintf.c $(DOP_CFILES) -o s21_sprintf.out
 testd:
 	gcc test_sprintf_d.c s21_sprintf.c $(DOP_CFILES) -lcheck -lpthread  -lm  -o test_d.out
 testi:
