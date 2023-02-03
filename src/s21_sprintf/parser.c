@@ -49,6 +49,10 @@ void check_part_format(const char *pF, struct info *mys, va_list input,
       
       if(mys->fl=='-')//для 19 теста
         mys->was_shift=1;
+      if(mys->fl=='+')
+        mys->was_plus=1;
+      if(mys->fl==' ')
+        mys->was_space=1;
       mys->fl = pF[*i];
       (*i)++;
     } else if (strcspn(&pF[*i], "0123456789*") == 0) {

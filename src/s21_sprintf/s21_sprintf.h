@@ -13,6 +13,8 @@ struct info {
   char spec;
   int block_zero;
   int was_shift;
+  int was_plus;
+  int was_space;
 };
 
 //i d
@@ -45,7 +47,7 @@ void ppts_width_align_left_s(struct info *mys, char *s, char *str,
 void ppts_width_s(struct info *mys, char *s, char *str);
 void ppts_acc_s(struct info *mys, char *s, char *str);
 //f
-void ppts_acc_f(struct info *mys, char *num_s, char *str);
+void ppts_f(struct info *mys, char *num_s, char *str);
 
 //parser.h
 void cpf_width(const char *pF, struct info *mys, va_list input, int * i);

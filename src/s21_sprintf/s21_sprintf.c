@@ -14,6 +14,8 @@ void init_struct(struct info *mys) {
   mys->spec = '_';
   mys->block_zero = 0;
   mys->was_shift = 0;
+  mys->was_plus = 0;
+  mys->was_space = 0;
 }
 
 char *add_plus_nums(struct info *mys, char *num_s) {
@@ -140,15 +142,20 @@ void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_
       d = va_arg(input, double);
 
     //printf("PPTS:F:MYSACC: %d\n", mys->acc);
+    char c;
+    if(mys->was_space||mys->fl==' ')
+      c=' ';
+    if(mys->was_plus||mys->fl=='+')
+      c='+';
     if(mys->acc==-1)
-      num_s = ftoa(d, 6, mys->fl);
+      num_s = ftoa(d, 6, c);
     else
-      num_s = ftoa(d, mys->acc, mys->fl);
+      num_s = ftoa(d, mys->acc, c);
 
     len_num_s = strlen(num_s);
     //printf("FUNC:NUMS:%s\n", num_s);
     //printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
-    ppts_acc_f(mys, num_s, str);
+    ppts_f(mys, num_s, str);
     break;
   
   
@@ -158,7 +165,7 @@ void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_
 }
 
 int s21_sprintf(char *str, const char *format, ...) {
-  struct info mys = {'_', -1, -1, '_', '_', 0, 0};
+  struct info mys = {'_', -1, -1, '_', '_', 0, 0, 0, 0};
   va_list(input);
   va_start(input, format);
   int i = 0;
@@ -199,17 +206,16 @@ int s21_sprintf(char *str, const char *format, ...) {
 // int main() {
 //   char str1[400];
 //   char str2[400];
-//   char *str3 = "%Lf %.Lf!";
-//   long double num_long = -76.756589;
-// sprintf(str1, str3, num_long, num_long);
-// s21_sprintf(str2, str3, num_long, num_long);
+//   char *str3 = "test: %5f\ntest: %6.1f\ntest: %8.2f!";
+//   double num = 76.756589;
+// sprintf(str1, str3, num, num, num);
+// s21_sprintf(str2, str3, num, num, num);
+
 
 //   printf("MAIN:S21PRINTF:%s\n", str2);
 //   printf("MAIN:PRINTF   :%s\n", str1);
 //   printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
 //   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
 //   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
-
-//   printf("MAIN:FTOA:%s\n", ftoa(num_long, 6, '_'));
 //   return 0;
 // } 
