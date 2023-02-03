@@ -36,6 +36,11 @@ char* ftoa(long double n, int afterpoint, char c);
 char *__utoa (unsigned long value);
 
 //s
+void ppts_width_align_right_s(struct info *mys, char *s, char *str,
+                              int col_spaces);
+void ppts_width_align_left_s(struct info *mys, char *s, char *str,
+                             int col_spaces);
+void ppts_width_s(struct info *mys, char *s, char *str);
 void ppts_acc_s(struct info *mys, char *s, char *str);
 
 void init_struct(struct info *mys);

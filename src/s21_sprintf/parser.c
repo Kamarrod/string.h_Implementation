@@ -58,7 +58,7 @@ void check_part_format(const char *pF, struct info *mys, va_list input,
     } else if (strcspn(&pF[*i], "lhL") == 0) {
       mys->len = pF[*i];
       (*i)++;
-    } else if (strcspn(&pF[*i], "cdeEfgGosuxXpni") == 0) {
+    } else if (strcspn(&pF[*i], "%cdeEfgGosuxXpni") == 0) {
       mys->spec = pF[*i];
       was_spec = 1;
       (*i)++;

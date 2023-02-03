@@ -57,50 +57,6 @@ void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces,
   }
 }
 
-void ppts_width_align_right_s(struct info *mys, char *s, char *str,
-                              int col_spaces) {
-  for (int i = 0; i < col_spaces; i++)
-    strcat(str, " ");
-  if (mys->acc >= 1)
-    strncat(str, s, mys->acc);
-  else
-    strcat(str, s);
-}
-
-void ppts_width_align_left_s(struct info *mys, char *s, char *str,
-                             int col_spaces) {
-  if (mys->acc >= 1)
-    strncat(str, s, mys->acc);
-  else
-    strcat(str, s);
-  for (int i = 0; i < col_spaces; i++)
-    strcat(str, " ");
-}
-void ppts_acc_s(struct info *mys, char *s, char *str) {
-  strncat(str, s, mys->acc);
-}
-
-void ppts_width_s(struct info *mys, char *s, char *str) {
-  int col_spaces;
-  if (mys->acc >= 1)
-    col_spaces = mys->width - mys->acc;
-  else
-    col_spaces = mys->width - strlen(s);
-
-  if (col_spaces >= 1) {
-    if (mys->fl != '-') { //выравнивание правому краю в пределах заданной ширины
-      ppts_width_align_right_s(mys, s, str, col_spaces);
-    } else if (mys->fl == '-') { //Выравнивание по левому краю в пределах
-                                 //заданной ширины
-      ppts_width_align_left_s(mys, s, str, col_spaces);
-    }
-  } else if (mys->acc >= 1) {
-    ppts_acc_s(mys, s, str);
-  } else {
-    strcat(str, s);
-  }
-}
-
 void ppts_acc_f(struct info *mys, char *num_s, char *str) {
   //учитываем ширину
   
@@ -119,7 +75,6 @@ void ppts_acc_f(struct info *mys, char *num_s, char *str) {
   if(mys->fl!='-')
     strcat(str, num_s);
 }
-
 
 char *add_plus_nums(struct info *mys, char *num_s) {
   char *p1 = NULL;
@@ -191,7 +146,6 @@ void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_
     break;
 
   case 'c':
-  case '%':
     c = va_arg(input, int);
     if(c==0)
       *exist_c_null=1;
@@ -199,9 +153,18 @@ void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_
     if(mys->width>0)
       *ret_val +=mys->width - 1; 
     break;
-
+  case '%':
+    c = '%';
+    ppts_width_c(mys, c, str, j, *exist_c_null);
+    if(mys->width>0)
+      *ret_val +=mys->width - 1;
+  break;
   case 's':
     s = va_arg(input, char *);
+    char* nullstr = "(null)";
+    if(s==NULL)
+      s = nullstr;
+
     if (mys->width != -1) {
       ppts_width_s(mys, s, str);
     } else if (mys->acc != -1) {
@@ -294,17 +257,21 @@ int s21_sprintf(char *str, const char *format, ...) {
 
 
 //%[флаги][ширина][.точность][длина]спецификатор. 
-//test 10
+
 // int main() {
-//   char str1[200];
-//   char str2[200];
-//   char *str3 = "%u Test %3.u Test %5.7u TEST %10u %#u %-u %+u %.u % .u";
-//   unsigned int val = 0;
-//   sprintf(str1, str3, val, val, val, val, val, val, val, val, val);
-//   s21_sprintf(str2, str3, val, val, val, val, val, val, val, val, val);
+//   char str1[100];
+//   char str2[100];
+//   char *str3 = "%s %s %s %% %d";
+//   char *val = "This";
+//   char *val2 = "\0";
+//   int val3 = 65;
+//   char *val4 = "string";
+// sprintf(str1, str3, val, val2, val4, val3);
+// s21_sprintf(str2, str3, val, val2, val4, val3);
+
 //   printf("MAIN:S21PRINTF:%s\n", str2);
 //   printf("MAIN:PRINTF   :%s\n", str1);
-//   printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
+//  printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
 //   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
 //   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
 
