@@ -236,33 +236,74 @@ START_TEST(sprintf_19_c) {
   ck_assert_pstr_eq(str1, str2);
 }
 END_TEST
+//MY TESTS
 
-/*START_TEST(sprintf_20_c) {
-  char str1[100];
-  char str2[100];
-  char *str3 = "TEST %lc right now\n";
-  int a = 266;
-  ck_assert_int_eq(sprintf(str1, str3, a), s21_sprintf(str2, str3, a));
-  ck_assert_pstr_eq(str1, str2);
-  // sprintf(str1, str3, a);
-  //                  s21_sprintf(str2, str3, a);
-  // printf("SPRINT: %s", str1);
-  // printf("S21_PRINT: %s", str2);
-}
-END_TEST
 
-START_TEST(sprintf_21_c) {
-  char str1[100];
-  char str2[100];
-  char *str3 = "%lc This is the Test right now\n";
-  int a = 1156;
-  ck_assert_int_eq(sprintf(str1, str3, a),
-                   s21_sprintf(str2, str3, a));
-  ck_assert_pstr_eq(str1, str2);
-  printf("SPRINT: %s", str1);
-  printf("S21_PRINT: %s", str2);
-}
-END_TEST */
+START_TEST(sprintf_one_char) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%c";
+    char val = 'X';
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+START_TEST(sprintf_one_precision) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%.5c";
+    char val = 'c';
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
+START_TEST(sprintf_one_flags) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "% -5c";
+    char val = 'c';
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
+START_TEST(sprintf_one_width) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%15c";
+    char val = 'c';
+    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
+START_TEST(sprintf_one_many) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%-5.3c%c%c%c%c Hello! ABOBA";
+    char val = 'c';
+    ck_assert_int_eq(s21_sprintf(str1, format, val, 'c', 'a', 'b', 'b'), sprintf(str2, format, val, 'c', 'a', 'b', 'b'));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
+START_TEST(sprintf_one_starwidth) {
+    char str1[BUFF_SIZE];
+    char str2[BUFF_SIZE];
+
+    char *format = "%-*c";
+    char val = 'c';
+    ck_assert_int_eq(s21_sprintf(str1, format, 5, val), sprintf(str2, format, 5, val));
+
+    ck_assert_str_eq(str1, str2);
+} END_TEST
+
 
 Suite *test_sprintf_c(void) {
   Suite *s = suite_create("\033[45m-=S21_SPRINTF_C=-\033[0m");
@@ -287,8 +328,13 @@ Suite *test_sprintf_c(void) {
   tcase_add_test(tc, sprintf_17_c);
   tcase_add_test(tc, sprintf_18_c);
   tcase_add_test(tc, sprintf_19_c);
-  // tcase_add_test(tc, sprintf_20_c);
-  // tcase_add_test(tc, sprintf_21_c);
+
+      tcase_add_test(tc, sprintf_one_char);
+    tcase_add_test(tc, sprintf_one_precision);
+    tcase_add_test(tc, sprintf_one_flags);
+    tcase_add_test(tc, sprintf_one_width);
+    tcase_add_test(tc, sprintf_one_many);
+    tcase_add_test(tc, sprintf_one_starwidth);
 
   suite_add_tcase(s, tc);
   return s;

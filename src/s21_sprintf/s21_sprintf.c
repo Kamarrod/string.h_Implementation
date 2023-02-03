@@ -270,7 +270,7 @@ char *add_space_nums(struct info *mys, char *num_s) {
   return p1;
 }
 
-void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_null, int j) {
+void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_null, int j, int* ret_val) {
   //case i d
   long num;
   char *num_s;
@@ -337,7 +337,9 @@ void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_
     c = va_arg(input, int);
     if(c==0)
       *exist_c_null=1;
-    ppts_width_c(mys, c, str, j);
+    ppts_width_c(mys, c, str, j, *exist_c_null);
+    if(mys->width>0)
+      *ret_val +=mys->width - 1; 
     break;
 
   case 's':
@@ -404,15 +406,17 @@ int s21_sprintf(char *str, const char *format, ...) {
   int j = 0;
   int exist_c_null=0;
   str[0]='\0';
+  int ret_val = 0;
   while (format[i] != '\0') {
     if (format[i] == '%') { //здесь смотри как записать в buf то что идет после процента
       i++;
       check_part_format(format, &mys, input, &i);
-      print_part_to_str(str, &mys, input, &exist_c_null, j);//пишем форматированный кусок в buf
+      print_part_to_str(str, &mys, input, &exist_c_null, j, &ret_val);//пишем форматированный кусок в buf
       j = strlen(str);
     } else {
       if(exist_c_null){//для флага с при char 0
-        str[j+1] = format[i];
+        j++;
+        str[j] = format[i];
         exist_c_null=0;
       } 
       else
@@ -420,28 +424,60 @@ int s21_sprintf(char *str, const char *format, ...) {
       i++;
       j++;
     }
+    ret_val++;
     str[j] = '\0';
   }
   va_end(input);
-  return strlen(str);
+  if(mys.spec!='c')
+    ret_val = strlen(str);
+  return ret_val;
+
 }
 
 
 //%[флаги][ширина][.точность][длина]спецификатор. 
 
+//test12
+
+// int main() {
+//   int ret_orig;
+//   char str1[100];
+//   char str2[100];
+//   char *str3 = "%c Test %c Test %c Test %c Test %c";
+// ret_orig= sprintf(str1, str3, '\n', '\0', '\0', '\0', 'c');
+// s21_sprintf(str2, str3, '\n', '\0', '\0', '\0', 'c');
+//   printf("MAIN:S21PRINTF:%s\n", str2);
+//   printf("MAIN:PRINTF   :%s\n", str1);
+//   printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
+//   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
+//   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
+
+//   for(int i=0; i < strlen(str1); i++)
+//     printf("STR1[%d]= %c\n", i, str1[i]);
+//   for(int i=0; i < strlen(str2); i++)
+//     printf("STR2[%d]= %c\n", i, str2[i]);
+  
+//   printf("ret_orig = %d\n", ret_orig);
+
+//   return 0;
+// } 
 
 
-int main() {
-  char str1[100];
-  char str2[100];
-  char *str3 = "%c Test %c Test %c Test %c Test %c";
-sprintf(str1, str3, '\n', '\0', '\0', '\0', 'c');
-s21_sprintf(str2, str3, '\n', '\0', '\0', '\0', 'c');
-  printf("MAIN:S21PRINTF:%s\n", str2);
-  printf("MAIN:PRINTF   :%s\n", str1);
-  printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
-  printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
-  printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
+// int main() {
+//   char str1[100];
+//   char str2[100];
+//   char *str3 = "%05c Test % 5c Test %lc Test";
+//   int a = 70;
+//   unsigned long int b = 70;
+// sprintf(str1, str3, a, a, b);
+// s21_sprintf(str2, str3, a, a, b);
 
-  return 0;
-} 
+
+//   printf("MAIN:S21PRINTF:%s\n", str2);
+//   printf("MAIN:PRINTF   :%s\n", str1);
+//   printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
+//   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
+//   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
+
+//   return 0;
+// } 
