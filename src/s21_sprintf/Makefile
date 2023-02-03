@@ -2,8 +2,8 @@
 CC=gcc
 #Это еще один комментарий. Он поясняет, что в переменной CFLAGS лежат флаги, которые передаются компилятору
 CFLAGS=-c #-Wall -Wextra -Werror
-DOP_CFILES= s21_sprintf_d.c s21_sprintf_c.c parser.c
-DOP_OFILES= s21_sprintf_d.o s21_sprintf_c.o parser.o
+DOP_CFILES= s21_sprintf_d.c s21_sprintf_c.c parser.c s21_sprintf_u.c typecasting.c
+DOP_OFILES= s21_sprintf_d.o s21_sprintf_c.o parser.o s21_sprintf_c.o typecasting.o
 #TST_LIBS = $(shell pkg-config --libs check)
 TST_LIBS = -lcheck -lm -lpthread -lrt -lsubunit
 all: s21_sprintf
@@ -17,6 +17,8 @@ testi:
 	gcc test_sprintf_i.c s21_sprintf.c $(DOP_CFILES) -lcheck -lpthread  -lm  -o test_i.out
 testc:
 	gcc test_sprintf_c.c s21_sprintf.c $(DOP_CFILES) -lcheck -lpthread  -lm  -o test_c.out
+testu:
+	gcc test_sprintf_u.c s21_sprintf.c $(DOP_CFILES) -lcheck -lpthread  -lm  -o test_u.out
 
 clean:
 	rm -rf *.o
