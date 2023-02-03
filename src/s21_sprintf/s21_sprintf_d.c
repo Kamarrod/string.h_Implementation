@@ -115,3 +115,44 @@ void ppts_acc_i_d(struct info *mys, int len_num_s, char *num_s, char *str) {
       strcat(str, num_s);
   }
 }
+
+void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces,
+                           int col_zeros, struct info *mys) {
+  if (num_s[0] != '-' &&
+      num_s[0] != '+') { //есть какая-то ширина и стоит флаг 0
+
+    if (col_zeros > 0) { //если даже стоит фл 0 но есть точность все заполнять
+                         //нулями не будем
+      for (int i = 0; i < col_spaces; i++)
+        strcat(str, " ");
+      for (int i = 0; i < col_zeros; i++)
+        strcat(str, "0");
+    } else {
+      for (int i = 0; i < col_spaces; i++)
+      if(mys->block_zero==0)
+        strcat(str, "0");
+    }
+  if(mys->block_zero==0)
+    strcat(str, num_s);
+  } else if (num_s[0] == '-' || num_s[0] == '+') { //сначала знак потом нули
+                                                   //потом число
+    if (num_s[0] == '-')
+      strcat(str, "-");
+    else
+      strcat(str, "+");
+
+    if (col_zeros > 0) { //если даже стоит фл 0 но есть точность все заполнять
+                         //нулями не будем
+      for (int i = 0; i < col_spaces; i++)
+        strcat(str, " ");
+      for (int i = 0; i < col_zeros; i++)
+        strcat(str, "0");
+    } else {
+      for (int i = 0; i < col_spaces; i++)
+      if(mys->block_zero==0)
+        strcat(str, "0");
+    }
+  if(mys->block_zero==0)
+    strcat(str, &num_s[1]);
+  }
+}

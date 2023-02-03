@@ -75,40 +75,65 @@ char* itoa(long x, int d) {
     return str;
 }
 
-char* ftoa(long double n, int afterpoint, char c) {
-    static char res [1024]={0};
-    for (int k = 0; k <= 1024; k++)
-      res[k] = '\0';
-
-    if(n<0) {
-      n=-n;
-      strcpy(res, "-");
-    } else {
-      if(c=='+')
-        strcpy(res, "+");
-      else if(c==' ')
-        strcpy(res, " ");
-    }
-
-    long ipart = (long)n;
-    long double fpart = n - (long double)ipart;    
-    //printf("FTOA:IPART:%ld\n", ipart);
-    strcat(res, itoa(ipart,0));
-    int i = strlen(res);
+// char* ftoa(long double n, int afterpoint, char c) {
+//     static char res[128] = {0};
+//     for (int k = 0; k <= 1024; k++)
+//       res[k] = '\0';
+//     char *fparts;
+//     char* iparts;
+//     int i;
+//     if(n<0) {
+//       n=-n;
+//       res[0] = '-';
+//     } else {
+//       if(c=='+')
+//         res[0] = '+';
+//       else if(c==' ')
+//         res[0] = ' ';
+//     }
+//     printf("FTOA:RES0:%s\n", res);
+//     long ipart = (long)n;
+//     long double fpart = n - (long double)ipart;    
+   
+//     i = strlen(res);
+//     printf("FTOA:I1:%ld\n", i);
     
-    if (afterpoint != 0) {
-        res[i] = '.';
-        //округление
-        printf("FTOA:FPART:DEC:LF:%.16Lf\n", fpart);
-        fpart = roundl(fpart * pow(10, afterpoint));
-        //fpart = fpart * pow(10, afterpoint);
-        printf("FTOA:FPART:DEC:LF:%Lf\n", fpart);
-        strcat(res, itoa((long)fpart, afterpoint));
-        printf("FTOA:FPART:DEC:LD:%ld\n", (long)fpart);
-        //printf("FTOA:FPART:STR:%s\n", itoa((long)fpart, afterpoint));
-    }
-    return res;
-}
+//     iparts = itoa(ipart,0);
+//     //printf("FTOA:IPART:%ld\n", ipart);
+//     printf("FTOA:IPARTS:%s\n", iparts);
+    
+//     for(int k=0; k < strlen(iparts);k++){
+//       res[i] = iparts[k];
+//       printf("FTOA:CYCLE:res[i]: %c\n", res[i]);
+//       printf("FTOA:CYCLE:iparts[k]: %c\n", iparts[k]);
+//       i++;
+//     }
+//     printf("--------------------------------------\n");
+//     for(int k=0; k < 2;k++){
+//       printf("FTOA:CYCLE:iparts[k]: %c\n", iparts[k]);
+//     }
+
+//     //res[i] = '\0';
+//     //strcat(res, itoa(ipart,0));
+//     //i = strlen(res);
+//     printf("FTOA:I1:%ld\n", i);
+//     printf("FTOA:RES1:%s\n", res);
+   
+   
+   
+//     if (afterpoint != 0) {
+//         res[i] = '.';
+
+//         fpart = roundl(fpart * pow(10, afterpoint));
+//         //fpart = fpart * pow(10, afterpoint);
+//         //strcat(res, itoa((long)fpart, afterpoint));
+        
+//         //printf("FTOA:FPART:DEC:LD:%ld\n", (long)fpart);
+//         //printf("FTOA:FPART:STR:%s\n", itoa((long)fpart, afterpoint));
+//     }
+//     printf("FTOA:RES2:%s\n", res);
+//     return res;
+// }
 
 
 char *__utoa (unsigned long value){
@@ -137,4 +162,66 @@ char *__utoa (unsigned long value){
     }       
   
   return str;
+}
+
+
+
+// char* ftoa(long double n, int afterpoint, char c) {
+//     static char res[128] = {0};
+//     for (int k = 0; k <= 1024; k++)
+//       res[k] = '\0';
+//     int i;
+//     if(n<0) {
+//       n=-n;
+//       res[0] = '-';
+//     } else {
+//       if(c=='+')
+//         res[0] = '+';
+//       else if(c==' ')
+//         res[0] = ' ';
+//     }
+//     long ipart = (long)n;
+//     long double fpart = n - (long double)ipart;     
+//     strcat(res, itoa(ipart,0));
+//     i = strlen(res);   
+//     if (afterpoint != 0) {
+//         res[i] = '.';
+//         fpart = roundl(fpart * pow(10, afterpoint));
+//         strcat(res, itoa((long)fpart, afterpoint));
+//     }
+//     return res;
+// }
+
+char* ftoa(long double n, int afterpoint, char c) {
+    static char res[128] = {0};
+    for (int k = 0; k <= 1024; k++)
+      res[k] = '\0';
+    int i;
+
+
+    if(n<0) {
+      n=-n;
+      res[0] = '-';
+    } else {
+      if(c=='+')
+        res[0] = '+';
+      else if(c==' ')
+        res[0] = ' ';
+    }
+
+    if(afterpoint!=0){
+      long ipart = (long)n;
+      long double fpart = n - (long double)ipart;     
+      strcat(res, itoa(ipart,0));
+      i = strlen(res);   
+
+        res[i] = '.';
+        fpart = roundl(fpart * pow(10, afterpoint));
+        strcat(res, itoa((long)fpart, afterpoint));
+    } else {
+        long double rounded = roundl(n);
+        strcat(res, itoa((long)rounded,0));
+    }
+
+    return res;
 }

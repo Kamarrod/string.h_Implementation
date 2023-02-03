@@ -16,66 +16,6 @@ void init_struct(struct info *mys) {
   mys->was_shift = 0;
 }
 
-void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces,
-                           int col_zeros, struct info *mys) {
-  if (num_s[0] != '-' &&
-      num_s[0] != '+') { //есть какая-то ширина и стоит флаг 0
-
-    if (col_zeros > 0) { //если даже стоит фл 0 но есть точность все заполнять
-                         //нулями не будем
-      for (int i = 0; i < col_spaces; i++)
-        strcat(str, " ");
-      for (int i = 0; i < col_zeros; i++)
-        strcat(str, "0");
-    } else {
-      for (int i = 0; i < col_spaces; i++)
-      if(mys->block_zero==0)
-        strcat(str, "0");
-    }
-  if(mys->block_zero==0)
-    strcat(str, num_s);
-  } else if (num_s[0] == '-' || num_s[0] == '+') { //сначала знак потом нули
-                                                   //потом число
-    if (num_s[0] == '-')
-      strcat(str, "-");
-    else
-      strcat(str, "+");
-
-    if (col_zeros > 0) { //если даже стоит фл 0 но есть точность все заполнять
-                         //нулями не будем
-      for (int i = 0; i < col_spaces; i++)
-        strcat(str, " ");
-      for (int i = 0; i < col_zeros; i++)
-        strcat(str, "0");
-    } else {
-      for (int i = 0; i < col_spaces; i++)
-      if(mys->block_zero==0)
-        strcat(str, "0");
-    }
-  if(mys->block_zero==0)
-    strcat(str, &num_s[1]);
-  }
-}
-
-void ppts_acc_f(struct info *mys, char *num_s, char *str) {
-  //учитываем ширину
-  
-  if(mys->width!=-1){
-    
-    if(mys->fl=='-')
-      strcat(str, num_s);
-
-    for (int i = 0; i < mys->width - strlen(num_s);i++) {
-      if(mys->fl=='0')
-        strcat(str, "0");
-      else
-        strcat(str, " ");
-    }
-  }
-  if(mys->fl!='-')
-    strcat(str, num_s);
-}
-
 char *add_plus_nums(struct info *mys, char *num_s) {
   char *p1 = NULL;
   p1 = malloc((strlen(num_s) + 2) * sizeof(char));
@@ -199,10 +139,8 @@ void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_
     else
       d = va_arg(input, double);
 
-    printf("PPTS:F:MYSACC: %d\n", mys->acc);
-    if(mys->acc==0)
-      num_s = ftoa(d, 0, mys->fl);
-    else if(mys->acc==-1)
+    //printf("PPTS:F:MYSACC: %d\n", mys->acc);
+    if(mys->acc==-1)
       num_s = ftoa(d, 6, mys->fl);
     else
       num_s = ftoa(d, mys->acc, mys->fl);
@@ -259,21 +197,19 @@ int s21_sprintf(char *str, const char *format, ...) {
 //%[флаги][ширина][.точность][длина]спецификатор. 
 
 // int main() {
-//   char str1[100];
-//   char str2[100];
-//   char *str3 = "%s %s %s %% %d";
-//   char *val = "This";
-//   char *val2 = "\0";
-//   int val3 = 65;
-//   char *val4 = "string";
-// sprintf(str1, str3, val, val2, val4, val3);
-// s21_sprintf(str2, str3, val, val2, val4, val3);
+//   char str1[400];
+//   char str2[400];
+//   char *str3 = "%Lf %.Lf!";
+//   long double num_long = -76.756589;
+// sprintf(str1, str3, num_long, num_long);
+// s21_sprintf(str2, str3, num_long, num_long);
 
 //   printf("MAIN:S21PRINTF:%s\n", str2);
 //   printf("MAIN:PRINTF   :%s\n", str1);
-//  printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
+//   printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
 //   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
 //   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
 
+//   printf("MAIN:FTOA:%s\n", ftoa(num_long, 6, '_'));
 //   return 0;
 // } 

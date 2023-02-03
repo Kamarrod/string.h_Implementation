@@ -29,25 +29,7 @@ void ppts_width_align_left_s(struct info *mys, char *s, char *str,
 void ppts_acc_s(struct info *mys, char *s, char *str) {
     strncat(str, s, mys->acc);
 }
-/*
-длина строки 29
-ширина       3
-точность     0
 
-не пишем слово
-пишем 3 пробела
---------------------
-длина строки 4
-ширина       5
-точность     7
-
-пишем слово
-пишем 1 пробел
---------------------
-
-
-
-*/
 void ppts_width_s(struct info *mys, char *s, char *str) {
     int col_spaces;
     if(strlen(s) <= mys->acc){//точность больше или = длины слова => пишем все слово
