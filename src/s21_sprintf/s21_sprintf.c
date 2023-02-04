@@ -16,6 +16,7 @@ void init_struct(struct info *mys) {
   mys->was_shift = 0;
   mys->was_plus = 0;
   mys->was_space = 0;
+  mys->was_sharp = 0;
 }
 
 char *add_plus_nums(struct info *mys, char *num_s) {
@@ -155,7 +156,11 @@ void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_
     len_num_s = strlen(num_s);
     //printf("FUNC:NUMS:%s\n", num_s);
     //printf("FUNC:LEN NUMS:%ld\n", strlen(num_s));
+    if(mys->acc==0 && (mys->was_sharp||mys->fl=='#'))
+      strcat(num_s, ".");
     ppts_f(mys, num_s, str);
+    if(num_s)
+      free(num_s);
     break;
   
   
@@ -165,7 +170,7 @@ void print_part_to_str(char *str, struct info *mys, va_list input, int* exist_c_
 }
 
 int s21_sprintf(char *str, const char *format, ...) {
-  struct info mys = {'_', -1, -1, '_', '_', 0, 0, 0, 0};
+  struct info mys = {'_', -1, -1, '_', '_', 0, 0, 0, 0, 0};
   va_list(input);
   va_start(input, format);
   int i = 0;
@@ -200,22 +205,30 @@ int s21_sprintf(char *str, const char *format, ...) {
 
 }
 
+//52
+//86
+//93
+// %[флаги][ширина][.точность][длина]спецификатор. 
+// 1 2 3 4 точность с обычными
+// любая точность с нулем
 
-//%[флаги][ширина][.точность][длина]спецификатор. 
+int main() {
+  char str1[400];
+char str2[400];
 
-// int main() {
-//   char str1[400];
-//   char str2[400];
-//   char *str3 = "test: %5f\ntest: %6.1f\ntest: %8.2f!";
-//   double num = 76.756589;
-// sprintf(str1, str3, num, num, num);
-// s21_sprintf(str2, str3, num, num, num);
+  char *str3 = "test: %-+.1Lf! test: %- .2Lf! test: %-0.3Lf!";
+  long double num = -0.999999;
 
+sprintf(str1, str3, num, num, num);
+s21_sprintf(str2, str3, num, num, num);
 
-//   printf("MAIN:S21PRINTF:%s\n", str2);
-//   printf("MAIN:PRINTF   :%s\n", str1);
-//   printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
-//   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
-//   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
-//   return 0;
-// } 
+  printf("MAIN:S21PRINTF:%s\n", str2);
+  printf("MAIN:PRINTF   :%s\n", str1);
+  printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
+  printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
+  printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
+
+  //printf("MAIN:FTOA:%s\n", ftoa(num,1,'_'));
+
+  return 0;
+} 

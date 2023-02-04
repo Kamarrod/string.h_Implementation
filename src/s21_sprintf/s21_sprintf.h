@@ -15,6 +15,7 @@ struct info {
   int was_shift;
   int was_plus;
   int was_space;
+  int was_sharp;
 };
 
 //i d

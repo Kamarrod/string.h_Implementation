@@ -53,6 +53,8 @@ void check_part_format(const char *pF, struct info *mys, va_list input,
         mys->was_plus=1;
       if(mys->fl==' ')
         mys->was_space=1;
+      if(mys->fl=='#')
+        mys->was_sharp = 1;
       mys->fl = pF[*i];
       (*i)++;
     } else if (strcspn(&pF[*i], "0123456789*") == 0) {
@@ -69,32 +71,3 @@ void check_part_format(const char *pF, struct info *mys, va_list input,
     }
   }
 }
-/*
-
-
-1
-если есть знак нет ширины
-сдвиг влево- пробел
----------------
-важен только -
-
-2
-если есть знак ширина
-сдвиг влево- пробел 
----------------
-важен только -
-
-3
-если нет знака ширина
-сдвиг влево- пробел 
----------------
-важны оба
-
-4
-если нет знака нет ширины
-сдвиг влево- пробел 
----------------
-важны оба флага
-
-
-*/

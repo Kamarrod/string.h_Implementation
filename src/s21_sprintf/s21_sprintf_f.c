@@ -3,24 +3,66 @@ void ppts_f(struct info *mys, char *num_s, char *str) {
 
   if(mys->width!=-1){
     
-    if(mys->fl=='-' || mys->was_shift)
+
+    if(mys->fl=='-' || mys->was_shift) {//если - то сначала пишем число потом  
       strcat(str, num_s);
-    // printf("PPTS F:STRLEN NUMS: %ld\n", strlen(num_s));
-    // printf("PPTS F:SUBSTRACT: %ld\n", mys->width - strlen(num_s));
-    // printf("PPTS res: %ld\n", (mys->width > strlen(num_s)));
-    if((mys->width > strlen(num_s))){  
-      for (int i = 0; i < mys->width - strlen(num_s);i++) {
-        if(mys->fl=='0')
-          strcat(str, "0");
-        else
-          strcat(str, " ");
+      if((mys->width > strlen(num_s))){  
+        for (int i = 0; i < mys->width - strlen(num_s);i++) {
+            strcat(str, " ");
+
+        }
       }
     }
 
-    if(mys->fl!='-')
-      strcat(str, num_s);
+    if(mys->fl!='-' && !mys->was_shift){
+
+        int col_zeros_spaces = mys->width - strlen(num_s);
+        
+        if(col_zeros_spaces>0){
+
+          char *p1 = NULL;
+          p1 = malloc((mys->width + 2) * sizeof(char));
+          if (p1) {
+            
+            p1[0]='\0';
+            if(num_s[0]==' '||num_s[0]=='+'||num_s[0]=='-'){
+              for(int i=0; i < col_zeros_spaces;i++){
+                if(mys->fl!='0')
+                  strcat(p1, " ");
+              }
+              strncat(p1, num_s, 1);
+
+              for(int i=0; i < col_zeros_spaces;i++){
+                if(mys->fl=='0')
+                  strcat(p1, "0");
+              }
+              strcat(p1, &num_s[1]);
+            
+            
+            } else {
+              for(int i=0; i < col_zeros_spaces;i++){
+                if(mys->fl=='0')
+                  strcat(p1, "0");
+                else
+                  strcat(p1, " ");
+              }
+              strcat(p1, num_s);
+            }
+            
+          strcat(str, p1);
+          free(p1);
+          }
+
+        }else {
+          strcat(str, num_s);
+        }
+    }
+
+
+
   } else {
     strcat(str, num_s);
   }
 
 }
+

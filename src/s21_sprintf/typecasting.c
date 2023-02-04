@@ -192,36 +192,125 @@ char *__utoa (unsigned long value){
 //     return res;
 // }
 
+// char* ftoa(long double n, int afterpoint, char c) {
+//     static char res[128] = {0};
+//     for (int k = 0; k <= 1024; k++)
+//       res[k] = '\0';
+//     int i;
+
+
+//     if(n<0) {
+//       n=-n;
+//       res[0] = '-';
+//     } else {
+//       if(c=='+')
+//         res[0] = '+';
+//       else if(c==' ')
+//         res[0] = ' ';
+//     }
+
+//     if(afterpoint!=0){
+//       long ipart = (long)n;
+//       long double fpart = n - (long double)ipart;     
+//       strcat(res, itoa(ipart,0));
+//       i = strlen(res);   
+
+//         res[i] = '.';
+//         fpart = roundl(fpart * pow(10, afterpoint));
+//         strcat(res, itoa((long)fpart, afterpoint));
+//     } else {
+//         long double rounded = roundl(n);
+//         strcat(res, itoa((long)rounded,0));
+//     }
+
+//     return res;
+// }
+char* ulltoa(unsigned long long x, int d) {
+  int neg = 0;
+  int long_min=0;
+  if (x < 0) {
+    //костыль для min_long
+    if(x==LONG_MIN){
+      x=LONG_MAX;
+      long_min=1;
+    } else {
+      x = -x;
+    }
+    neg = 1;
+  }
+
+
+  static char str[1024] = {0};
+  
+  //тк статик чтобы убирать мусор между итерациями
+  for (int k = 0; k <= 1024; k++)
+      str[k] = '\0';
+  int i = 0;
+  
+    if(x==0)
+      str[i] = '0';
+    else {
+      while (x) {
+          str[i++] = (x % 10) + '0';
+          x = x / 10;
+      }
+      while (i < d)
+        str[i++] = '0';
+
+      reverse(str, i);
+    }
+    str[i+1] = '\0';
+    
+
+    if(neg){
+      for (int j=i+1; j>=0; j--)
+        str[j] = str[j-1];
+      str[0]='-';
+
+      if(long_min){////костыль для min_long продолжение
+        str[i] +=1;
+      } 
+      str[i+2] = '\0';
+    }
+    return str;
+}
+
 char* ftoa(long double n, int afterpoint, char c) {
-    static char res[128] = {0};
-    for (int k = 0; k <= 1024; k++)
+
+char *res = NULL;
+res = malloc((256) * sizeof(char));
+if (res) {
+    for (int k = 0; k <= 256; k++)
       res[k] = '\0';
     int i;
-
-
     if(n<0) {
       n=-n;
-      res[0] = '-';
+      strcat(res, "-");
     } else {
       if(c=='+')
-        res[0] = '+';
+        strcat(res, "+");
       else if(c==' ')
-        res[0] = ' ';
+        strcat(res, " ");
     }
 
     if(afterpoint!=0){
-      long ipart = (long)n;
+      unsigned long long ipart =  (unsigned long long)n;
       long double fpart = n - (long double)ipart;     
-      strcat(res, itoa(ipart,0));
+      strcat(res, ulltoa(ipart,0));
       i = strlen(res);   
 
         res[i] = '.';
         fpart = roundl(fpart * pow(10, afterpoint));
-        strcat(res, itoa((long)fpart, afterpoint));
+        if(fpart!=0.0)
+          strcat(res, ulltoa((unsigned long long)fpart, afterpoint));
+        else {
+          for (int i=0; i< afterpoint; i++)
+            strcat(res, "0");
+        }
     } else {
         long double rounded = roundl(n);
-        strcat(res, itoa((long)rounded,0));
+        strcat(res, ulltoa((unsigned long long)rounded,0));
     }
-
+}
     return res;
 }
