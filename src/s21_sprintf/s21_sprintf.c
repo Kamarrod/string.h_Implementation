@@ -212,23 +212,24 @@ int s21_sprintf(char *str, const char *format, ...) {
 // 1 2 3 4 точность с обычными
 // любая точность с нулем
 
-int main() {
-  char str1[400];
-char str2[400];
+// int main() {
+//   char str1[400];
+// char str2[400];
 
-  char *str3 = "test: %-+.1Lf! test: %- .2Lf! test: %-0.3Lf!";
-  long double num = -0.999999;
+//   char *str3 = "test: %.1Lf! test: %.2Lf! test: %.3Lf! test: %.4Lf! test: %.5Lf! test: %.6Lf!";
+//   long double num = -9999.99999;
+//   // char *str3 = "%20.10f %20.15f %-20.5f!";
+//   // double num = -76.756589;
+// sprintf(str1, str3, num, num, num, num , num, num);
+// s21_sprintf(str2, str3, num, num, num, num , num, num);
 
-sprintf(str1, str3, num, num, num);
-s21_sprintf(str2, str3, num, num, num);
+//   printf("MAIN:S21PRINTF:%s\n", str2);
+//   printf("MAIN:PRINTF   :%s\n", str1);
+//   printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
+//   printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
+//   printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
 
-  printf("MAIN:S21PRINTF:%s\n", str2);
-  printf("MAIN:PRINTF   :%s\n", str1);
-  printf("MAIN:S21PRINTF SIZE:%ld\n", strlen(str2));
-  printf("MAIN:PRINTF   SIZE:%ld\n", strlen(str1));
-  printf("MAIN:STRCMP:%d\n", strcmp(str1, str2));
+//   //printf("MAIN:FTOA:%s\n", ftoa(num,1,'_'));
 
-  //printf("MAIN:FTOA:%s\n", ftoa(num,1,'_'));
-
-  return 0;
-} 
+//   return 0;
+// } 

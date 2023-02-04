@@ -282,7 +282,7 @@ res = malloc((256) * sizeof(char));
 if (res) {
     for (int k = 0; k <= 256; k++)
       res[k] = '\0';
-    int i;
+    //int i;
     if(n<0) {
       n=-n;
       strcat(res, "-");
@@ -296,11 +296,30 @@ if (res) {
     if(afterpoint!=0){
       unsigned long long ipart =  (unsigned long long)n;
       long double fpart = n - (long double)ipart;     
-      strcat(res, ulltoa(ipart,0));
-      i = strlen(res);   
 
-        res[i] = '.';
-        fpart = roundl(fpart * pow(10, afterpoint));
+        //if(roundl(fpart)==1)
+        // printf("FPART!! %Lf \n",  fpart);
+        
+        // printf("ROUND POW !! %Lf \n", roundl(fpart * pow(10, afterpoint)));
+        
+      
+        //unsigned long long check = (unsigned long long)(fpart*100);
+        //printf("ROUND!! %Lu POW2\n", (unsigned long long)(fpart * 100));
+        
+        // int check = (int)(fpart*100);
+        // printf("ROUND!! %d POW2\n", check);
+
+        if((int)(fpart*100)>=95 && afterpoint <= 4){
+          strcat(res, ulltoa(ipart+1,0));
+          fpart = 0;
+        } else {
+          strcat(res, ulltoa(ipart,0));
+          fpart = roundl(fpart * pow(10, afterpoint));
+        }
+        
+        // strcat(res, ulltoa(ipart,0));
+        // fpart = roundl(fpart * pow(10, afterpoint));
+        strcat(res, ".");
         if(fpart!=0.0)
           strcat(res, ulltoa((unsigned long long)fpart, afterpoint));
         else {
