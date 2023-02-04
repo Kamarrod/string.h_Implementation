@@ -1,18 +1,6 @@
 #include "s21_sprintf.h"
 #include <math.h>
 
-char *utoa(unsigned long val, int base) {
-  static char buf[128] = {0};
-  int i = 30;
-
-  for (; val && i; --i, val /= base)
-
-    buf[i] = "0123456789abcdef"[val % base];
-  char *ret_val;
-  ret_val = &buf[i +1];
-  return ret_val;
-}
-
 void reverse(char* str, int len)
 {
     int i = 0, j = len - 1, temp;
@@ -75,66 +63,6 @@ char* itoa(long x, int d) {
     return str;
 }
 
-// char* ftoa(long double n, int afterpoint, char c) {
-//     static char res[128] = {0};
-//     for (int k = 0; k <= 1024; k++)
-//       res[k] = '\0';
-//     char *fparts;
-//     char* iparts;
-//     int i;
-//     if(n<0) {
-//       n=-n;
-//       res[0] = '-';
-//     } else {
-//       if(c=='+')
-//         res[0] = '+';
-//       else if(c==' ')
-//         res[0] = ' ';
-//     }
-//     printf("FTOA:RES0:%s\n", res);
-//     long ipart = (long)n;
-//     long double fpart = n - (long double)ipart;    
-   
-//     i = strlen(res);
-//     printf("FTOA:I1:%ld\n", i);
-    
-//     iparts = itoa(ipart,0);
-//     //printf("FTOA:IPART:%ld\n", ipart);
-//     printf("FTOA:IPARTS:%s\n", iparts);
-    
-//     for(int k=0; k < strlen(iparts);k++){
-//       res[i] = iparts[k];
-//       printf("FTOA:CYCLE:res[i]: %c\n", res[i]);
-//       printf("FTOA:CYCLE:iparts[k]: %c\n", iparts[k]);
-//       i++;
-//     }
-//     printf("--------------------------------------\n");
-//     for(int k=0; k < 2;k++){
-//       printf("FTOA:CYCLE:iparts[k]: %c\n", iparts[k]);
-//     }
-
-//     //res[i] = '\0';
-//     //strcat(res, itoa(ipart,0));
-//     //i = strlen(res);
-//     printf("FTOA:I1:%ld\n", i);
-//     printf("FTOA:RES1:%s\n", res);
-   
-   
-   
-//     if (afterpoint != 0) {
-//         res[i] = '.';
-
-//         fpart = roundl(fpart * pow(10, afterpoint));
-//         //fpart = fpart * pow(10, afterpoint);
-//         //strcat(res, itoa((long)fpart, afterpoint));
-        
-//         //printf("FTOA:FPART:DEC:LD:%ld\n", (long)fpart);
-//         //printf("FTOA:FPART:STR:%s\n", itoa((long)fpart, afterpoint));
-//     }
-//     printf("FTOA:RES2:%s\n", res);
-//     return res;
-// }
-
 
 char *__utoa (unsigned long value){
   static char str[128] = {0};
@@ -163,68 +91,6 @@ char *__utoa (unsigned long value){
   
   return str;
 }
-
-
-
-// char* ftoa(long double n, int afterpoint, char c) {
-//     static char res[128] = {0};
-//     for (int k = 0; k <= 1024; k++)
-//       res[k] = '\0';
-//     int i;
-//     if(n<0) {
-//       n=-n;
-//       res[0] = '-';
-//     } else {
-//       if(c=='+')
-//         res[0] = '+';
-//       else if(c==' ')
-//         res[0] = ' ';
-//     }
-//     long ipart = (long)n;
-//     long double fpart = n - (long double)ipart;     
-//     strcat(res, itoa(ipart,0));
-//     i = strlen(res);   
-//     if (afterpoint != 0) {
-//         res[i] = '.';
-//         fpart = roundl(fpart * pow(10, afterpoint));
-//         strcat(res, itoa((long)fpart, afterpoint));
-//     }
-//     return res;
-// }
-
-// char* ftoa(long double n, int afterpoint, char c) {
-//     static char res[128] = {0};
-//     for (int k = 0; k <= 1024; k++)
-//       res[k] = '\0';
-//     int i;
-
-
-//     if(n<0) {
-//       n=-n;
-//       res[0] = '-';
-//     } else {
-//       if(c=='+')
-//         res[0] = '+';
-//       else if(c==' ')
-//         res[0] = ' ';
-//     }
-
-//     if(afterpoint!=0){
-//       long ipart = (long)n;
-//       long double fpart = n - (long double)ipart;     
-//       strcat(res, itoa(ipart,0));
-//       i = strlen(res);   
-
-//         res[i] = '.';
-//         fpart = roundl(fpart * pow(10, afterpoint));
-//         strcat(res, itoa((long)fpart, afterpoint));
-//     } else {
-//         long double rounded = roundl(n);
-//         strcat(res, itoa((long)rounded,0));
-//     }
-
-//     return res;
-// }
 char* ulltoa(unsigned long long x, int d) {
   int neg = 0;
   int long_min=0;
@@ -282,7 +148,6 @@ res = malloc((256) * sizeof(char));
 if (res) {
     for (int k = 0; k <= 256; k++)
       res[k] = '\0';
-    //int i;
     if(n<0) {
       n=-n;
       strcat(res, "-");
@@ -297,18 +162,6 @@ if (res) {
       unsigned long long ipart =  (unsigned long long)n;
       long double fpart = n - (long double)ipart;     
 
-        //if(roundl(fpart)==1)
-        // printf("FPART!! %Lf \n",  fpart);
-        
-        // printf("ROUND POW !! %Lf \n", roundl(fpart * pow(10, afterpoint)));
-        
-      
-        //unsigned long long check = (unsigned long long)(fpart*100);
-        //printf("ROUND!! %Lu POW2\n", (unsigned long long)(fpart * 100));
-        
-        // int check = (int)(fpart*100);
-        // printf("ROUND!! %d POW2\n", check);
-
         if((int)(fpart*100)>=95 && afterpoint <= 4){
           strcat(res, ulltoa(ipart+1,0));
           fpart = 0;
@@ -316,9 +169,6 @@ if (res) {
           strcat(res, ulltoa(ipart,0));
           fpart = roundl(fpart * pow(10, afterpoint));
         }
-        
-        // strcat(res, ulltoa(ipart,0));
-        // fpart = roundl(fpart * pow(10, afterpoint));
         strcat(res, ".");
         if(fpart!=0.0)
           strcat(res, ulltoa((unsigned long long)fpart, afterpoint));

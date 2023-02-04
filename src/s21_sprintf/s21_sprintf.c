@@ -213,15 +213,12 @@ int s21_sprintf(char *str, const char *format, ...) {
 // любая точность с нулем
 
 // int main() {
-//   char str1[400];
-// char str2[400];
-
-//   char *str3 = "test: %.1Lf! test: %.2Lf! test: %.3Lf! test: %.4Lf! test: %.5Lf! test: %.6Lf!";
-//   long double num = -9999.99999;
-//   // char *str3 = "%20.10f %20.15f %-20.5f!";
-//   // double num = -76.756589;
-// sprintf(str1, str3, num, num, num, num , num, num);
-// s21_sprintf(str2, str3, num, num, num, num , num, num);
+//   char str1[100] = "";
+//   char str2[100] = "";
+//   char *str3 = "%%Test %d Test";
+//   int val = 10;
+// sprintf(str1, str3, val);
+//  s21_sprintf(str2, str3, val);
 
 //   printf("MAIN:S21PRINTF:%s\n", str2);
 //   printf("MAIN:PRINTF   :%s\n", str1);

@@ -1,11 +1,11 @@
-#include <check.h>
-#include <stdio.h>
-#include <string.h>
-#include <locale.h>
-#include "s21_sprintf.h"
-#include <limits.h>
-#define BUFF_SIZE 512
-
+// #include <check.h>
+// #include <stdio.h>
+// #include <string.h>
+// #include <locale.h>
+// #include "s21_sprintf.h"
+// #include <limits.h>
+// #define BUFF_SIZE 512
+#include "alltests.h"
 // One parameter unsigned
 START_TEST(sprintf_1_unsigned) {
   char str1[100] = "";
@@ -387,20 +387,20 @@ Suite *test_sprintf_unsigned(void) {
 }
 
 
-int main(void) {
-    setlocale(LC_ALL, "");
-    int nf;
-    Suite *s1;
-    SRunner *sr;
-    s1 = test_sprintf_unsigned();
-    sr = srunner_create(s1);
+// int main(void) {
+//     setlocale(LC_ALL, "");
+//     int nf;
+//     Suite *s1;
+//     SRunner *sr;
+//     s1 = test_sprintf_unsigned();
+//     sr = srunner_create(s1);
 
-    //srunner_run_all(sr, CK_ENV);
-    //srunner_run_all(sr, CK_NORMAL);
-    srunner_set_fork_status(sr, CK_NOFORK);
-    srunner_run_all(sr, CK_VERBOSE);
+//     //srunner_run_all(sr, CK_ENV);
+//     //srunner_run_all(sr, CK_NORMAL);
+//     srunner_set_fork_status(sr, CK_NOFORK);
+//     srunner_run_all(sr, CK_VERBOSE);
 
-    nf = srunner_ntests_failed(sr);
-    //srunner_free(sr);
-    return nf == 0 ? 0 : 1;
-}
+//     nf = srunner_ntests_failed(sr);
+//     //srunner_free(sr);
+//     return nf == 0 ? 0 : 1;
+// }

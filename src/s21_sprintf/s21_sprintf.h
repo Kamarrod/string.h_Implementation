@@ -34,11 +34,11 @@ void ppts_width_c(struct info *mys, char c, char *str, int j, int exist_c_null);
 //u
 void ppts_acc_u(struct info *mys, int len_num_s, char *num_s, char *str);
 //typecasting
-char *utoa(unsigned long val, int base);
 void reverse(char* str, int len);
 char* itoa(long x, int d);
 char* ftoa(long double n, int afterpoint, char c);
 char *__utoa (unsigned long value);
+char* ulltoa(unsigned long long x, int d);
 
 //s
 void ppts_width_align_right_s(struct info *mys, char *s, char *str,
