@@ -258,98 +258,105 @@ START_TEST(sprintf_17_unsigned) {
 }
 END_TEST
 
-
-
-//MY UNSIGNED
+// MY UNSIGNED
 START_TEST(sprintf_unsigned_val) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+  char str1[BUFF_SIZE];
+  char str2[BUFF_SIZE];
 
-    char *format = "%u";
-    unsigned int val = 14140;
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+  char *format = "%u";
+  unsigned int val = 14140;
+  ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+  ck_assert_str_eq(str1, str2);
+}
+END_TEST
 
 START_TEST(sprintf_unsigned_val_width) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+  char str1[BUFF_SIZE];
+  char str2[BUFF_SIZE];
 
-    char *format = "%15u";
-    unsigned int val = 14140;
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+  char *format = "%15u";
+  unsigned int val = 14140;
+  ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+  ck_assert_str_eq(str1, str2);
+}
+END_TEST
 
 START_TEST(sprintf_unsigned_val_flags) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+  char str1[BUFF_SIZE];
+  char str2[BUFF_SIZE];
 
-    char *format = "%-16u";
-    unsigned int val = 14140;
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+  char *format = "%-16u";
+  unsigned int val = 14140;
+  ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+  ck_assert_str_eq(str1, str2);
+}
+END_TEST
 
 START_TEST(sprintf_unsigned_val_precision) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+  char str1[BUFF_SIZE];
+  char str2[BUFF_SIZE];
 
-    char *format = "%.51u";
-    unsigned int val = 14140;
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+  char *format = "%.51u";
+  unsigned int val = 14140;
+  ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+  ck_assert_str_eq(str1, str2);
+}
+END_TEST
 
 START_TEST(sprintf_unsigned_val_many_flags) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+  char str1[BUFF_SIZE];
+  char str2[BUFF_SIZE];
 
-    char *format = "% 5.51u";
-    unsigned int val = 14140;
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+  char *format = "% 5.51u";
+  unsigned int val = 14140;
+  ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+  ck_assert_str_eq(str1, str2);
+}
+END_TEST
 
 START_TEST(sprintf_unsigned_val_short) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+  char str1[BUFF_SIZE];
+  char str2[BUFF_SIZE];
 
-    char *format = "%hu";
-    unsigned short int val = 14140;
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+  char *format = "%hu";
+  unsigned short int val = 14140;
+  ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+  ck_assert_str_eq(str1, str2);
+}
+END_TEST
 
 START_TEST(sprintf_unsigned_val_long) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+  char str1[BUFF_SIZE];
+  char str2[BUFF_SIZE];
 
-    char *format = "%lu";
-    unsigned long int val = 949149114140;
-    ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
+  char *format = "%lu";
+  unsigned long int val = 949149114140;
+  ck_assert_int_eq(s21_sprintf(str1, format, val), sprintf(str2, format, val));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+  ck_assert_str_eq(str1, str2);
+}
+END_TEST
 
 START_TEST(sprintf_unsigned_val_many) {
-    char str1[BUFF_SIZE];
-    char str2[BUFF_SIZE];
+  char str1[BUFF_SIZE];
+  char str2[BUFF_SIZE];
 
-    char *format = "%lu, %u, %hu, %.5u, %15.6u";
-    unsigned long int val = 949149114140;
-    ck_assert_int_eq(s21_sprintf(str1, format, val, 14, 1441, 14414, 9681), sprintf(str2, format, val, (unsigned)14,
-                             (unsigned short)1441, (unsigned)14414,
-                             (unsigned)9681));
+  char *format = "%lu, %u, %hu, %.5u, %15.6u";
+  unsigned long int val = 949149114140;
+  ck_assert_int_eq(
+      s21_sprintf(str1, format, val, 14, 1441, 14414, 9681),
+      sprintf(str2, format, val, (unsigned)14, (unsigned short)1441,
+              (unsigned)14414, (unsigned)9681));
 
-    ck_assert_str_eq(str1, str2);
-} END_TEST
+  ck_assert_str_eq(str1, str2);
+}
+END_TEST
 
 Suite *test_sprintf_unsigned(void) {
   Suite *s = suite_create("\033[45m-=S21_SPRINTF_UNSIGNED=-\033[0m");
@@ -373,19 +380,17 @@ Suite *test_sprintf_unsigned(void) {
   tcase_add_test(tc, sprintf_16_unsigned);
   tcase_add_test(tc, sprintf_17_unsigned);
 
-
-    tcase_add_test(tc, sprintf_unsigned_val);
-    tcase_add_test(tc, sprintf_unsigned_val_width);
-    tcase_add_test(tc, sprintf_unsigned_val_flags);
-    tcase_add_test(tc, sprintf_unsigned_val_precision);
-    tcase_add_test(tc, sprintf_unsigned_val_many_flags);
-    tcase_add_test(tc, sprintf_unsigned_val_short);
-    tcase_add_test(tc, sprintf_unsigned_val_long);
-    tcase_add_test(tc, sprintf_unsigned_val_many);
+  tcase_add_test(tc, sprintf_unsigned_val);
+  tcase_add_test(tc, sprintf_unsigned_val_width);
+  tcase_add_test(tc, sprintf_unsigned_val_flags);
+  tcase_add_test(tc, sprintf_unsigned_val_precision);
+  tcase_add_test(tc, sprintf_unsigned_val_many_flags);
+  tcase_add_test(tc, sprintf_unsigned_val_short);
+  tcase_add_test(tc, sprintf_unsigned_val_long);
+  tcase_add_test(tc, sprintf_unsigned_val_many);
   suite_add_tcase(s, tc);
   return s;
 }
-
 
 // int main(void) {
 //     setlocale(LC_ALL, "");

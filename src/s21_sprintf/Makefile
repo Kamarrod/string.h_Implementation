@@ -12,9 +12,10 @@ s21_sprintf:
 #$(CC) $(CFLAGS) s21_sprintf.c $(DOP_CFILES)
 #$(CC) s21_sprintf.o $(DOP_OFILES) -o s21_sprintf.out
 	gcc -g s21_sprintf.c $(DOP_CFILES) -o s21_sprintf.out
-alltests:
-	gcc alltests.c s21_sprintf.c $(DOP_CFILES) $(TEST_CFILES) -lcheck -lpthread  -lm  -o alltests.out
-
+#alltests:
+#	gcc alltests.c s21_sprintf.c $(DOP_CFILES) $(TEST_CFILES) -lcheck -lpthread  -lm  -o alltests.out
+alltests_valgrind:
+	gcc -g alltests.c s21_sprintf.c $(DOP_CFILES) $(TEST_CFILES) -o alltests_valgrind.out -lcheck -lcheck -lpthread -lm -D_GNU_SOURCE -lrt -lsubunit
 clean:
 	rm -rf *.o
 	rm -rf *.a

@@ -31,8 +31,7 @@ void cpf_acc(const char *pF, struct info *mys, va_list input, int *i) {
       (*i)++;
     }
     strcat(num, "\0");
-    if (strlen(num) != 0)
-      mys->acc += atoi(num);
+    if (strlen(num) != 0) mys->acc += atoi(num);
   } else if (pF[*i] == '*') {
     mys->acc = va_arg(input, int);
     (*i)++;
@@ -43,18 +42,12 @@ void check_part_format(const char *pF, struct info *mys, va_list input,
                        int *i) {
   init_struct(mys);
   int was_spec = 0;
-  // printf("&PF[i]:%s\n", &pF[*i]);
   while (pF[*i] != '\0' && was_spec == 0) {
     if (strcspn(&pF[*i], "-+ #0") == 0) {
-      
-      if(mys->fl=='-')//для 19 теста
-        mys->was_shift=1;
-      if(mys->fl=='+')
-        mys->was_plus=1;
-      if(mys->fl==' ')
-        mys->was_space=1;
-      if(mys->fl=='#')
-        mys->was_sharp = 1;
+      if (mys->fl == '-') mys->was_shift = 1;
+      if (mys->fl == '+') mys->was_plus = 1;
+      if (mys->fl == ' ') mys->was_space = 1;
+      if (mys->fl == '#') mys->was_sharp = 1;
       mys->fl = pF[*i];
       (*i)++;
     } else if (strcspn(&pF[*i], "0123456789*") == 0) {
