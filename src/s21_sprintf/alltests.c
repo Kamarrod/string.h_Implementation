@@ -1,6 +1,6 @@
 #include "alltests.h"
 int main(void) {
-  setlocale(LC_ALL, "");
+  //setlocale(LC_ALL, "");
   setlocale(LC_ALL, "en_US.UTF-8");
   int nf;
   SRunner *sr;
@@ -16,6 +16,6 @@ int main(void) {
   srunner_run_all(sr, CK_VERBOSE);
 
   nf = srunner_ntests_failed(sr);
-  // srunner_free(sr);
+  srunner_free(sr);
   return nf == 0 ? 0 : 1;
 }

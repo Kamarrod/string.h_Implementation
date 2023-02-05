@@ -127,9 +127,9 @@ char* ulltoa(unsigned long long x, int d) {
 }
 
 char* ftoa(long double n, int afterpoint, char c) {
-  char* res = NULL;
-  res = malloc((256) * sizeof(char));
-  if (res) {
+  char* res_d = NULL;
+  char res[256];
+  res[0]='\0';
     for (int k = 0; k <= 256; k++) res[k] = '\0';
     if (n < 0) {
       n = -n;
@@ -162,6 +162,10 @@ char* ftoa(long double n, int afterpoint, char c) {
       long double rounded = roundl(n);
       strcat(res, ulltoa((unsigned long long)rounded, 0));
     }
-  }
-  return res;
+
+
+  res_d = malloc((strlen(res)+1) * sizeof(char));
+  if(res_d)
+    strcpy(res_d, res);
+  return res_d;
 }

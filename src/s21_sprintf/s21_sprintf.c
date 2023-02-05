@@ -40,6 +40,16 @@ char *add_space_nums(struct info *mys, char *num_s) {
   return p1;
 }
 
+// char *add_sharp_nums(struct info *mys, char *num_s) {
+//   char *p1 = NULL;
+//   p1 = malloc((strlen(num_s) + 2) * sizeof(char));
+//   if (p1) {
+//     strcpy(p1, " ");
+//     strcat(p1, num_s);
+//   }
+//   return p1;
+// }
+
 void ppts_case_id(struct info *mys, va_list input, char *str) {
   long num;
   char *num_s;
@@ -127,7 +137,7 @@ void ppts_case_u(struct info *mys, va_list input, char *str) {
 
 void ppts_case_f(struct info *mys, va_list input, char *str) {
   long double d;
-  int len_num_s = 0;
+  //int len_num_s = 0;
   char *num_s;
 
   if (mys->len == 'L')
@@ -135,7 +145,7 @@ void ppts_case_f(struct info *mys, va_list input, char *str) {
   else
     d = va_arg(input, double);
 
-  char c;
+  char c='_';
   if (mys->was_space || mys->fl == ' ') c = ' ';
   if (mys->was_plus || mys->fl == '+') c = '+';
   if (mys->acc == -1)
@@ -143,9 +153,13 @@ void ppts_case_f(struct info *mys, va_list input, char *str) {
   else
     num_s = ftoa(d, mys->acc, c);
 
-  len_num_s = strlen(num_s);
+  //len_num_s = strlen(num_s);
 
-  if (mys->acc == 0 && (mys->was_sharp || mys->fl == '#')) strcat(num_s, ".");
+  if (mys->acc == 0 && (mys->was_sharp || mys->fl == '#')){
+     num_s = (char *) realloc(num_s, strlen(num_s)+2);
+     if(num_s)
+      strcat(num_s, ".");
+  }
   ppts_f(mys, num_s, str);
   if (num_s) free(num_s);
 }
