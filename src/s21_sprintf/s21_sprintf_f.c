@@ -1,6 +1,11 @@
 #include "s21_sprintf.h"
 void ppts_f(struct info *mys, char *num_s, char *str) {
-  int len_s = strlen(num_s);
+  int len_s;
+  if(num_s!=NULL)
+    len_s = strlen(num_s);
+  else
+    len_s = 0;
+
   if (mys->width != -1) {
     if (mys->fl == '-' ||
         mys->was_shift) {  //если - то сначала пишем число потом

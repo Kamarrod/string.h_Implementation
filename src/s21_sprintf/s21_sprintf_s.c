@@ -32,8 +32,9 @@ void ppts_acc_s(struct info *mys, char *s, char *str) {
 
 void ppts_width_s(struct info *mys, char *s, char *str) {
   int col_spaces;
+  unsigned macc = mys->acc;
   if (strlen(s) <=
-      mys->acc) {  //точность больше или = длины слова => пишем все слово
+      macc) {  //точность больше или = длины слова => пишем все слово
     col_spaces = mys->width - strlen(s);
   } else {  //точность меньше длины слова
     col_spaces = mys->width - mys->acc;
@@ -43,7 +44,7 @@ void ppts_width_s(struct info *mys, char *s, char *str) {
     if (mys->fl !=
         '-') {  //выравнивание правому краю в пределах заданной ширины
       ppts_width_align_right_s(mys, s, str, col_spaces);
-    } else if (mys->fl == '-') {  //Выравнивание по левому краю в пределах
+    } else{  //Выравнивание по левому краю в пределах
                                   //заданной ширины
       ppts_width_align_left_s(mys, s, str, col_spaces);
     }

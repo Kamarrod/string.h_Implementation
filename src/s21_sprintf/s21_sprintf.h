@@ -29,11 +29,10 @@ void ppts_width_fill_nulls(char *num_s, char *str, int col_spaces,
                            int col_zeros, struct info *mys);
 
 // c
-void ppts_width_align_left_c(char c, char *str, int col_spaces,
-                             struct info *mys, int j);
+void ppts_width_align_left_c(char c, char *str, int col_spaces);
 void ppts_width_align_right_c(char c, char *str, int col_spaces,
-                              struct info *mys, int j);
-void ppts_width_c(struct info *mys, char c, char *str, int j, int exist_c_null);
+                              struct info *mys);
+void ppts_width_c(struct info *mys, char c, char *str, int j);
 // u
 void ppts_acc_u(struct info *mys, int len_num_s, char *num_s, char *str);
 // typecasting

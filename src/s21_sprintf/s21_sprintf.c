@@ -20,7 +20,7 @@ void init_struct(struct info *mys) {
   mys->was_sharp = 0;
 }
 
-char *add_plus_nums(struct info *mys, char *num_s) {
+char *add_plus_nums(char *num_s) {
   char *p1 = NULL;
   p1 = malloc((strlen(num_s) + 2) * sizeof(char));
   if (p1) {
@@ -30,7 +30,7 @@ char *add_plus_nums(struct info *mys, char *num_s) {
   return p1;
 }
 
-char *add_space_nums(struct info *mys, char *num_s) {
+char *add_space_nums(char *num_s) {
   char *p1 = NULL;
   p1 = malloc((strlen(num_s) + 2) * sizeof(char));
   if (p1) {
@@ -39,16 +39,6 @@ char *add_space_nums(struct info *mys, char *num_s) {
   }
   return p1;
 }
-
-// char *add_sharp_nums(struct info *mys, char *num_s) {
-//   char *p1 = NULL;
-//   p1 = malloc((strlen(num_s) + 2) * sizeof(char));
-//   if (p1) {
-//     strcpy(p1, " ");
-//     strcat(p1, num_s);
-//   }
-//   return p1;
-// }
 
 void ppts_case_id(struct info *mys, va_list input, char *str) {
   long num;
@@ -62,10 +52,10 @@ void ppts_case_id(struct info *mys, va_list input, char *str) {
   }
   num_s = itoa(num, 0);
   if (mys->fl == '+' && num_s[0] != '-') {  // флаг+
-    num_s = add_plus_nums(mys, num_s);
+    num_s = add_plus_nums(num_s);
   }
   if (mys->fl == ' ' && num_s[0] != '-') {
-    num_s = add_space_nums(mys, num_s);
+    num_s = add_space_nums(num_s);
   }
   if (mys->acc == 0 && num == 0) mys->block_zero = 1;
   len_num_s += strlen(num_s);
@@ -95,7 +85,7 @@ void ppts_case_c(int *exist_c_null, int *ret_val, int j, char *str,
   char c;
   c = va_arg(input, int);
   if (c == 0) *exist_c_null = 1;
-  ppts_width_c(mys, c, str, j, *exist_c_null);
+  ppts_width_c(mys, c, str, j);
   if (mys->width > 0) *ret_val += mys->width - 1;
 }
 
@@ -137,7 +127,6 @@ void ppts_case_u(struct info *mys, va_list input, char *str) {
 
 void ppts_case_f(struct info *mys, va_list input, char *str) {
   long double d;
-  //int len_num_s = 0;
   char *num_s;
 
   if (mys->len == 'L')
@@ -153,12 +142,15 @@ void ppts_case_f(struct info *mys, va_list input, char *str) {
   else
     num_s = ftoa(d, mys->acc, c);
 
-  //len_num_s = strlen(num_s);
-
   if (mys->acc == 0 && (mys->was_sharp || mys->fl == '#')){
-     num_s = (char *) realloc(num_s, strlen(num_s)+2);
-     if(num_s)
-      strcat(num_s, ".");
+    //  num_s = (char *) realloc(num_s, strlen(num_s)+2);
+    //  if(num_s)
+    //   strcat(num_s, ".");
+      void * tmp =(char *) realloc(num_s, strlen(num_s)+2);
+      if (NULL != tmp){
+        num_s = tmp;
+        strcat(num_s, ".");
+      }
   }
   ppts_f(mys, num_s, str);
   if (num_s) free(num_s);
@@ -174,7 +166,7 @@ void print_part_to_str(char *str, struct info *mys, va_list input,
       ppts_case_c(exist_c_null, ret_val, j, str, mys, input);
       break;
     case '%':
-      ppts_width_c(mys, '%', str, j, *exist_c_null);
+      ppts_width_c(mys, '%', str, j);
       if (mys->width > 0) *ret_val += mys->width - 1;
       break;
     case 's':
@@ -186,8 +178,8 @@ void print_part_to_str(char *str, struct info *mys, va_list input,
     case 'f':
       ppts_case_f(mys, input, str);
       break;
-    default:
-      break;
+    // default:
+    //   break;
   }
 }
 

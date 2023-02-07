@@ -12,7 +12,7 @@ void cpf_width(const char *pF, struct info *mys, va_list input, int *i) {
     }
     strcat(num, "\0");
     mys->width += atoi(num);
-  } else if (pF[*i] == '*') {
+  } else {
     mys->width = va_arg(input, int);
     (*i)++;
   }
@@ -20,9 +20,9 @@ void cpf_width(const char *pF, struct info *mys, va_list input, int *i) {
 
 void cpf_acc(const char *pF, struct info *mys, va_list input, int *i) {
   mys->acc = 0;
-  char num[256] = "";
   (*i)++;
   if (pF[*i] != '*') {
+    char num[256] = "";
     while (strcspn(&pF[*i], "0123456789") == 0) {
       char buf[3];
       buf[0] = pF[*i];
@@ -32,7 +32,7 @@ void cpf_acc(const char *pF, struct info *mys, va_list input, int *i) {
     }
     strcat(num, "\0");
     if (strlen(num) != 0) mys->acc += atoi(num);
-  } else if (pF[*i] == '*') {
+  } else {
     mys->acc = va_arg(input, int);
     (*i)++;
   }
