@@ -1,4 +1,4 @@
-#include "alltests.h"
+#include "jer_tests.h"
 int main(void) {
   //setlocale(LC_ALL, "");
   setlocale(LC_ALL, "en_US.UTF-8");
