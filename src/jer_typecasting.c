@@ -109,13 +109,13 @@ char* ftoa(long double n, int afterpoint, char c) {
     for (int k = 0; k < 256; k++) res[k] = '\0';
     if (n < 0) {
       n = -n;
-      strcat(res, "-");
+      s21_strcat(res, "-");
 
     } else {
       if (c == '+')
-        strcat(res, "+");
+        s21_strcat(res, "+");
       else if (c == ' ')
-        strcat(res, " ");
+        s21_strcat(res, " ");
     }
 
     if (afterpoint != 0) {
@@ -123,26 +123,26 @@ char* ftoa(long double n, int afterpoint, char c) {
       long double fpart = n - (long double)ipart;
 
       if ((int)(fpart * 100) >= 95 && afterpoint <= 4) {
-        strcat(res, ulltoa(ipart + 1, 0));
+        s21_strcat(res, ulltoa(ipart + 1, 0));
         fpart = 0;
       } else {
-        strcat(res, ulltoa(ipart, 0));
+        s21_strcat(res, ulltoa(ipart, 0));
         fpart = roundl(fpart * pow(10, afterpoint));
       }
-      strcat(res, ".");
+      s21_strcat(res, ".");
       if (fpart != 0.0)
-        strcat(res, ulltoa((unsigned long long)fpart, afterpoint));
+        s21_strcat(res, ulltoa((unsigned long long)fpart, afterpoint));
       else {
-        for (int i = 0; i < afterpoint; i++) strcat(res, "0");
+        for (int i = 0; i < afterpoint; i++) s21_strcat(res, "0");
       }
   } else {
       long double rounded = roundl(n);
-      strcat(res, ulltoa((unsigned long long)rounded, 0));
+      s21_strcat(res, ulltoa((unsigned long long)rounded, 0));
   }
 
 
-  res_d = malloc((strlen(res)+1) * sizeof(char));
+  res_d = malloc((s21_strlen(res)+1) * sizeof(char));
   if(res_d)
-    strcpy(res_d, res);
+    s21_strcpy(res_d, res);
   return res_d;
 }

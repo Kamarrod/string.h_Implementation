@@ -2,7 +2,7 @@
 #define ARBOKTYA_H
 
 #include <stdio.h>
-#include <string.h>
+//#include <string.h>
 #include <stdlib.h>
 
 s21_size_t s21_strlen(const char *str);  // ++

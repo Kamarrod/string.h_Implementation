@@ -4,7 +4,9 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+//#include <string.h>
+#include "camarrod.h"
+#include "arboktya.h"
 struct info {
   char fl;
   int width;
