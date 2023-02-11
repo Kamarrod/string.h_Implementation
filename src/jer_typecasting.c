@@ -146,3 +146,11 @@ char* ftoa(long double n, int afterpoint, char c) {
     s21_strcpy(res_d, res);
   return res_d;
 }
+
+int s21_atoi(char* str) {
+  int result = 0;
+  for(s21_size_t i = 0; i < s21_strlen(str); ++i)
+    result = result * 10 + (str[i] - '0');
+
+  return result;
+}

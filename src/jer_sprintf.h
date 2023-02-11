@@ -43,6 +43,7 @@ char *itoa(long x, int d);
 char *ftoa(long double n, int afterpoint, char c);
 char *utoa(unsigned long value);
 char *ulltoa(unsigned long long x, int d);
+int s21_atoi(char* str);
 
 // s
 void ppts_width_align_right_s(struct info *mys, char *s, char *str,
