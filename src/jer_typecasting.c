@@ -82,7 +82,7 @@ char* utoa(unsigned long value) {
 
   return str;
 }
-char* ulltoa(unsigned long long x, int d) {
+char* ulltoa(s21_size_t x, int d) {
   static char str[1024] = {0};
   for (int k = 0; k < 1024; k++) str[k] = '\0';
   int i = 0;
@@ -103,7 +103,7 @@ char* ulltoa(unsigned long long x, int d) {
 }
 
 char* ftoa(long double n, int afterpoint, char c) {
-  char* res_d = NULL;
+  char* res_d = s21_NULL;
   char res[256];
   res[0]='\0';
     for (int k = 0; k < 256; k++) res[k] = '\0';
@@ -119,7 +119,7 @@ char* ftoa(long double n, int afterpoint, char c) {
     }
 
     if (afterpoint != 0) {
-      unsigned long long ipart = (unsigned long long)n;
+      s21_size_t ipart = (s21_size_t)n;
       long double fpart = n - (long double)ipart;
 
       if ((int)(fpart * 100) >= 95 && afterpoint <= 4) {
@@ -131,13 +131,13 @@ char* ftoa(long double n, int afterpoint, char c) {
       }
       s21_strcat(res, ".");
       if (fpart != 0.0)
-        s21_strcat(res, ulltoa((unsigned long long)fpart, afterpoint));
+        s21_strcat(res, ulltoa((s21_size_t)fpart, afterpoint));
       else {
         for (int i = 0; i < afterpoint; i++) s21_strcat(res, "0");
       }
   } else {
       long double rounded = roundl(n);
-      s21_strcat(res, ulltoa((unsigned long long)rounded, 0));
+      s21_strcat(res, ulltoa((s21_size_t)rounded, 0));
   }
 
 

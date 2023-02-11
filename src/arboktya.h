@@ -4,7 +4,8 @@
 #include <stdio.h>
 //#include <string.h>
 #include <stdlib.h>
-
+#define s21_size_t unsigned long long
+#define s21_NULL (void*)0
 s21_size_t s21_strlen(const char *str);  // ++
 int s21_memcmp(const void *str1, const void *str2, s21_size_t n);  // ++
 int s21_strcmp(const char *str1, const char *str2);  // ++

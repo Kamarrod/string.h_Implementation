@@ -20,7 +20,7 @@ void init_struct(struct info *mys) {
 }
 
 char *add_plus_nums(char *num_s) {
-  char *p1 = NULL;
+  char *p1 = s21_NULL;
   p1 = malloc((s21_strlen(num_s) + 2) * sizeof(char));
   if (p1) {
     s21_strcpy(p1, "+");
@@ -30,7 +30,7 @@ char *add_plus_nums(char *num_s) {
 }
 
 char *add_space_nums(char *num_s) {
-  char *p1 = NULL;
+  char *p1 = s21_NULL;
   p1 = malloc((s21_strlen(num_s) + 2) * sizeof(char));
   if (p1) {
     s21_strcpy(p1, " ");
@@ -74,7 +74,7 @@ void ppts_case_id(struct info *mys, va_list input, char *str) {
         s21_strcat(str, " ");
     }
   }
-  if ((mys->fl == '+' || mys->fl == ' ') && num_s[0] != '-' && num_s != NULL) {
+  if ((mys->fl == '+' || mys->fl == ' ') && num_s[0] != '-' && num_s != s21_NULL) {
     free(num_s);
   }
 }
@@ -89,10 +89,10 @@ void ppts_case_c(int *exist_c_null, int *ret_val, int j, char *str,
 }
 
 void ppts_case_s(struct info *mys, va_list input, char *str) {
-  char *s = NULL;
+  char *s = s21_NULL;
   s = va_arg(input, char *);
   char *nullstr = "(null)";
-  if (s == NULL) s = nullstr;
+  if (s == s21_NULL) s = nullstr;
 
   if (mys->width != -1) {
     ppts_width_s(mys, s, str);
@@ -146,7 +146,7 @@ void ppts_case_f(struct info *mys, va_list input, char *str) {
     //  if(num_s)
     //   s21_strcat(num_s, ".");
       void * tmp =(char *) realloc(num_s, s21_strlen(num_s)+2);
-      if (NULL != tmp){
+      if (s21_NULL != tmp){
         num_s = tmp;
         s21_strcat(num_s, ".");
       }
