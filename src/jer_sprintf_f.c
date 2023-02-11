@@ -1,7 +1,7 @@
 #include "jer_sprintf.h"
 void ppts_f(struct info *mys, char *num_s, char *str) {
   int len_s;
-  if(num_s!=NULL)
+  if(num_s!=s21_NULL)
     len_s = s21_strlen(num_s);
   else
     len_s = 0;
