@@ -1,5 +1,5 @@
 #include "arboktya.h"
-#include <stdlib.h>
+//#include <stdlib.h>
 
 #ifdef __APPLE__
   static char* macosErrors[107] = {"Undefined error: 0", "Operation not permitted","No such file or directory",

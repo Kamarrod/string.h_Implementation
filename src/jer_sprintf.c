@@ -1,11 +1,10 @@
 #include "jer_sprintf.h"
+// #include <math.h>
+// #include <stdarg.h>
+// #include <stdio.h>
+// #include <stdlib.h>
 
-#include <math.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "string.h"
+//#include "string.h"
 
 void init_struct(struct info *mys) {
   mys->fl = '_';
@@ -22,20 +21,20 @@ void init_struct(struct info *mys) {
 
 char *add_plus_nums(char *num_s) {
   char *p1 = NULL;
-  p1 = malloc((strlen(num_s) + 2) * sizeof(char));
+  p1 = malloc((s21_strlen(num_s) + 2) * sizeof(char));
   if (p1) {
-    strcpy(p1, "+");
-    strcat(p1, num_s);
+    s21_strcpy(p1, "+");
+    s21_strcat(p1, num_s);
   }
   return p1;
 }
 
 char *add_space_nums(char *num_s) {
   char *p1 = NULL;
-  p1 = malloc((strlen(num_s) + 2) * sizeof(char));
+  p1 = malloc((s21_strlen(num_s) + 2) * sizeof(char));
   if (p1) {
-    strcpy(p1, " ");
-    strcat(p1, num_s);
+    s21_strcpy(p1, " ");
+    s21_strcat(p1, num_s);
   }
   return p1;
 }
@@ -58,7 +57,7 @@ void ppts_case_id(struct info *mys, va_list input, char *str) {
     num_s = add_space_nums(num_s);
   }
   if (mys->acc == 0 && num == 0) mys->block_zero = 1;
-  len_num_s += strlen(num_s);
+  len_num_s += s21_strlen(num_s);
   if (mys->width != -1) {  //ширина / +внутри точность
     ppts_width_i_d(mys, len_num_s, num_s, str);
   } else if (mys->acc != -1 &&
@@ -67,12 +66,12 @@ void ppts_case_id(struct info *mys, va_list input, char *str) {
     ppts_acc_i_d(mys, len_num_s, num_s, str);
   } else {
     if (mys->block_zero == 0)
-      strcat(str, num_s);
+      s21_strcat(str, num_s);
     else {
       if (mys->fl == '+')
-        strcat(str, "+");
+        s21_strcat(str, "+");
       else if (mys->fl == ' ')
-        strcat(str, " ");
+        s21_strcat(str, " ");
     }
   }
   if ((mys->fl == '+' || mys->fl == ' ') && num_s[0] != '-' && num_s != NULL) {
@@ -100,7 +99,7 @@ void ppts_case_s(struct info *mys, va_list input, char *str) {
   } else if (mys->acc != -1) {
     ppts_acc_s(mys, s, str);
   } else {
-    strcat(str, s);
+    s21_strcat(str, s);
   }
 }
 
@@ -113,7 +112,7 @@ void ppts_case_u(struct info *mys, va_list input, char *str) {
   else
     uli = va_arg(input, unsigned);
   num_s = utoa(uli);
-  len_num_s += strlen(num_s);
+  len_num_s += s21_strlen(num_s);
 
   if (mys->acc == 0 && uli == 0) mys->block_zero = 1;
   if (mys->width != -1) {
@@ -121,7 +120,7 @@ void ppts_case_u(struct info *mys, va_list input, char *str) {
   } else if (mys->acc != -1) {
     ppts_acc_u(mys, len_num_s, num_s, str);
   } else {
-    strcat(str, num_s);
+    s21_strcat(str, num_s);
   }
 }
 
@@ -143,13 +142,13 @@ void ppts_case_f(struct info *mys, va_list input, char *str) {
     num_s = ftoa(d, mys->acc, c);
 
   if (mys->acc == 0 && (mys->was_sharp || mys->fl == '#')){
-    //  num_s = (char *) realloc(num_s, strlen(num_s)+2);
+    //  num_s = (char *) realloc(num_s, s21_strlen(num_s)+2);
     //  if(num_s)
-    //   strcat(num_s, ".");
-      void * tmp =(char *) realloc(num_s, strlen(num_s)+2);
+    //   s21_strcat(num_s, ".");
+      void * tmp =(char *) realloc(num_s, s21_strlen(num_s)+2);
       if (NULL != tmp){
         num_s = tmp;
-        strcat(num_s, ".");
+        s21_strcat(num_s, ".");
       }
   }
   ppts_f(mys, num_s, str);
@@ -199,7 +198,7 @@ int s21_sprintf(char *str, const char *format, ...) {
       check_part_format(format, &mys, input, &i);
       print_part_to_str(str, &mys, input, &exist_c_null, j,
                         &ret_val);  //пишем форматированный кусок в buf
-      j = strlen(str);
+      j = s21_strlen(str);
     } else {
       if (exist_c_null) {  //для флага с при char 0
         j++;
@@ -214,6 +213,6 @@ int s21_sprintf(char *str, const char *format, ...) {
     str[j] = '\0';
   }
   va_end(input);
-  if (mys.spec != 'c') ret_val = strlen(str);
+  if (mys.spec != 'c') ret_val = s21_strlen(str);
   return ret_val;
 }
