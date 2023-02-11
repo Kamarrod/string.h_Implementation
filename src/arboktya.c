@@ -1,5 +1,4 @@
 #include "arboktya.h"
-#include <stdlib.h>
 
 #ifdef __APPLE__
   static char* macosErrors[107] = {"Undefined error: 0", "Operation not permitted","No such file or directory",
@@ -64,20 +63,11 @@
   const int unknownErrorLength = 25;
 #endif
 
-// int main() {
-
-//   for(int errnum = -100;  errnum < 200; ++errnum)
-//     printf("%s | %s\n", s21_strerror(errnum), strerror(errnum));
-
-
-//   return 0;
-// }
-
 // Добавляет строку, на которую указывает src, в конец строки, на которую указывает dest, длиной до n символов.
-char* s21_strncat(char *dest, const char *src, size_t n) {
+char* s21_strncat(char *dest, const char *src, s21_size_t n) {
   char* ptr = dest + s21_strlen(dest);
-  size_t srcLength = s21_strlen(src);
-  for(size_t i = 0; i < srcLength && i < n; ++i) {
+  s21_size_t srcLength = s21_strlen(src);
+  for(s21_size_t i = 0; i < srcLength && i < n; ++i) {
     *ptr = *src;
     ++ptr;
     ++src;
@@ -92,9 +82,6 @@ char* s21_strncat(char *dest, const char *src, size_t n) {
 // // Описания ошибок есть в оригинальной библиотеке. Проверка текущей ОС осуществляется с помощью директив.
 char* s21_strerror(int errnum) {
   #ifdef __APPLE__
-    // return errnum < 0 || errnum > 105 ? "Unknown error" : errnum == 0 ? "Undefined error"
-    //   : macosErrors[errnum];
-
     if(errnum < 0 || errnum > 106) {
       refreshUnknownError(errnum);
       return unknownError;
@@ -114,7 +101,7 @@ void refreshUnknownError(int errnum) {
   for(int i = indexOfStartNumber; i < unknownErrorLength; ++i)
     unknownError[i] = ' ';
   char* errnumString = getNumberFromInt(errnum);
-  for(size_t i = 0; i < s21_strlen(errnumString); ++i)
+  for(s21_size_t i = 0; i < s21_strlen(errnumString); ++i)
     unknownError[indexOfStartNumber + i] = errnumString[i];
   unknownError[indexOfStartNumber + s21_strlen(errnumString)] = '\0';
   free(errnumString);
@@ -128,7 +115,7 @@ char* getNumberFromInt(int number) {
     copy /= 10;
   }
   char* result = malloc(sizeof(char) * (digitCount + 1));
-  if(result != NULL) {
+  if(result != s21_NULL) {
     int endIndex = 0;
     if(number < 0) {
       result[0] = '-';
@@ -147,22 +134,22 @@ char* getNumberFromInt(int number) {
 
 // Разбивает строку str на ряд токенов, разделенных delim.
 char* s21_strtok(char* str, const char *delim) {
-  static char* ptr = NULL;
-  if(str != NULL)
+  static char* ptr = s21_NULL;
+  if(str != s21_NULL)
     ptr = str;
-  else if(ptr == NULL)
+  else if(ptr == s21_NULL)
     return ptr;
-  str = ptr + strspn(ptr, delim);
-  ptr = str + strcspn(str, delim);
+  str = ptr + s21_strspn(ptr, delim);
+  ptr = str + s21_strcspn(str, delim);
   if(str == ptr) {
-    ptr = NULL;
+    ptr = s21_NULL;
     return ptr;
   }
   if(*ptr) {
     *ptr = '\0';
     ptr++;
   } else {
-    ptr = NULL;
+    ptr = s21_NULL;
   }
 
   return str;
@@ -170,8 +157,8 @@ char* s21_strtok(char* str, const char *delim) {
 
 
 // Вычисляет длину строки str, не включая завершающий нулевой символ.
- size_t s21_strlen(const char *str) {
-  size_t size = 0;
+ s21_size_t s21_strlen(const char *str) {
+  s21_size_t size = 0;
   while(str[size])
     ++size;
 
@@ -190,18 +177,18 @@ int s21_strcmp(const char *str1, const char *str2) {
 
 int contains(char c, const char* str) {
   int result = 0;
-  for(size_t i = 0; i < s21_strlen(str) && result == 0; ++i)
+  for(s21_size_t i = 0; i < s21_strlen(str) && result == 0; ++i)
     if(str[i] == c)
       result = 1;
   return result;
 }
 
 // Вычисляет длину начального сегмента str1, который полностью состоит из символов str2.
-size_t s21_strspn(const char *str1, const char *str2) {
-  size_t result = 0;
-  size_t lengthStr1 = s21_strlen(str1);
+s21_size_t s21_strspn(const char *str1, const char *str2) {
+  s21_size_t result = 0;
+  s21_size_t lengthStr1 = s21_strlen(str1);
   int find = 1;
-  for(size_t i = 0; i < lengthStr1 && find == 1; ++i) {
+  for(s21_size_t i = 0; i < lengthStr1 && find == 1; ++i) {
     if(contains(str1[i], str2) == 1)
       ++result;
     else
@@ -212,11 +199,11 @@ size_t s21_strspn(const char *str1, const char *str2) {
 }
 
 // Вычисляет длину начального сегмента str1, который полностью состоит из символов, не входящих в str2.
-size_t s21_strcspn(const char *str1, const char *str2) {
-  size_t result = 0;
-  size_t lengthStr1 = s21_strlen(str1);
+s21_size_t s21_strcspn(const char *str1, const char *str2) {
+  s21_size_t result = 0;
+  s21_size_t lengthStr1 = s21_strlen(str1);
   int find = 1;
-  for(size_t i = 0; i < lengthStr1 && find == 1; ++i) {
+  for(s21_size_t i = 0; i < lengthStr1 && find == 1; ++i) {
     if(contains(str1[i], str2) == 0)
       ++result;
     else
@@ -229,8 +216,8 @@ size_t s21_strcspn(const char *str1, const char *str2) {
 // Добавляет строку, на которую указывает src, в конец строки, на которую указывает dest.
 char* s21_strcat(char *dest, const char *src) {
   char* ptr = dest + s21_strlen(dest);
-  size_t srcLength = s21_strlen(src);
-  for(size_t i = 0; i < srcLength; ++i) {
+  s21_size_t srcLength = s21_strlen(src);
+  for(s21_size_t i = 0; i < srcLength; ++i) {
     *ptr = *src;
     ++ptr;
     ++src;
@@ -241,11 +228,11 @@ char* s21_strcat(char *dest, const char *src) {
 }
 
 // Сравнивает первые n байтов str1 и str2.
-int s21_memcmp(const void* str1, const void* str2, size_t n) {
+int s21_memcmp(const void* str1, const void* str2, s21_size_t n) {
   int result = 0;
   const unsigned char* _str1 = str1;
   const unsigned char* _str2 = str2;
-  for(size_t i = 0; i < n && result == 0; ++i) {
+  for(s21_size_t i = 0; i < n && result == 0; ++i) {
     if(*_str1 != *_str2)
       result = *_str1 - *_str2;
     ++_str1;
@@ -256,9 +243,9 @@ int s21_memcmp(const void* str1, const void* str2, size_t n) {
 }
 
 // Сравнивает не более первых n байтов str1 и str2.
-int s21_strncmp(const char *str1, const char *str2, size_t n) {
+int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
   int result = 0;
-  for(size_t i = 0; i < n && result == 0; ++i) {
+  for(s21_size_t i = 0; i < n && result == 0; ++i) {
     if(*str1 != *str2)
       result = *str1 - *str2;
     ++str1;
@@ -269,11 +256,11 @@ int s21_strncmp(const char *str1, const char *str2, size_t n) {
 }
 
 void* s21_to_lower(const char* str) {
-    char* result = NULL;
-    if(str != NULL) {
+    char* result = s21_NULL;
+    if(str != s21_NULL) {
         result = malloc((s21_strlen(str) + 1) * sizeof(char));
-        if(result != NULL) {
-            for(size_t i = 0; i < s21_strlen(str); ++i) {
+        if(result != s21_NULL) {
+            for(s21_size_t i = 0; i < s21_strlen(str); ++i) {
                 result[i] = str[i];
                 if(str[i] >= 'A' && str[i] <= 'Z')
                     result[i] += 'a' - 'A';
@@ -286,10 +273,10 @@ void* s21_to_lower(const char* str) {
 }
 
 void* s21_trim(const char* src, const char* trim_chars) {
-    char* result = NULL;
-    if(src != NULL) {
+    char* result = s21_NULL;
+    if(src != s21_NULL) {
       if(s21_strlen(src) == 0) result = "";
-      else if(trim_chars == NULL || s21_strlen(trim_chars) == 0) result = s21_trim(src, " ");
+      else if(trim_chars == s21_NULL || s21_strlen(trim_chars) == 0) result = s21_trim(src, " ");
       else {
         int left = 0, right = s21_strlen(src) - 1;
         while(left < (int)s21_strlen(src) && contains(src[left], trim_chars)) {
@@ -300,7 +287,7 @@ void* s21_trim(const char* src, const char* trim_chars) {
         }
         if(left <= right) {
           result = malloc(sizeof(char) * (right - left + 2));
-          if(result != NULL) {
+          if(result != s21_NULL) {
             for(int i = 0; i < (right - left + 1); ++i)
               result[i] = src[left + i];
             result[right - left + 1] = '\0';
