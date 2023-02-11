@@ -21,12 +21,12 @@ all: test #gcov_report
 test:
 	gcc $(CFLAGS) alltests.c $(JER_CFILES) $(ARB_CFILES) $(CAM_CFILES) $(TEST_CFILES) -lcheck -lpthread  -lm
 	gcc alltests.o $(JER_OFILES) $(ARB_OFILES) $(CAM_OFILES) $(TEST_OFILES) -lcheck -lpthread  -lm  -o alltests.out
-# gcov_report:
-# 	gcc alltests.c s21_sprintf.c $(JER_DOP_CFILES) $(JER_TEST_CFILES) -o gcov_check.out $(TST_LIBS) --coverage
-# 	./gcov_check.out
-# 	lcov -t "s21_sprintf" -o s21_sprintf.info -c -d . 
-# 	genhtml -o report s21_sprintf.info
-# 	open ./report/index.html
+gcov_report:
+	gcc alltests.c $(CAM_CFILES) $(JER_CFILES) $(ARB_CFILES) $(TEST_CFILES) -o gcov_check.out $(TST_LIBS) --coverage
+	./gcov_check.out
+	lcov -t "gcheck" -o gcheck.info -c -d . 
+	genhtml -o report gcheck.info
+	open ./report/index.html
 clean:
 	rm -rf *.o
 	rm -rf *.a

@@ -1,13 +1,8 @@
 #include "arboktya.h"
 #include <stdlib.h>
 
-
-char unknownError[25] = "Unknown error           ";
-const int indexOfStartNumber = 14;
-const int unknownErrorLength = 25;
-
 #ifdef __APPLE__
-  static char* macosErrors[107] = {"Undefined error : 0", "Operation not permitted","No such file or directory",
+  static char* macosErrors[107] = {"Undefined error: 0", "Operation not permitted","No such file or directory",
   "No such process","Interrupted system call","Input/output error","Device not configured",
   "Argument list too long","Exec format error","Bad file descriptor","No child processes",
   "Resource deadlock avoided","Cannot allocate memory","Permission denied","Bad address",
@@ -32,6 +27,10 @@ const int unknownErrorLength = 25;
   "Bad message","EMULTIHOP (Reserved)","No message available on STREAM","ENOLINK (Reserved)","No STREAM resources","Not a STREAM",
   "Protocol error","STREAM ioctl timeout","Operation not supported on socket","Policy not found","State not recoverable",
   "Previous owner died","Interface output queue is full"};
+
+  char unknownError[26] = "Unknown error:            ";
+  const int indexOfStartNumber = 15;
+  const int unknownErrorLength = 26;
 
 #else
   static char* linuxErrors[135] = {"Success", "Operation not permitted", "No such file or directory",
@@ -59,9 +58,17 @@ const int unknownErrorLength = 25;
   "Structure needs cleaning", "Not a XENIX named type file", "No XENIX semaphores available", "Is a named type file", "Remote I/O error", "Disk quota exceeded",
   "No medium found", "Wrong medium type", "Operation canceled", "Required key not available", "Key has expired", "Key has been revoked", "Key was rejected by service",
   "Owner died", "State not recoverable", "Operation not possible due to RF-kill", "Memory page has hardware error"};
+
+  char unknownError[25] = "Unknown error           ";
+  const int indexOfStartNumber = 14;
+  const int unknownErrorLength = 25;
 #endif
 
 // int main() {
+
+//   for(int errnum = -100;  errnum < 200; ++errnum)
+//     printf("%s | %s\n", s21_strerror(errnum), strerror(errnum));
+
 
 //   return 0;
 // }
@@ -85,8 +92,15 @@ char* s21_strncat(char *dest, const char *src, size_t n) {
 // // Описания ошибок есть в оригинальной библиотеке. Проверка текущей ОС осуществляется с помощью директив.
 char* s21_strerror(int errnum) {
   #ifdef __APPLE__
-    return errnum < 0 || errnum> 105 ? "Unknown error" : errnum == 0 ? "Undefined error"
-      : macosErrors[errnum];
+    // return errnum < 0 || errnum > 105 ? "Unknown error" : errnum == 0 ? "Undefined error"
+    //   : macosErrors[errnum];
+
+    if(errnum < 0 || errnum > 106) {
+      refreshUnknownError(errnum);
+      return unknownError;
+    }
+    return macosErrors[errnum];
+
   #else
     if(errnum < 0 || errnum > 133) {
       refreshUnknownError(errnum);
@@ -142,7 +156,7 @@ char* s21_strtok(char* str, const char *delim) {
   ptr = str + strcspn(str, delim);
   if(str == ptr) {
     ptr = NULL;
-    return str;
+    return ptr;
   }
   if(*ptr) {
     *ptr = '\0';
