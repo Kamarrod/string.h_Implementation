@@ -121,15 +121,15 @@ void *s21_memcpy(void *dest, const void *src, s21_size_t n) { // check
 
 void *s21_memmove(void *dest, const void *src, s21_size_t n) {
     if (src != NULL && dest != NULL) {
-        if (dest < src && src - dest < (int)n) {
+        if (dest < src) { //&& src - dest < (int)n) {
             void *promDest = dest ;
             const void *promSrc = src;
             while (n--) {
                 *((char*)promDest++) = *((char*)promSrc++);
             }
-            return dest;
+            //return dest;
         } 
-        if (src < dest && dest - src < (int)n) {
+        if (src < dest ) { //&& dest - src < (int)n) {
             printf("YES\n");
             void *promDest = dest + n;
             const void *promSrc = src + n;
@@ -137,9 +137,9 @@ void *s21_memmove(void *dest, const void *src, s21_size_t n) {
             while (n--) {
                 *((char*)promDest--) = *((char*)promSrc--);
             }
-            return dest;
+            //return dest;
         }
-        s21_memcpy(dest, src, n);
+        //s21_memcpy(dest, src, n);
     }
     return dest;
 }
@@ -167,11 +167,6 @@ void *s21_to_upper(const char *str) { // check
                 else copy[i] = prom[i];
             }
             copy[len] = '\0';
-            // while(*prom++ != '\0') {
-            //     if( (int)(*prom) >= 97 || (int)(*prom) <= 122) *copy++ = (char) ( *prom - 32);
-            //     else *copy++ = (char)(*prom);
-            // }
-            // //*copy = '\0';
         }
     }
     return (void*)copy;
@@ -179,14 +174,12 @@ void *s21_to_upper(const char *str) { // check
 
 void *s21_insert(const char *src, const char *str, s21_size_t start_index) { //check 
     char * answer = s21_NULL;
-    if (src && start_index <= strlen(src)) {
+    if (str && src && start_index <= strlen(src)) {
         s21_size_t lenSrc = strlen(src);
-        s21_size_t lenStr;
-        if (str) lenStr  = strlen(str);
-        else lenStr = 0;
+        s21_size_t lenStr = strlen(str);
+        //else lenStr = 0;
         answer = malloc((lenSrc + lenStr + 1) * sizeof(char));
         for (s21_size_t i = 0; i < lenSrc + lenStr; i++) {
-            //if (i == lenS)
             if (str && start_index <= i && i < start_index + lenStr) answer[i] = str[i - start_index];
             else {
                     if (i >= start_index + lenStr ) answer[i] = src[i - lenStr];
@@ -194,17 +187,6 @@ void *s21_insert(const char *src, const char *str, s21_size_t start_index) { //c
             }
         }
         answer[lenSrc + lenStr] = '\0';
-    } //else {
-    //     if (str && src == s21_NULL && start_index == 0) {
-    //         printf("YES\n");
-    //         s21_size_t lenStr = strlen(str);
-    //         answer = malloc((lenStr + 1) * sizeof(char));
-    //         for (s21_size_t i = 0; i < lenStr; i++) {
-    //         //if (i == lenS)
-    //             answer[i] = str[i];
-    //         }
-    //         answer[lenStr] = '\0';
-    //     }
-    // }
+    }
     return (void*)answer;
 }
