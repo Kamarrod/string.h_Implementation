@@ -1,4 +1,4 @@
-#include "jer_sprintf.h"
+#include "s21_string.h"
 void ppts_width_align_right_s(struct info *mys, char *s, char *str,
                               int col_spaces) {
   for (int i = 0; i < col_spaces; i++) {
@@ -44,8 +44,8 @@ void ppts_width_s(struct info *mys, char *s, char *str) {
     if (mys->fl !=
         '-') {  //выравнивание правому краю в пределах заданной ширины
       ppts_width_align_right_s(mys, s, str, col_spaces);
-    } else{  //Выравнивание по левому краю в пределах
-                                  //заданной ширины
+    } else {  //Выравнивание по левому краю в пределах
+              //заданной ширины
       ppts_width_align_left_s(mys, s, str, col_spaces);
     }
   } else if (mys->acc >= 0) {

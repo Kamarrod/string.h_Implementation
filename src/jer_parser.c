@@ -1,4 +1,4 @@
-#include "jer_sprintf.h"
+#include "s21_string.h"
 void cpf_width(const char *pF, struct info *mys, va_list input, int *i) {
   mys->width = 0;
   if (pF[*i] != '*') {
@@ -11,7 +11,7 @@ void cpf_width(const char *pF, struct info *mys, va_list input, int *i) {
       (*i)++;
     }
     s21_strcat(num, "\0");
-    mys->width += atoi(num);
+    mys->width += s21_atoi(num);
   } else {
     mys->width = va_arg(input, int);
     (*i)++;
@@ -31,7 +31,7 @@ void cpf_acc(const char *pF, struct info *mys, va_list input, int *i) {
       (*i)++;
     }
     s21_strcat(num, "\0");
-    if (s21_strlen(num) != 0) mys->acc += atoi(num);
+    if (s21_strlen(num) != 0) mys->acc += s21_atoi(num);
   } else {
     mys->acc = va_arg(input, int);
     (*i)++;

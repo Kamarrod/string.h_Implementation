@@ -1,5 +1,5 @@
-#include "jer_sprintf.h"
-void ppts_width_align_left_c(char c, char *str, int col_spaces ) {
+#include "s21_string.h"
+void ppts_width_align_left_c(char c, char *str, int col_spaces) {
   s21_strncat(str, &c, 1);
   for (int i = 0; i < col_spaces; i++) {
     s21_strcat(str, " ");

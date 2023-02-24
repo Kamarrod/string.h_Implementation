@@ -1,11 +1,4 @@
-#include "jer_sprintf.h"
-// #include <math.h>
-// #include <stdarg.h>
-// #include <stdio.h>
-// #include <stdlib.h>
-
-//#include "string.h"
-
+#include "s21_string.h"
 void init_struct(struct info *mys) {
   mys->fl = '_';
   mys->width = -1;
@@ -74,7 +67,8 @@ void ppts_case_id(struct info *mys, va_list input, char *str) {
         s21_strcat(str, " ");
     }
   }
-  if ((mys->fl == '+' || mys->fl == ' ') && num_s[0] != '-' && num_s != s21_NULL) {
+  if ((mys->fl == '+' || mys->fl == ' ') && num_s[0] != '-' &&
+      num_s != s21_NULL) {
     free(num_s);
   }
 }
@@ -133,7 +127,7 @@ void ppts_case_f(struct info *mys, va_list input, char *str) {
   else
     d = va_arg(input, double);
 
-  char c='_';
+  char c = '_';
   if (mys->was_space || mys->fl == ' ') c = ' ';
   if (mys->was_plus || mys->fl == '+') c = '+';
   if (mys->acc == -1)
@@ -141,15 +135,15 @@ void ppts_case_f(struct info *mys, va_list input, char *str) {
   else
     num_s = ftoa(d, mys->acc, c);
 
-  if (mys->acc == 0 && (mys->was_sharp || mys->fl == '#')){
+  if (mys->acc == 0 && (mys->was_sharp || mys->fl == '#')) {
     //  num_s = (char *) realloc(num_s, s21_strlen(num_s)+2);
     //  if(num_s)
     //   s21_strcat(num_s, ".");
-      void * tmp =(char *) realloc(num_s, s21_strlen(num_s)+2);
-      if (s21_NULL != tmp){
-        num_s = tmp;
-        s21_strcat(num_s, ".");
-      }
+    void *tmp = (char *)realloc(num_s, s21_strlen(num_s) + 2);
+    if (s21_NULL != tmp) {
+      num_s = tmp;
+      s21_strcat(num_s, ".");
+    }
   }
   ppts_f(mys, num_s, str);
   if (num_s) free(num_s);
@@ -177,8 +171,8 @@ void print_part_to_str(char *str, struct info *mys, va_list input,
     case 'f':
       ppts_case_f(mys, input, str);
       break;
-    // default:
-    //   break;
+      // default:
+      //   break;
   }
 }
 

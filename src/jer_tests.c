@@ -1,5 +1,5 @@
 #include "alltests.h"
-///CCCCCCCCCCC
+/// CCCCCCCCCCC
 START_TEST(sprintf_1_c) {
   char str1[100];
   char str2[100];
@@ -339,7 +339,7 @@ Suite *test_sprintf_c(void) {
   suite_add_tcase(s, tc);
   return s;
 }
-///DDDDDDDDDDDDDD
+/// DDDDDDDDDDDDDD
 // One parameter signed
 START_TEST(sprintf_1_signed) {
   char str1[100] = "";
@@ -1342,7 +1342,6 @@ START_TEST(sprintf_47_f) {
   ck_assert_pstr_eq(str1, str2);
 }
 END_TEST
-
 
 START_TEST(sprintf_50_f) {
   char str1[400];

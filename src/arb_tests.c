@@ -1,375 +1,432 @@
 #include "alltests.h"
 int sameSigns(int first, int second) {
   int result = 0;
-  if((first > 0 && second > 0) || (first < 0 && second < 0) || (first == second))
+  if ((first > 0 && second > 0) || (first < 0 && second < 0) ||
+      (first == second))
     result = 1;
   return result;
 }
 
 // ---------------------------------------------------------------------------------------------------------------
 
-START_TEST (strlenSimple) {
-  ck_assert_int_eq(s21_strlen("abc"), strlen("abc"));
-} END_TEST
+START_TEST(strlenSimple) { ck_assert_int_eq(s21_strlen("abc"), strlen("abc")); }
+END_TEST
 
-START_TEST (strlenEmptyString) {
-  ck_assert_int_eq(s21_strlen(""), strlen(""));
-} END_TEST
+START_TEST(strlenEmptyString) { ck_assert_int_eq(s21_strlen(""), strlen("")); }
+END_TEST
 
-START_TEST (strlenOneLetterString) {
+START_TEST(strlenOneLetterString) {
   char* str = "a";
   ck_assert_int_eq(s21_strlen("a"), strlen("a"));
   ck_assert_int_eq(s21_strlen(str), strlen(str));
-} END_TEST
+}
+END_TEST
 
-START_TEST (strlenOneLetterStringWithNull) {
+START_TEST(strlenOneLetterStringWithNull) {
   ck_assert_int_eq(s21_strlen("a\0"), strlen("a\0"));
-} END_TEST
+}
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
-START_TEST (toLowerDiffLetters) {
+START_TEST(toLowerDiffLetters) {
   char* result = s21_to_lower("AbcDR");
   ck_assert_str_eq(result, "abcdr");
   free(result);
-} END_TEST
+}
+END_TEST
 
-START_TEST (toLowerAllLettersLow) {
+START_TEST(toLowerAllLettersLow) {
   char* result = s21_to_lower("abcdr");
   ck_assert_str_eq(result, "abcdr");
   free(result);
-} END_TEST
+}
+END_TEST
 
-START_TEST (toLowerAllLettersBig) {
+START_TEST(toLowerAllLettersBig) {
   char* result = s21_to_lower("ABCDR");
   ck_assert_str_eq(result, "abcdr");
   free(result);
-} END_TEST
+}
+END_TEST
 
-START_TEST (toLowerEmptyString) {
+START_TEST(toLowerEmptyString) {
   char* result = s21_to_lower("");
   ck_assert_str_eq(result, "");
   free(result);
-} END_TEST
+}
+END_TEST
 
-START_TEST (toLowerDigits) {
+START_TEST(toLowerDigits) {
   char* result = s21_to_lower("123");
   ck_assert_str_eq(result, "123");
   free(result);
-} END_TEST
+}
+END_TEST
 
-START_TEST (toLowerDigitsAndLetters) {
+START_TEST(toLowerDigitsAndLetters) {
   char* result = s21_to_lower("aBC45qPR");
   ck_assert_str_eq(result, "abc45qpr");
   free(result);
-} END_TEST
+}
+END_TEST
 
-START_TEST (toLowerOtherSymbols) {
+START_TEST(toLowerOtherSymbols) {
   char* result = s21_to_lower("!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/");
   ck_assert_str_eq(result, "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/");
   free(result);
-} END_TEST
+}
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
-START_TEST (strerrorAllErrors) {
-  for(int errnum = -100; errnum < 200; ++errnum)
+START_TEST(strerrorAllErrors) {
+  for (int errnum = -100; errnum < 200; ++errnum)
     ck_assert_str_eq(s21_strerror(errnum), strerror(errnum));
-} END_TEST
+}
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
-START_TEST (strcmpSameStringsSmallLetters) {
+START_TEST(strcmpSameStringsSmallLetters) {
   ck_assert(s21_strcmp("abc", "abc") == 0);
-} END_TEST
+}
+END_TEST
 
-START_TEST (strcmpSameStringsBigLetters) {
+START_TEST(strcmpSameStringsBigLetters) {
   ck_assert(s21_strcmp("QWE", "QWE") == 0);
-} END_TEST
+}
+END_TEST
 
-START_TEST (strcmpSameStringsDiffLetters) {
+START_TEST(strcmpSameStringsDiffLetters) {
   ck_assert(s21_strcmp("abcRtaeW", "abcRtaeW") == 0);
-} END_TEST
+}
+END_TEST
 
-START_TEST (strcmpSameStringsDigits) {
+START_TEST(strcmpSameStringsDigits) {
   ck_assert(s21_strcmp("1234567890", "1234567890") == 0);
-} END_TEST
+}
+END_TEST
 
-START_TEST (strcmpSameStringsOtherSymbols) {
-  ck_assert(s21_strcmp("!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/", "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/") == 0);
-} END_TEST
+START_TEST(strcmpSameStringsOtherSymbols) {
+  ck_assert(s21_strcmp("!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/",
+                       "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/") == 0);
+}
+END_TEST
 
-START_TEST (strcmpDiffStringsOtherSymbols) {
-  ck_assert(s21_strcmp("!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/", "!@#$^&*()_-+={[]}:;\"'|\\~`<>") > 0);
-} END_TEST
+START_TEST(strcmpDiffStringsOtherSymbols) {
+  ck_assert(s21_strcmp("!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/",
+                       "!@#$^&*()_-+={[]}:;\"'|\\~`<>") > 0);
+}
+END_TEST
 
-START_TEST (strcmpSameStringsJustSpaces) {
+START_TEST(strcmpSameStringsJustSpaces) {
   ck_assert(s21_strcmp("   ", "   ") == 0);
-} END_TEST
+}
+END_TEST
 
-START_TEST (strcmpEmptyStrings) {
-  ck_assert(s21_strcmp("", "") == 0);
-} END_TEST
+START_TEST(strcmpEmptyStrings) { ck_assert(s21_strcmp("", "") == 0); }
+END_TEST
 
-START_TEST (strcmpDigits1) {
-  ck_assert(s21_strcmp("123", "039") > 0);
-} END_TEST
+START_TEST(strcmpDigits1) { ck_assert(s21_strcmp("123", "039") > 0); }
+END_TEST
 
-START_TEST (strcmpDigits2) {
-  ck_assert(s21_strcmp("123", "124") < 0);
-} END_TEST
+START_TEST(strcmpDigits2) { ck_assert(s21_strcmp("123", "124") < 0); }
+END_TEST
 
-START_TEST (strcmpSpaces) {
-  ck_assert(s21_strcmp("", "  ") < 0);
-} END_TEST
+START_TEST(strcmpSpaces) { ck_assert(s21_strcmp("", "  ") < 0); }
+END_TEST
 
-START_TEST (strcmpDiffLengthStr1) {
-  ck_assert(s21_strcmp("123", "12345") < 0);
-} END_TEST
+START_TEST(strcmpDiffLengthStr1) { ck_assert(s21_strcmp("123", "12345") < 0); }
+END_TEST
 
-START_TEST (strcmpDiffLengthStr2) {
-  ck_assert(s21_strcmp("abcdr", "abc") > 0);
-} END_TEST
+START_TEST(strcmpDiffLengthStr2) { ck_assert(s21_strcmp("abcdr", "abc") > 0); }
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
-START_TEST (memcmpSameStringsSmallLetters) {
+START_TEST(memcmpSameStringsSmallLetters) {
   char* first = "abc";
   char* second = "abc";
-  for(size_t i = 0; i < 5; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)));
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)));
+}
+END_TEST
 
-
-START_TEST (memcmpSameStringsBigLetters) {
+START_TEST(memcmpSameStringsBigLetters) {
   char* first = "QWE";
   char* second = "QWE";
-  for(size_t i = 0; i < 5; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
-
-START_TEST (memcmpSameStringsDiffLetters) {
+START_TEST(memcmpSameStringsDiffLetters) {
   char* first = "abcRtaeW";
   char* second = "abcRtaeW";
-  for(size_t i = 0; i < 15; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 15; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (memcmpSameStringsDigits) {
+START_TEST(memcmpSameStringsDigits) {
   char* first = "1234567890";
   char* second = "1234567890";
-  for(size_t i = 0; i < 11; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 11; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (memcmpSameStringsOtherSymbols) {
+START_TEST(memcmpSameStringsOtherSymbols) {
   char* first = "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/";
   char* second = "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/";
-  for(size_t i = 0; i < 100; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i),
-    memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 100; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (memcmpDiffStringsOtherSymbols) {
+START_TEST(memcmpDiffStringsOtherSymbols) {
   char* first = "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/";
   char* second = "!@#$^&*()_-+={[]}:;\"'|\\~`<>";
-  for(size_t i = 0; i < 100; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i),
-    memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 100; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (memcmpSameStringsJustSpaces) {
+START_TEST(memcmpSameStringsJustSpaces) {
   char* first = "   ";
   char* second = "   ";
-  for(size_t i = 0; i < 5; ++i)
-  ck_assert(sameSigns(s21_memcmp(first, second, i),
-    memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (memcmpEmptyStrings) {
+START_TEST(memcmpEmptyStrings) {
   char* first = "";
   char* second = "";
-  for(size_t i = 0; i < 5; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (memcmpDigits1) {
+START_TEST(memcmpDigits1) {
   char* first = "123";
   char* second = "039";
-  for(size_t i = 0; i < 5; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (memcmpDigits2) {
+START_TEST(memcmpDigits2) {
   char* first = "123";
   char* second = "124";
-  for(size_t i = 0; i < 5; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (memcmpSpaces) {
+START_TEST(memcmpSpaces) {
   char* first = "";
   char* second = "  ";
-  for(size_t i = 1; i < 5; ++i)
-    ck_assert(s21_memcmp(first, second, i) < 0);
+  for (size_t i = 1; i < 5; ++i) ck_assert(s21_memcmp(first, second, i) < 0);
   ck_assert(s21_memcmp(first, second, 0) == 0);
-} END_TEST
+}
+END_TEST
 
-START_TEST (memcmpDiffLengthStr1) {
+START_TEST(memcmpDiffLengthStr1) {
   char* first = "123";
   char* second = "12345";
-  for(size_t i = 0; i < 10; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 10; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (memcmpDiffLengthStr2) {
+START_TEST(memcmpDiffLengthStr2) {
   char* first = "abcdr";
   char* second = "abc";
-  for(size_t i = 0; i < 10; ++i)
-    ck_assert(sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 10; ++i)
+    ck_assert(
+        sameSigns(s21_memcmp(first, second, i), memcmp(first, second, i)) == 1);
+}
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
-START_TEST (strncmpSameStringsSmallLetters) {
-  char* first=  "abc";
+START_TEST(strncmpSameStringsSmallLetters) {
+  char* first = "abc";
   char* second = "abc";
-  for(size_t i = 0; i < 5; ++i)
-    ck_assert(sameSigns(s21_strncmp(first, second, i), strncmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(sameSigns(s21_strncmp(first, second, i),
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-
-START_TEST (strncmpSameStringsBigLetters) {
-  char* first=  "QWE";
+START_TEST(strncmpSameStringsBigLetters) {
+  char* first = "QWE";
   char* second = "QWE";
-  for(size_t i = 0; i < 5; ++i)
-    ck_assert(sameSigns(s21_strncmp(first, second, i), strncmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(sameSigns(s21_strncmp(first, second, i),
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-
-START_TEST (strncmpSameStringsDiffLetters) {
-  char* first=  "abcRtaeW";
+START_TEST(strncmpSameStringsDiffLetters) {
+  char* first = "abcRtaeW";
   char* second = "abcRtaeW";
-  for(size_t i = 0; i < 15; ++i)
-    ck_assert(sameSigns(s21_strncmp(first, second, i), strncmp(first ,second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 15; ++i)
+    ck_assert(sameSigns(s21_strncmp(first, second, i),
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (strncmpSameStringsDigits) {
-  char* first=  "1234567890";
+START_TEST(strncmpSameStringsDigits) {
+  char* first = "1234567890";
   char* second = "1234567890";
-  for(size_t i = 0; i < 11; ++i)
-    ck_assert(sameSigns(s21_strncmp(first, second, i), strncmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 11; ++i)
+    ck_assert(sameSigns(s21_strncmp(first, second, i),
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (strncmpSameStringsOtherSymbols) {
-  char* first=  "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/";
+START_TEST(strncmpSameStringsOtherSymbols) {
+  char* first = "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/";
   char* second = "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/";
-  for(size_t i = 0; i < 100; ++i)
+  for (size_t i = 0; i < 100; ++i)
     ck_assert(sameSigns(s21_strncmp(first, second, i),
-    strncmp(first, second, i)) == 1);
-} END_TEST
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (strncmpDiffStringsOtherSymbols) {
-  char* first=  "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/";
+START_TEST(strncmpDiffStringsOtherSymbols) {
+  char* first = "!@#$^&*()_-+={[]}:;\"'|\\~`<>,.?/";
   char* second = "!@#$^&*()_-+={[]}:;\"'|\\~`<>";
-  for(size_t i = 0; i < 100; ++i)
+  for (size_t i = 0; i < 100; ++i)
     ck_assert(sameSigns(s21_strncmp(first, second, i),
-    strncmp(first, second, i)) == 1);
-} END_TEST
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (strncmpSameStringsJustSpaces) {
-  char* first=  "   ";
+START_TEST(strncmpSameStringsJustSpaces) {
+  char* first = "   ";
   char* second = "   ";
-  for(size_t i = 0; i < 5; ++i)
-  ck_assert(sameSigns(s21_strncmp(first ,second, i),
-    strncmp(first ,second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(sameSigns(s21_strncmp(first, second, i),
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (strncmpEmptyStrings) {
-  char* first=  "";
+START_TEST(strncmpEmptyStrings) {
+  char* first = "";
   char* second = "";
-  for(size_t i = 0; i < 5; ++i)
-    ck_assert(sameSigns(s21_strncmp(first, second, i), strncmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(sameSigns(s21_strncmp(first, second, i),
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (strncmpDigits1) {
-  char* first=  "123";
+START_TEST(strncmpDigits1) {
+  char* first = "123";
   char* second = "039";
-  for(size_t i = 0; i < 5; ++i)
-    ck_assert(sameSigns(s21_strncmp(first, second, i), strncmp(first ,second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(sameSigns(s21_strncmp(first, second, i),
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (strncmpDigits2) {
-  char* first=  "123";
+START_TEST(strncmpDigits2) {
+  char* first = "123";
   char* second = "124";
-  for(size_t i = 0; i < 5; ++i)
-    ck_assert(sameSigns(s21_strncmp(first, second, i), strncmp(first ,second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 5; ++i)
+    ck_assert(sameSigns(s21_strncmp(first, second, i),
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (strncmpSpaces) {
-  char* first=  "";
+START_TEST(strncmpSpaces) {
+  char* first = "";
   char* second = "  ";
-  for(size_t i = 1; i < 5; ++i)
-    ck_assert(s21_strncmp(first, second, i) < 0);
+  for (size_t i = 1; i < 5; ++i) ck_assert(s21_strncmp(first, second, i) < 0);
   ck_assert(s21_strncmp(first, second, 0) == 0);
-} END_TEST
+}
+END_TEST
 
-START_TEST (strncmpDiffLengthStr1) {
-  char* first=  "123";
+START_TEST(strncmpDiffLengthStr1) {
+  char* first = "123";
   char* second = "12345";
-  for(size_t i = 0; i < 10; ++i)
-    ck_assert(sameSigns(s21_strncmp(first ,second,  i), strncmp(first, second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 10; ++i)
+    ck_assert(sameSigns(s21_strncmp(first, second, i),
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
-START_TEST (strncmpDiffLengthStr2) {
-  char* first=  "abcdr";
+START_TEST(strncmpDiffLengthStr2) {
+  char* first = "abcdr";
   char* second = "abc";
-  for(size_t i = 0; i < 10; ++i)
-    ck_assert(sameSigns(s21_strncmp(first, second, i), strncmp(first,second, i)) == 1);
-} END_TEST
+  for (size_t i = 0; i < 10; ++i)
+    ck_assert(sameSigns(s21_strncmp(first, second, i),
+                        strncmp(first, second, i)) == 1);
+}
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
 START_TEST(trimSameStrings) {
   char* result = s21_trim("abc", "abc");
   ck_assert_str_eq(result, "");
-} END_TEST
+}
+END_TEST
 
 START_TEST(trimEmptyDeleteString) {
   char* result = s21_trim("abc", "");
   ck_assert_str_eq(result, "abc");
   free(result);
-} END_TEST
+}
+END_TEST
 
 START_TEST(trimDeleteEdgeSpaces) {
   char* result = s21_trim("  abc  ", " ");
   ck_assert_str_eq(result, "abc");
   free(result);
-} END_TEST
+}
+END_TEST
 
 START_TEST(trimOtherLetters) {
   char* result = s21_trim("abc", "rtv ");
   ck_assert_str_eq(result, "abc");
   free(result);
-} END_TEST
+}
+END_TEST
 
 START_TEST(trimSomeLetters) {
   char* result = s21_trim("abc", "ac");
   ck_assert_str_eq(result, "b");
   free(result);
-} END_TEST
+}
+END_TEST
 
 START_TEST(trimInnerLetters) {
   char* result = s21_trim("abcde", "bcd");
   ck_assert_str_eq(result, "abcde");
   free(result);
-} END_TEST
+}
+END_TEST
 
 START_TEST(trimEmptyStr) {
   char* result = s21_trim("", "abc");
   ck_assert_str_eq(result, "");
-} END_TEST
+}
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
@@ -379,7 +436,8 @@ START_TEST(strcatSimple) {
   char first[20] = "begin";
   char second[20] = "end";
   ck_assert_str_eq(s21_strcat(s21_first, s21_second), strcat(first, second));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strcatAddToEmpty) {
   char s21_first[10] = "";
@@ -387,7 +445,8 @@ START_TEST(strcatAddToEmpty) {
   char first[10] = "";
   char second[10] = "end";
   ck_assert_str_eq(s21_strcat(s21_first, s21_second), strcat(first, second));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strcatBothEmpty) {
   char s21_first[20] = "";
@@ -395,7 +454,8 @@ START_TEST(strcatBothEmpty) {
   char first[20] = "";
   char second[20] = "";
   ck_assert_str_eq(s21_strcat(s21_first, s21_second), strcat(first, second));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strcatAddEmpty) {
   char s21_first[20] = "begin";
@@ -403,7 +463,8 @@ START_TEST(strcatAddEmpty) {
   char first[20] = "begin";
   char second[20] = "";
   ck_assert_str_eq(s21_strcat(s21_first, s21_second), strcat(first, second));
-} END_TEST
+}
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
@@ -412,137 +473,170 @@ START_TEST(strncatSimple1) {
   char s21_second[20] = "end";
   char first[20] = "begin";
   char second[20] = "end";
-  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 0), strncat(first, second, 0));
-} END_TEST
+  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 0),
+                   strncat(first, second, 0));
+}
+END_TEST
 
 START_TEST(strncatSimple2) {
   char s21_first[20] = "begin";
   char s21_second[20] = "end";
   char first[20] = "begin";
   char second[20] = "end";
-  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 3), strncat(first, second, 3));
-} END_TEST
+  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 3),
+                   strncat(first, second, 3));
+}
+END_TEST
 
 START_TEST(strncatSimple3) {
   char s21_first[20] = "begin";
   char s21_second[20] = "end";
   char first[20] = "begin";
   char second[20] = "end";
-  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 10), strncat(first, second, 10));
-} END_TEST
+  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 10),
+                   strncat(first, second, 10));
+}
+END_TEST
 
 START_TEST(strncatAddToEmpty1) {
   char s21_first[10] = "";
   char s21_second[10] = "end";
   char first[10] = "";
   char second[10] = "end";
-  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 0), strncat(first, second, 0));
-} END_TEST
+  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 0),
+                   strncat(first, second, 0));
+}
+END_TEST
 
 START_TEST(strncatAddToEmpty2) {
   char s21_first[10] = "";
   char s21_second[10] = "end";
   char first[10] = "";
   char second[10] = "end";
-  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 3), strncat(first, second, 3));
-} END_TEST
+  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 3),
+                   strncat(first, second, 3));
+}
+END_TEST
 
 START_TEST(strncatAddToEmpty3) {
   char s21_first[10] = "";
   char s21_second[10] = "end";
   char first[10] = "";
   char second[10] = "end";
-  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 5), strncat(first, second, 5));
-} END_TEST
+  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 5),
+                   strncat(first, second, 5));
+}
+END_TEST
 
 START_TEST(strncatBothEmpty1) {
   char s21_first[20] = "";
   char s21_second[20] = "";
   char first[20] = "";
   char second[20] = "";
-  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 0), strncat(first, second, 0));
-} END_TEST
+  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 0),
+                   strncat(first, second, 0));
+}
+END_TEST
 
 START_TEST(strncatBothEmpty2) {
   char s21_first[20] = "";
   char s21_second[20] = "";
   char first[20] = "";
   char second[20] = "";
-  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 5), strncat(first, second, 5));
-} END_TEST
+  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 5),
+                   strncat(first, second, 5));
+}
+END_TEST
 
 START_TEST(strncatAddEmpty1) {
   char s21_first[20] = "begin";
   char s21_second[20] = "";
   char first[20] = "begin";
   char second[20] = "";
-  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 0), strncat(first, second, 0));
-} END_TEST
+  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 0),
+                   strncat(first, second, 0));
+}
+END_TEST
 
 START_TEST(strncatAddEmpty2) {
   char s21_first[20] = "begin";
   char s21_second[20] = "";
   char first[20] = "begin";
   char second[20] = "";
-  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 3), strncat(first, second, 3));
-} END_TEST
+  ck_assert_str_eq(s21_strncat(s21_first, s21_second, 3),
+                   strncat(first, second, 3));
+}
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
 START_TEST(strspnSearchSomeLetters) {
   ck_assert_int_eq(s21_strspn("qwerty", "qwe"), strspn("qwerty", "qwe"));
-} END_TEST
-
+}
+END_TEST
 
 START_TEST(strspnSearchEmpty) {
   ck_assert_int_eq(s21_strspn("qwerty", ""), strspn("qwerty", ""));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strspnSameStrings) {
   ck_assert_int_eq(s21_strspn("qwerty", "qwerty"), strspn("qwerty", "qwerty"));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strspnSearchInEmptyString) {
   ck_assert_int_eq(s21_strspn("", "qwe"), strspn("", "qwe"));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strspnBothEmpty) {
   ck_assert_int_eq(s21_strspn("", ""), strspn("", ""));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strspnSearchOtherChars) {
   ck_assert_int_eq(s21_strspn("qwerty", "abcde"), strspn("qwerty", "abcde"));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strspnBothStringsOnlySpaces) {
   ck_assert_int_eq(s21_strspn("   ", " "), strspn("   ", " "));
-} END_TEST
+}
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
 START_TEST(strcspnBothStringsOnlySpaces) {
   ck_assert_int_eq(s21_strcspn("   ", " "), strcspn("   ", " "));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strcspnSameStrings) {
   ck_assert_int_eq(s21_strcspn("abcde", "abcde"), strcspn("abcde", "abcde"));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strcspnDiffStrings) {
   ck_assert_int_eq(s21_strcspn("qwerty", "abcd"), strcspn("qwerty", "abcd"));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strcspnBothStringsEmpty) {
   ck_assert_int_eq(s21_strcspn("", ""), strcspn("", ""));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strcspnSearchInEmpty) {
   ck_assert_int_eq(s21_strcspn("", " aw"), strcspn("", " aw"));
-} END_TEST
+}
+END_TEST
 
 START_TEST(strcspnSameSuffix) {
-  ck_assert_int_eq(s21_strcspn("abcder", " qweder"), strcspn("abcder", " qweder"));
-} END_TEST
+  ck_assert_int_eq(s21_strcspn("abcder", " qweder"),
+                   strcspn("abcder", " qweder"));
+}
+END_TEST
 
 // ---------------------------------------------------------------------------------------------------------------
 
@@ -554,12 +648,13 @@ START_TEST(strtokSimple) {
   char* s21_lexems = s21_strtok(s21_str, delim);
   char* lexems = strtok(str, delim);
 
-  while(s21_lexems) {
+  while (s21_lexems) {
     ck_assert_pstr_eq(s21_lexems, lexems);
     s21_lexems = s21_strtok(NULL, delim);
     lexems = strtok(NULL, delim);
   }
-} END_TEST
+}
+END_TEST
 
 START_TEST(strtokEmptyDelim) {
   char s21_str[100] = "q,w.e|r t'y";
@@ -569,12 +664,13 @@ START_TEST(strtokEmptyDelim) {
   char* s21_lexems = s21_strtok(s21_str, delim);
   char* lexems = strtok(str, delim);
 
-  while(s21_lexems) {
+  while (s21_lexems) {
     ck_assert_pstr_eq(s21_lexems, lexems);
     s21_lexems = s21_strtok(NULL, delim);
     lexems = strtok(NULL, delim);
   }
-} END_TEST
+}
+END_TEST
 
 START_TEST(strtokSameStrs) {
   char s21_str[100] = "abacaba";
@@ -586,12 +682,13 @@ START_TEST(strtokSameStrs) {
 
   ck_assert_pstr_eq(s21_lexems, lexems);
 
-  while(s21_lexems) {
+  while (s21_lexems) {
     ck_assert_pstr_eq(s21_lexems, lexems);
     s21_lexems = s21_strtok(NULL, delim);
     lexems = strtok(NULL, delim);
   }
-} END_TEST
+}
+END_TEST
 
 START_TEST(strtokBothEmpty) {
   char s21_str[100] = "";
@@ -603,12 +700,13 @@ START_TEST(strtokBothEmpty) {
 
   ck_assert_pstr_eq(s21_lexems, lexems);
 
-  while(s21_lexems) {
+  while (s21_lexems) {
     ck_assert_pstr_eq(s21_lexems, lexems);
     s21_lexems = s21_strtok(NULL, delim);
     lexems = strtok(NULL, delim);
   }
-} END_TEST
+}
+END_TEST
 
 START_TEST(strtokEmptyStr) {
   char s21_str[100] = "";
@@ -620,12 +718,13 @@ START_TEST(strtokEmptyStr) {
 
   ck_assert_pstr_eq(s21_lexems, lexems);
 
-  while(s21_lexems) {
+  while (s21_lexems) {
     ck_assert_pstr_eq(s21_lexems, lexems);
     s21_lexems = s21_strtok(NULL, delim);
     lexems = strtok(NULL, delim);
   }
-} END_TEST
+}
+END_TEST
 
 START_TEST(strtokMatchOnlyLastLetter) {
   char s21_str[100] = "abcd";
@@ -637,12 +736,13 @@ START_TEST(strtokMatchOnlyLastLetter) {
 
   ck_assert_pstr_eq(s21_lexems, lexems);
 
-  while(s21_lexems) {
+  while (s21_lexems) {
     ck_assert_pstr_eq(s21_lexems, lexems);
     s21_lexems = s21_strtok(NULL, delim);
     lexems = strtok(NULL, delim);
   }
-} END_TEST
+}
+END_TEST
 
 START_TEST(strtokMatchMidAndLastChars) {
   char s21_str[100] = "ab cd";
@@ -654,12 +754,13 @@ START_TEST(strtokMatchMidAndLastChars) {
 
   ck_assert_pstr_eq(s21_lexems, lexems);
 
-  while(s21_lexems) {
+  while (s21_lexems) {
     ck_assert_pstr_eq(s21_lexems, lexems);
     s21_lexems = s21_strtok(NULL, delim);
     lexems = strtok(NULL, delim);
   }
-} END_TEST
+}
+END_TEST
 
 START_TEST(strtokMatchFromMidToEndChars) {
   char s21_str[100] = "abR cde";
@@ -671,16 +772,17 @@ START_TEST(strtokMatchFromMidToEndChars) {
 
   ck_assert_pstr_eq(s21_lexems, lexems);
 
-  while(s21_lexems) {
+  while (s21_lexems) {
     ck_assert_pstr_eq(s21_lexems, lexems);
     s21_lexems = s21_strtok(NULL, delim);
     lexems = strtok(NULL, delim);
   }
-} END_TEST
+}
+END_TEST
 
 Suite* test_arboktya_string_funcs(void) {
   Suite* s = suite_create("tests");
-  TCase *tc = tcase_create("core");
+  TCase* tc = tcase_create("core");
 
   tcase_add_test(tc, strlenSimple);
   tcase_add_test(tc, strlenEmptyString);
@@ -751,7 +853,7 @@ Suite* test_arboktya_string_funcs(void) {
   tcase_add_test(tc, strcatAddToEmpty);
   tcase_add_test(tc, strcatBothEmpty);
   tcase_add_test(tc, strcatAddEmpty);
-  
+
   tcase_add_test(tc, strncatSimple1);
   tcase_add_test(tc, strncatSimple2);
   tcase_add_test(tc, strncatSimple3);
@@ -762,7 +864,7 @@ Suite* test_arboktya_string_funcs(void) {
   tcase_add_test(tc, strncatBothEmpty2);
   tcase_add_test(tc, strncatAddEmpty1);
   tcase_add_test(tc, strncatAddEmpty2);
-  
+
   tcase_add_test(tc, strspnSearchSomeLetters);
   tcase_add_test(tc, strspnSearchEmpty);
   tcase_add_test(tc, strspnSameStrings);
@@ -797,8 +899,8 @@ Suite* test_arboktya_string_funcs(void) {
 //   SRunner* sr = srunner_create(s);
 
 //   srunner_run_all(sr, CK_NORMAL);
-  
+
 //   srunner_free(sr);
-  
+
 //   return 0;
 // }

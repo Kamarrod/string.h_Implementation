@@ -1,12 +1,4 @@
-#include <stdlib.h>
-#include <check.h>
-#include <stdio.h>
-#include <string.h>
-#include <locale.h>
-
 #include "alltests.h"
-
-
 START_TEST(test_insert_1) {
   char s1[30] = "hello, world!";
   char s3[] = "hELLO, WORLD!";
@@ -498,7 +490,6 @@ START_TEST(strstr_13) {
 }
 END_TEST
 
-
 START_TEST(memchr_1) {
   char str[] = "Hello, world!";
   int ch = ' ';
@@ -578,7 +569,6 @@ START_TEST(memchr_10) {
   ck_assert_ptr_eq(memchr(str, ch, len), s21_memchr(str, ch, len));
 }
 END_TEST
-
 
 START_TEST(memset_1) {
   char s1[] = "Hello, world!";
@@ -723,7 +713,6 @@ START_TEST(memcpy_10) {
   ck_assert_str_eq(memcpy(s1, s3, n), s21_memcpy(s2, s3, n));
 }
 END_TEST
-
 
 START_TEST(memmove_1) {
   char s1[] = "Hello, world!";
@@ -897,23 +886,22 @@ START_TEST(test_to_upper_7) {
 }
 END_TEST
 
-
 Suite *test_camarrod_string_funcs(void) {
-    Suite *s = suite_create("suite_insert");
-    TCase *tc = tcase_create("insert_tc");
+  Suite *s = suite_create("suite_insert");
+  TCase *tc = tcase_create("insert_tc");
 
-  //suite_add_tcase(s, tc);
-    tcase_add_test(tc, test_insert_1);
-    tcase_add_test(tc, test_insert_2);
-    tcase_add_test(tc, test_insert_3);
-    tcase_add_test(tc, test_insert_4);
+  // suite_add_tcase(s, tc);
+  tcase_add_test(tc, test_insert_1);
+  tcase_add_test(tc, test_insert_2);
+  tcase_add_test(tc, test_insert_3);
+  tcase_add_test(tc, test_insert_4);
   tcase_add_test(tc, test_insert_5);
   tcase_add_test(tc, test_insert_6);
   tcase_add_test(tc, test_insert_7);
   tcase_add_test(tc, test_insert_8);
   tcase_add_test(tc, test_insert_9);
   tcase_add_test(tc, test_insert_10);
-    tcase_add_test(tc, strchr_1);
+  tcase_add_test(tc, strchr_1);
   tcase_add_test(tc, strchr_2);
   tcase_add_test(tc, strchr_3);
   tcase_add_test(tc, strchr_4);
@@ -951,7 +939,7 @@ Suite *test_camarrod_string_funcs(void) {
   tcase_add_test(tc, strrchr_6);
   tcase_add_test(tc, strrchr_7);
   tcase_add_test(tc, strrchr_8);
-    tcase_add_test(tc, strstr_1);
+  tcase_add_test(tc, strstr_1);
   tcase_add_test(tc, strstr_2);
   tcase_add_test(tc, strstr_3);
   tcase_add_test(tc, strstr_4);
@@ -974,7 +962,7 @@ Suite *test_camarrod_string_funcs(void) {
   tcase_add_test(tc, memchr_8);
   tcase_add_test(tc, memchr_9);
   tcase_add_test(tc, memchr_10);
-    tcase_add_test(tc, memset_1);
+  tcase_add_test(tc, memset_1);
   tcase_add_test(tc, memset_2);
   tcase_add_test(tc, memset_3);
   tcase_add_test(tc, memset_4);
@@ -990,17 +978,17 @@ Suite *test_camarrod_string_funcs(void) {
   tcase_add_test(tc, memcpy_8);
   tcase_add_test(tc, memcpy_9);
   tcase_add_test(tc, memcpy_10);
-    tcase_add_test(tc, memmove_1);
+  tcase_add_test(tc, memmove_1);
   tcase_add_test(tc, memmove_2);
   tcase_add_test(tc, memmove_3);
   tcase_add_test(tc, memmove_4);
-  //tcase_add_test(tc, memmove_5);
+  // tcase_add_test(tc, memmove_5);
   tcase_add_test(tc, memmove_6);
   tcase_add_test(tc, memmove_7);
   tcase_add_test(tc, memmove_8);
   tcase_add_test(tc, memmove_9);
   tcase_add_test(tc, memmove_10);
-     tcase_add_test(tc, test_to_upper_1);
+  tcase_add_test(tc, test_to_upper_1);
   tcase_add_test(tc, test_to_upper_2);
   tcase_add_test(tc, test_to_upper_3);
   tcase_add_test(tc, test_to_upper_4);
@@ -1008,7 +996,6 @@ Suite *test_camarrod_string_funcs(void) {
   tcase_add_test(tc, test_to_upper_6);
   tcase_add_test(tc, test_to_upper_7);
 
-
-      suite_add_tcase(s, tc);
+  suite_add_tcase(s, tc);
   return s;
 }

@@ -1,5 +1,4 @@
-#include "jer_sprintf.h"
-
+#include "s21_string.h"
 void ppts_acc_u(struct info *mys, int len_num_s, char *num_s, char *str) {
   int col_zeros = mys->acc - len_num_s;
   if (col_zeros >= 1) {

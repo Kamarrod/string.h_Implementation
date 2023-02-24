@@ -1,4 +1,4 @@
-#include "jer_sprintf.h"
+#include "s21_string.h"
 void ppts_width_align_right_i_d(char *num_s, char *str, int col_spaces,
                                 int col_zeros, struct info *mys) {
   if (mys->fl != '0') {
@@ -16,7 +16,7 @@ void ppts_width_align_right_i_d(char *num_s, char *str, int col_spaces,
       if (mys->block_zero == 0) s21_strcat(str, &num_s[1]);
     }
   } else {  //Заполняет число слева нулями (0) вместо
-                                //пробелов, где указан спецификатор ширины
+            //пробелов, где указан спецификатор ширины
     ppts_width_fill_nulls(num_s, str, col_spaces, col_zeros, mys);
   }
 }
@@ -45,7 +45,7 @@ void ppts_width_align_left_i_d(char *num_s, char *str, int col_spaces,
 void ppts_width_i_d(struct info *mys, int len_num_s, char *num_s, char *str) {
   int col_spaces = 0;
   int col_zeros = 0;
-  if (mys->acc != -1){
+  if (mys->acc != -1) {
     if (num_s[0] == '+' || num_s[0] == '-')
       col_zeros = mys->acc - len_num_s + 1;
     else

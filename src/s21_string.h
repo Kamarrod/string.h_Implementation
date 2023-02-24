@@ -1,18 +1,15 @@
-#ifndef S21SPRINTF
-#define S21SPRINTF
+#ifndef S21_STRING
+#define S21_STRING
 #include <limits.h>
+#include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include <string.h>
-#include "camarrod.h"
-#include "arboktya.h"
-
 #define s21_size_t unsigned long long
-#define s21_NULL (void*)0
-
+#define s21_NULL (void *)0
 struct info {
   char fl;
+
   int width;
   int acc;
   char len;
@@ -46,8 +43,8 @@ void reverse(char *str, int len);
 char *itoa(long x, int d);
 char *ftoa(long double n, int afterpoint, char c);
 char *utoa(unsigned long value);
-char *ulltoa(unsigned long long x, int d);
-int s21_atoi(char* str);
+char *ulltoa(s21_size_t x, int d);
+int s21_atoi(char *str);
 char *ulltoa(s21_size_t x, int d);
 
 // s
@@ -65,8 +62,36 @@ void cpf_width(const char *pF, struct info *mys, va_list input, int *i);
 void cpf_acc(const char *pF, struct info *mys, va_list input, int *i);
 void check_part_format(const char *pF, struct info *mys, va_list input, int *i);
 void init_struct(struct info *mys);
-
-// void print_part_to_str(char *str, struct info *mys, va_list input, int*
-// exist_c_null, int j, int* ret_val);
 int s21_sprintf(char *str, const char *format, ...);
-#endif
+
+char *s21_strchr(const char *str, int c);
+char *s21_strcpy(char *dest, const char *src);
+char *s21_strncpy(char *dest, const char *src, s21_size_t n);
+char *s21_strpbrk(const char *str1, const char *str2);
+char *s21_strrchr(const char *str, int c);
+char *s21_strstr(const char *haystack, const char *needle);
+void *s21_memchr(const void *str, int c, s21_size_t n);
+void *s21_memcpy(void *dest, const void *src, s21_size_t n);
+void *s21_memmove(void *dest, const void *src, s21_size_t n);
+void *s21_memset(void *str, int c, s21_size_t n);
+void *s21_to_upper(const char *str);
+void *s21_insert(const char *src, const char *str, s21_size_t start_index);
+
+s21_size_t s21_strlen(const char *str);                             // ++
+int s21_memcmp(const void *str1, const void *str2, s21_size_t n);   // ++
+int s21_strcmp(const char *str1, const char *str2);                 // ++
+int s21_strncmp(const char *str1, const char *str2, s21_size_t n);  // ++
+char *s21_strtok(char *str, const char *delim);
+char *s21_strerror(int errnum);                                // ++
+char *s21_strcat(char *dest, const char *src);                 // ++
+char *s21_strncat(char *dest, const char *src, s21_size_t n);  // ++
+s21_size_t s21_strspn(const char *str1, const char *str2);     // ++
+s21_size_t s21_strcspn(const char *str1, const char *str2);    // ++
+
+void *s21_to_lower(const char *str);                      // ++
+void *s21_trim(const char *src, const char *trim_chars);  // ++
+
+int contains(char c, const char *str);
+void refreshUnknownError(int errnum);
+char *getNumberFromInt(int number);
+#endif  /////S21_STRING

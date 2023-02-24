@@ -1,7 +1,7 @@
-#include "jer_sprintf.h"
+#include "s21_string.h"
 void ppts_f(struct info *mys, char *num_s, char *str) {
   int len_s;
-  if(num_s!=s21_NULL)
+  if (num_s != s21_NULL)
     len_s = s21_strlen(num_s);
   else
     len_s = 0;
@@ -21,8 +21,7 @@ void ppts_f(struct info *mys, char *num_s, char *str) {
       if (col_zeros_spaces > 0) {
         char *p1 = NULL;
         p1 = malloc((mys->width + 1) * sizeof(char));
-        
-        
+
         if (p1) {
           p1[0] = '\0';
           if (num_s[0] == ' ' || num_s[0] == '+' || num_s[0] == '-') {
@@ -44,8 +43,7 @@ void ppts_f(struct info *mys, char *num_s, char *str) {
           s21_strcat(str, p1);
           free(p1);
         }
-      
-      
+
       } else {
         s21_strcat(str, num_s);
       }

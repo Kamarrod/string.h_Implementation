@@ -1,10 +1,10 @@
 #include "alltests.h"
 int main(void) {
-  //setlocale(LC_ALL, "");
+  // setlocale(LC_ALL, "");
   setlocale(LC_ALL, "en_US.UTF-8");
   int nf;
   SRunner *sr;
-  //jeraldin
+  // jeraldin
   sr = srunner_create(test_sprintf_unsigned());
   srunner_add_suite(sr, test_sprintf_string());
   srunner_add_suite(sr, test_sprintf_percent());
@@ -12,9 +12,9 @@ int main(void) {
   srunner_add_suite(sr, test_sprintf_signed());
   srunner_add_suite(sr, test_sprintf_c());
   srunner_add_suite(sr, test_sprintf_f());
-  //arboktya
+  // arboktya
   srunner_add_suite(sr, test_arboktya_string_funcs());
-  //camarrod
+  // camarrod
   srunner_add_suite(sr, test_camarrod_string_funcs());
 
   srunner_set_fork_status(sr, CK_NOFORK);
