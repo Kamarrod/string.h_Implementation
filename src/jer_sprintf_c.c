@@ -1,6 +1,9 @@
 #include "s21_string.h"
 void ppts_width_align_left_c(char c, char *str, int col_spaces) {
-  s21_strncat(str, &c, 1);
+  char cstr[2];
+  cstr[0] = c;
+  cstr[1] = '\0';
+  s21_strcat(str, cstr);
   for (int i = 0; i < col_spaces; i++) {
     s21_strcat(str, " ");
   }
@@ -14,7 +17,10 @@ void ppts_width_align_right_c(char c, char *str, int col_spaces,
     else
       s21_strcat(str, " ");
   }
-  s21_strncat(str, &c, 1);
+  char cstr[2];
+  cstr[0] = c;
+  cstr[1] = '\0';
+  s21_strcat(str, cstr);
 }
 
 void ppts_width_c(struct info *mys, char c, char *str, int j) {

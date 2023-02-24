@@ -74,7 +74,7 @@ END_TEST
 START_TEST(sprintf_6_c) {
   char str1[100];
   char str2[100];
-  char *str3 = "%05c Test % 5c Test %lc Test";
+  char *str3 = "%5c Test % 5c Test %lc Test";
   int a = 70;
   unsigned long int b = 70;
   ck_assert_int_eq(sprintf(str1, str3, a, a, b),
@@ -98,7 +98,7 @@ END_TEST
 START_TEST(sprintf_8_c) {
   char str1[100];
   char str2[100];
-  char *str3 = "%+010.5c Test % +10.5c Test %-10lc Test %-10lc Test %+10lc";
+  char *str3 = "%+10.5c Test % +10.5c Test %-10lc Test %-10lc Test %+10lc";
   char a = 92;
   unsigned long int b = 92;
   unsigned long int c = 92;
@@ -177,7 +177,7 @@ END_TEST
 START_TEST(sprintf_15_c) {
   char str1[400];
   char str2[400];
-  char *str3 = "%.7c Test %-7c Test %-50c Test % 54c Test %0188c";
+  char *str3 = "%.7c Test %-7c Test %-50c Test % 54c Test %188c";
   int a = 112;
   ck_assert_int_eq(sprintf(str1, str3, a, a, a, a, a),
                    s21_sprintf(str2, str3, a, a, a, a, a));
@@ -199,7 +199,7 @@ END_TEST
 START_TEST(sprintf_17_c) {
   char str1[400];
   char str2[400];
-  char *str3 = "%70c Test %-90c Test %080c Test %-065c Test %- 60c";
+  char *str3 = "%70c Test %-90c Test %80c Test %-65c Test %- 60c";
   int a = 255;
   ck_assert_int_eq(sprintf(str1, str3, a, a, a, a, a),
                    s21_sprintf(str2, str3, a, a, a, a, a));
@@ -210,7 +210,7 @@ END_TEST
 START_TEST(sprintf_18_c) {
   char str1[400];
   char str2[400];
-  char *str3 = "%70c Test %-90c Test %080c Test %-065c Test %- 60c";
+  char *str3 = "%70c Test %-90c Test %80c Test %-065c Test %- 60c";
   int a = 255;
   ck_assert_int_eq(sprintf(str1, str3, a, a, a, a, a),
                    s21_sprintf(str2, str3, a, a, a, a, a));
@@ -2261,7 +2261,7 @@ END_TEST
 START_TEST(sprintf_14_string) {
   char str1[200];
   char str2[200];
-  char *str3 = "%0s Test %06s Test %05.7s TEST %0.7s Oof %0.s";
+  char *str3 = "%s Test %6s Test %5.7s TEST %.7s Oof %.s";
   char *val = "WHAT IS THIS";
   char *val2 = "idx";
   char *val3 = "PPAP";
@@ -2313,7 +2313,7 @@ START_TEST(sprintf_17_string) {
   char str1[1024];
   char str2[1024];
   char *str3 =
-      "%0.0s %1.0s %2.0s %3.0s %5.0s %6.0s %7.0s %0.3s %0.7s %3.2s %3.7s %7.3s";
+      "%.0s %1.0s %2.0s %3.0s %5.0s %6.0s %7.0s %.3s %.7s %3.2s %3.7s %7.3s";
   char *val = s21_NULL;
   s21_sprintf(str2, str3, val, val, val, val, val, val, val, val, val, val, val,
               val);

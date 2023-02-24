@@ -298,10 +298,12 @@ void refreshUnknownError(int errnum) {
   for (int i = indexOfStartNumber; i < unknownErrorLength; ++i)
     unknownError[i] = ' ';
   char* errnumString = getNumberFromInt(errnum);
-  for (s21_size_t i = 0; i < s21_strlen(errnumString); ++i)
-    unknownError[indexOfStartNumber + i] = errnumString[i];
-  unknownError[indexOfStartNumber + s21_strlen(errnumString)] = '\0';
-  free(errnumString);
+  if (errnumString) {
+    for (s21_size_t i = 0; i < s21_strlen(errnumString); ++i)
+      unknownError[indexOfStartNumber + i] = errnumString[i];
+    unknownError[indexOfStartNumber + s21_strlen(errnumString)] = '\0';
+    free(errnumString);
+  }
 }
 
 char* getNumberFromInt(int number) {
