@@ -82,7 +82,7 @@ char* utoa(unsigned long value) {
 
   return str;
 }
-char* ulltoa(unsigned long long x, int d) {
+char* ulltoa(s21_size_t x, int d) {
   static char str[1024] = {0};
   for (int k = 0; k < 1024; k++) str[k] = '\0';
   int i = 0;
@@ -103,46 +103,54 @@ char* ulltoa(unsigned long long x, int d) {
 }
 
 char* ftoa(long double n, int afterpoint, char c) {
-  char* res_d = NULL;
+  char* res_d = s21_NULL;
   char res[256];
   res[0]='\0';
     for (int k = 0; k < 256; k++) res[k] = '\0';
     if (n < 0) {
       n = -n;
-      strcat(res, "-");
+      s21_strcat(res, "-");
 
     } else {
       if (c == '+')
-        strcat(res, "+");
+        s21_strcat(res, "+");
       else if (c == ' ')
-        strcat(res, " ");
+        s21_strcat(res, " ");
     }
 
     if (afterpoint != 0) {
-      unsigned long long ipart = (unsigned long long)n;
+      s21_size_t ipart = (s21_size_t)n;
       long double fpart = n - (long double)ipart;
 
       if ((int)(fpart * 100) >= 95 && afterpoint <= 4) {
-        strcat(res, ulltoa(ipart + 1, 0));
+        s21_strcat(res, ulltoa(ipart + 1, 0));
         fpart = 0;
       } else {
-        strcat(res, ulltoa(ipart, 0));
+        s21_strcat(res, ulltoa(ipart, 0));
         fpart = roundl(fpart * pow(10, afterpoint));
       }
-      strcat(res, ".");
+      s21_strcat(res, ".");
       if (fpart != 0.0)
-        strcat(res, ulltoa((unsigned long long)fpart, afterpoint));
+        s21_strcat(res, ulltoa((s21_size_t)fpart, afterpoint));
       else {
-        for (int i = 0; i < afterpoint; i++) strcat(res, "0");
+        for (int i = 0; i < afterpoint; i++) s21_strcat(res, "0");
       }
   } else {
       long double rounded = roundl(n);
-      strcat(res, ulltoa((unsigned long long)rounded, 0));
+      s21_strcat(res, ulltoa((s21_size_t)rounded, 0));
   }
 
 
-  res_d = malloc((strlen(res)+1) * sizeof(char));
+  res_d = malloc((s21_strlen(res)+1) * sizeof(char));
   if(res_d)
-    strcpy(res_d, res);
+    s21_strcpy(res_d, res);
   return res_d;
+}
+
+int s21_atoi(char* str) {
+  int result = 0;
+  for(s21_size_t i = 0; i < s21_strlen(str); ++i)
+    result = result * 10 + (str[i] - '0');
+
+  return result;
 }

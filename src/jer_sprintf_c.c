@@ -1,8 +1,8 @@
 #include "jer_sprintf.h"
 void ppts_width_align_left_c(char c, char *str, int col_spaces ) {
-  strncat(str, &c, 1);
+  s21_strncat(str, &c, 1);
   for (int i = 0; i < col_spaces; i++) {
-    strcat(str, " ");
+    s21_strcat(str, " ");
   }
 }
 
@@ -10,11 +10,11 @@ void ppts_width_align_right_c(char c, char *str, int col_spaces,
                               struct info *mys) {
   for (int i = 0; i < col_spaces; i++) {
     if (mys->fl == '0')
-      strcat(str, "0");
+      s21_strcat(str, "0");
     else
-      strcat(str, " ");
+      s21_strcat(str, " ");
   }
-  strncat(str, &c, 1);
+  s21_strncat(str, &c, 1);
 }
 
 void ppts_width_c(struct info *mys, char c, char *str, int j) {

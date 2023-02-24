@@ -2202,7 +2202,7 @@ START_TEST(sprintf_10_string) {
   char str1[200];
   char str2[200];
   char *str3 = "%s Test %3.s Test %5.7s TEST %10s %#s %-s %+s %.s % .s";
-  char *val = NULL;
+  char *val = s21_NULL;
   ck_assert_int_eq(
       sprintf(str1, str3, val, val, val, val, val, val, val, val, val),
       s21_sprintf(str2, str3, val, val, val, val, val, val, val, val, val));
@@ -2315,7 +2315,7 @@ START_TEST(sprintf_17_string) {
   char str2[1024];
   char *str3 =
       "%0.0s %1.0s %2.0s %3.0s %5.0s %6.0s %7.0s %0.3s %0.7s %3.2s %3.7s %7.3s";
-  char *val = NULL;
+  char *val = s21_NULL;
   s21_sprintf(str2, str3, val, val, val, val, val, val, val, val, val, val, val,
               val);
   sprintf(str1, str3, val, val, val, val, val, val, val, val, val, val, val,

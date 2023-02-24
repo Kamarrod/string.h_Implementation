@@ -44,7 +44,7 @@ char *s21_strpbrk(const char *str1, const char *str2) { // check
     s21_size_t shift  = 0;
     if (str1!= s21_NULL && str2!= s21_NULL) {
         do {
-           for (s21_size_t j = 0; j < strlen(str2) && find == -1; j++) {
+           for (s21_size_t j = 0; j < s21_strlen(str2) && find == -1; j++) {
             if (str1[shift] == str2[j]) find = 1;
            }
         } while (find == -1 && str1[shift++] != '\0');
@@ -72,8 +72,8 @@ char *s21_strstr(const char *haystack, const char *needle) { // check
   int flag;
   s21_size_t shift = 0;
   if (haystack != s21_NULL && needle != s21_NULL) {
-    s21_size_t lenOne = strlen(haystack);
-    s21_size_t lenTwo = strlen(needle);
+    s21_size_t lenOne = s21_strlen(haystack);
+    s21_size_t lenTwo = s21_strlen(needle);
     if (lenOne == lenTwo && lenOne == 0 && *haystack == '\0' && *needle == '\0') {
         first = 1;
         shift = 1;
@@ -157,7 +157,7 @@ void *s21_memset(void *str, int c, s21_size_t n) {
 void *s21_to_upper(const char *str) { // check
     char *copy = s21_NULL;
     if (str != s21_NULL) {
-        s21_size_t len = strlen(str);
+        s21_size_t len = s21_strlen(str);
         const char * prom = str;
         copy = malloc((len + 1) * sizeof(char));
         if (copy) {
@@ -174,10 +174,11 @@ void *s21_to_upper(const char *str) { // check
 
 void *s21_insert(const char *src, const char *str, s21_size_t start_index) { //check 
     char * answer = s21_NULL;
-    if (str && src && start_index <= strlen(src)) {
-        s21_size_t lenSrc = strlen(src);
-        s21_size_t lenStr = strlen(str);
-        //else lenStr = 0;
+    if (src && start_index <= s21_strlen(src)) {
+        s21_size_t lenSrc = s21_strlen(src);
+        s21_size_t lenStr;
+        if (str) lenStr  = s21_strlen(str);
+        else lenStr = 0;
         answer = malloc((lenSrc + lenStr + 1) * sizeof(char));
         for (s21_size_t i = 0; i < lenSrc + lenStr; i++) {
             if (str && start_index <= i && i < start_index + lenStr) answer[i] = str[i - start_index];

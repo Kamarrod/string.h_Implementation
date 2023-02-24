@@ -4,7 +4,13 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+//#include <string.h>
+#include "camarrod.h"
+#include "arboktya.h"
+
+#define s21_size_t unsigned long long
+#define s21_NULL (void*)0
+
 struct info {
   char fl;
   int width;
@@ -41,6 +47,8 @@ char *itoa(long x, int d);
 char *ftoa(long double n, int afterpoint, char c);
 char *utoa(unsigned long value);
 char *ulltoa(unsigned long long x, int d);
+int s21_atoi(char* str);
+char *ulltoa(s21_size_t x, int d);
 
 // s
 void ppts_width_align_right_s(struct info *mys, char *s, char *str,

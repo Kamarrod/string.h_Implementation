@@ -3,9 +3,11 @@
 
 #include "stdio.h"
 #include "stdlib.h"
-#include "string.h"
-#define s21_size_t unsigned long long
-#define s21_NULL (void*)0
+#include "arboktya.h"
+
+//#include "string.h"
+// #define s21_size_t unsigned long long
+// #define s21_NULL (void*)0
 char *s21_strchr(const char *str, int c);
 char *s21_strcpy(char *dest, const char *src);
 char *s21_strncpy(char *dest, const char *src, s21_size_t n);

@@ -3,39 +3,39 @@ void ppts_width_align_right_s(struct info *mys, char *s, char *str,
                               int col_spaces) {
   for (int i = 0; i < col_spaces; i++) {
     if (mys->fl == '0')
-      strcat(str, "0");
+      s21_strcat(str, "0");
     else
-      strcat(str, " ");
+      s21_strcat(str, " ");
   }
   if (mys->acc >= 0)
-    strncat(str, s, mys->acc);
+    s21_strncat(str, s, mys->acc);
   else
-    strcat(str, s);
+    s21_strcat(str, s);
 }
 
 void ppts_width_align_left_s(struct info *mys, char *s, char *str,
                              int col_spaces) {
   if (mys->acc >= 0)
-    strncat(str, s, mys->acc);
+    s21_strncat(str, s, mys->acc);
   else
-    strcat(str, s);
+    s21_strcat(str, s);
   for (int i = 0; i < col_spaces; i++) {
     if (mys->fl == '0')
-      strcat(str, "0");
+      s21_strcat(str, "0");
     else
-      strcat(str, " ");
+      s21_strcat(str, " ");
   }
 }
 void ppts_acc_s(struct info *mys, char *s, char *str) {
-  strncat(str, s, mys->acc);
+  s21_strncat(str, s, mys->acc);
 }
 
 void ppts_width_s(struct info *mys, char *s, char *str) {
   int col_spaces;
   unsigned macc = mys->acc;
-  if (strlen(s) <=
+  if (s21_strlen(s) <=
       macc) {  //точность больше или = длины слова => пишем все слово
-    col_spaces = mys->width - strlen(s);
+    col_spaces = mys->width - s21_strlen(s);
   } else {  //точность меньше длины слова
     col_spaces = mys->width - mys->acc;
   }
@@ -51,6 +51,6 @@ void ppts_width_s(struct info *mys, char *s, char *str) {
   } else if (mys->acc >= 0) {
     ppts_acc_s(mys, s, str);
   } else {
-    strcat(str, s);
+    s21_strcat(str, s);
   }
 }
