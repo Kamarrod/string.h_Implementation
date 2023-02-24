@@ -29,7 +29,7 @@ char *s21_strncpy(char *dest, const char *src, s21_size_t n) { // check
     if (src != s21_NULL) {
         prom = dest;
         s21_size_t i = 0;
-        for ( ; i < n && src[i] != '\0'; i++) {
+        for (; i < n && src[i] != '\0'; i++) {
             dest[i] = src[i];
         }
         for (; i < n; i++) {
@@ -69,7 +69,6 @@ char *s21_strrchr(const char *str, int c) { //check
 
 char *s21_strstr(const char *haystack, const char *needle) { // check
   int first = 0;
-  int flag;
   s21_size_t shift = 0;
   if (haystack != s21_NULL && needle != s21_NULL) {
     s21_size_t lenOne = s21_strlen(haystack);
@@ -79,7 +78,7 @@ char *s21_strstr(const char *haystack, const char *needle) { // check
         shift = 1;
     }
     for (s21_size_t i = 0; i < lenOne && first == 0; i++) {
-        flag = 0;
+        int flag = 0;
         for (s21_size_t j = 0; j < lenTwo && flag == 0; j++) {
         if (needle[j] != haystack[i + j]) {
             flag = 1;
@@ -108,38 +107,38 @@ void *s21_memchr(const void *str, int c, s21_size_t n) {  // check
             }
         }
     }
-    return find == -1 ? s21_NULL : (void*)str + shift;
+    return find == -1 ? s21_NULL : (void*)((char*)str + shift);
 }
 
 void *s21_memcpy(void *dest, const void *src, s21_size_t n) { // check
     void* prom = dest;
     while (n--) {
-        *((char*)dest++) = *((char*)src++);
+        *((char*)dest) = *((char*)src);
+        dest = (char*) dest + 1;
+        src = (char*) src + 1;
     }
     return prom;
 }
 
 void *s21_memmove(void *dest, const void *src, s21_size_t n) {
     if (src != NULL && dest != NULL) {
-        if (dest < src) { //&& src - dest < (int)n) {
+        if (dest < src) {
             void *promDest = dest ;
             const void *promSrc = src;
             while (n--) {
-                *((char*)promDest++) = *((char*)promSrc++);
+                *((char*)promDest + 1) = *((char*)promSrc + 1);
             }
-            //return dest;
         } 
-        if (src < dest ) { //&& dest - src < (int)n) {
-            printf("YES\n");
-            void *promDest = dest + n;
-            const void *promSrc = src + n;
+        if (src < dest ) {
+            void *promDest = (char*)dest + n;
+            const void *promSrc = (char*)src + n;
             n = n + 1;
             while (n--) {
-                *((char*)promDest--) = *((char*)promSrc--);
+                *((char*)promDest) = *((char*)promSrc);
+                promDest = (char*)promDest - 1;
+                promSrc = (char*)promSrc - 1;
             }
-            //return dest;
         }
-        //s21_memcpy(dest, src, n);
     }
     return dest;
 }
@@ -148,7 +147,7 @@ void *s21_memset(void *str, int c, s21_size_t n) {
     void * prom = str;
     if (str != s21_NULL) {
         for (s21_size_t i = 0; i < n; i++) {
-            *(char*)(str + i) = c;
+            *((char *)str + i) = c;
         }
     }
     return prom;
@@ -174,11 +173,9 @@ void *s21_to_upper(const char *str) { // check
 
 void *s21_insert(const char *src, const char *str, s21_size_t start_index) { //check 
     char * answer = s21_NULL;
-    if (src && start_index <= s21_strlen(src)) {
+    if (str && src && start_index <= s21_strlen(src)) {
         s21_size_t lenSrc = s21_strlen(src);
-        s21_size_t lenStr;
-        if (str) lenStr  = s21_strlen(str);
-        else lenStr = 0;
+        s21_size_t lenStr = s21_strlen(str);
         answer = malloc((lenSrc + lenStr + 1) * sizeof(char));
         for (s21_size_t i = 0; i < lenSrc + lenStr; i++) {
             if (str && start_index <= i && i < start_index + lenStr) answer[i] = str[i - start_index];
