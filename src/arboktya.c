@@ -172,7 +172,7 @@ int s21_strcmp(const char *str1, const char *str2) {
     ++str2;
   }
 
-  return *str1 - *str2 > 0 ? 1 : *str1 - *str2 == 0 ? 0 : -1;
+  return *str1 - *str2;
 }
 
 int contains(char c, const char* str) {
@@ -239,7 +239,7 @@ int s21_memcmp(const void* str1, const void* str2, s21_size_t n) {
     ++_str2;
   }
 
-  return result > 0 ? 1 : result == 0 ? 0 : -1;
+  return result;
 }
 
 // Сравнивает не более первых n байтов str1 и str2.
@@ -252,7 +252,7 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
     ++str2;
   }
 
-  return result > 0 ? 1 : result == 0 ? 0 : -1;
+  return result;
 }
 
 void* s21_to_lower(const char* str) {
